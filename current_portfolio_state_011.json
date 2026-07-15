@@ -1,0 +1,18 @@
+{
+  "current_portfolio": {
+    "TQQQ": 0.75,
+    "ERX": 0.0,
+    "UXI": 0.0,
+    "QQQM": 0.05,
+    "XLE": 0.0,
+    "XSOE": 0.1999999999999999,
+    "XLI": 0.0,
+    "XLB": 0.0,
+    "BIL": 0.0
+  },
+  "last_rebalance_date": null,
+  "last_alert_date": null,
+  "trading_days_since_alert": 1002,
+  "trading_days_since_rebalance": 1002,
+  "updated_at_utc": "2026-06-06T06:11:32+00:00"
+}

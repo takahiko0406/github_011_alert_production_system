@@ -1,0 +1,28 @@
+034 EXECUTION-GRADE EXPECTED RETURN SIGNAL
+
+Purpose
+- Keep all-ETF expected returns visible.
+- Mark only production or robust-gated shadow signals as execution-grade.
+
+Performance
+- 034_EXECUTION_GRADE_EXPECTED_RETURN_SIGNAL: ann 0.9300, Sharpe 3.8755, DD -0.1461, final equity 5.8199
+- 022F_BASE_COMMON: ann 0.9037, Sharpe 3.7375, DD -0.1461, final equity 5.6096
+- EXPANDED_CANDIDATE_COMMON: ann 0.7251, Sharpe 3.0521, DD -0.1682, final equity 4.3087
+
+Latest Gate
+- Robust gate active: False
+- Opportunistic gate active: True
+- Source model: 022F_balanced_defense_real_estate
+- Weights: XLI 36.4%, SOXL 26.0%, TQQQ 16.9%, SOXX 8.2%, XLE 8.0%, QQQM 0.9%
+
+Top Execution-Grade Scores
+- XSOE: action 41.6, authority LIVE_EXECUTION_MODEL, exp10d +1.40%, weight 0.0%
+- XLB: action 39.6, authority LIVE_EXECUTION_MODEL, exp10d +0.61%, weight 60.0%
+- QQQM: action 32.2, authority LIVE_EXECUTION_MODEL, exp10d +0.66%, weight 40.0%
+- XLI: action 19.8, authority LIVE_EXECUTION_MODEL, exp10d +0.63%, weight 0.0%
+- XLE: action 17.5, authority LIVE_EXECUTION_MODEL, exp10d +0.62%, weight 0.0%
+- SOXX: action 56.9, authority OPPORTUNISTIC_SHADOW_EXECUTION, exp10d +2.33%, weight 50.0%
+- XLF: action 15.8, authority RESEARCH_EXPECTED_RETURN_ONLY, exp10d +0.70%, weight 0.0%
+- TLT: action 15.5, authority RESEARCH_EXPECTED_RETURN_ONLY, exp10d +0.68%, weight 0.0%
+- XLP: action 14.1, authority RESEARCH_EXPECTED_RETURN_ONLY, exp10d +0.68%, weight 0.0%
+- IEF: action 13.8, authority RESEARCH_EXPECTED_RETURN_ONLY, exp10d +0.68%, weight 0.0%

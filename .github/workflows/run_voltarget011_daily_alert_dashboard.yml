@@ -1,0 +1,61 @@
+name: Run VolTarget011 Daily Alert Dashboard
+
+on:
+  schedule:
+    # 22:00 Japan time = 13:00 UTC.
+    # This is before regular US market open during daylight saving time.
+    - cron: "0 13 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      mark_rebalanced:
+        description: "Set true only after you actually rebalanced manually"
+        required: false
+        default: "false"
+      no_run_model:
+        description: "Set true to skip model run and only reprocess existing latest CSV"
+        required: false
+        default: "false"
+
+permissions:
+  contents: write
+
+jobs:
+  run-model-alert-dashboard:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install numpy pandas scikit-learn yfinance requests
+
+      - name: Run VolTarget011 daily alert dashboard
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          MODEL_SCRIPT_NAME: ${{ vars.MODEL_SCRIPT_NAME }}
+        run: |
+          EXTRA_ARGS=""
+          if [ "${{ github.event.inputs.mark_rebalanced }}" = "true" ]; then
+            EXTRA_ARGS="$EXTRA_ARGS --mark-rebalanced"
+          fi
+          if [ "${{ github.event.inputs.no_run_model }}" = "true" ]; then
+            EXTRA_ARGS="$EXTRA_ARGS --no-run-model"
+          fi
+          python run_011_daily_with_alert_dashboard.py $EXTRA_ARGS
+
+      - name: Commit dashboard outputs
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add *.csv *.json || true
+          git commit -m "Update VolTarget011 alert dashboard" || echo "No changes to commit"
+          git push || echo "Nothing to push"

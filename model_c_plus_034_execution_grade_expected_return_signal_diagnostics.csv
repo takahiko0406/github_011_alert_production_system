@@ -1,0 +1,2 @@
+rule,active_days,active_pct,latest_robust_gate_active,latest_opportunistic_gate_active,latest_source_model,latest_weights
+top SOXX + growth > 0 + crash_pressure < 0.50 + (industrial > 0 or materials > 0),50,0.07407407407407407,False,True,022F_balanced_defense_real_estate,"XLI 36.4%, SOXL 26.0%, TQQQ 16.9%, SOXX 8.2%, XLE 8.0%, QQQM 0.9%"

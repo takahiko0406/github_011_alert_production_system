@@ -1,0 +1,20 @@
+{
+  "execution_safe": true,
+  "data_date": "2026-07-13",
+  "prediction_date": "2026-07-13",
+  "allocation_date": "2026-07-13",
+  "score_date": "2026-07-13",
+  "dashboard_date": "2026-07-15",
+  "ranking_fingerprint": "02eb62aae13f138149c28573dd53bf3c7b4c63f2aacd9fa984e78d935eaf0704",
+  "assertions": {
+    "every_etf_once_in_main_ranking": true,
+    "selected_etfs_first": true,
+    "current_weights_sum_to_100": true,
+    "recommended_weights_sum_to_100": true,
+    "dashboard_telegram_rankings_identical": true,
+    "all_model_inputs_share_common_date": true,
+    "no_stale_data_shown_as_executable": true,
+    "no_research_only_buy": true
+  },
+  "production_modified": true
+}

@@ -1,0 +1,5 @@
+github_011_alert_production_system/
+.stale_quarantine/
+__pycache__/
+*.pyc
+*.zip

@@ -1,0 +1,30 @@
+034 DAILY EXECUTION — SAFE
+Data 2026-07-13 | Allocation 2026-07-13 | Freshness CURRENT
+Action: TRADE VERIFIED ALLOCATION
+
+RANKING (same order as dashboard)
+1. XLV | BUY | 7.0% | score 63.7
+2. QQQM | INCREASE | 25.0% | score 32.9
+3. XLB | BUY | 60.0% | score 31.2
+4. XLE | BUY | 8.0% | score 23.7
+5. XSOE | SELL | 0.0% | score 85.5
+6. SOXX | HOLD | 0.0% | score 83.4
+7. TLT | HOLD | 0.0% | score 83.2
+8. XLP | HOLD | 0.0% | score 70.2
+9. XLRE | HOLD | 0.0% | score 65.8
+10. FEZ | HOLD | 0.0% | score 52.7
+11. XLU | HOLD | 0.0% | score 47.3
+12. XLI | HOLD | 0.0% | score 35.9
+13. IWM | HOLD | 0.0% | score 21.2
+14. GLD | HOLD | 0.0% | score 7.2
+15. TQQQ | SELL | 0.0% | score UNAVAILABLE
+16. SOXL | HOLD | 0.0% | score UNAVAILABLE
+17. BIL | HOLD | 0.0% | score UNAVAILABLE
+18. XLF | HOLD | 0.0% | score 84.4
+19. IEF | HOLD | 0.0% | score 68.2
+
+QQQM 25.0% | TQQQ 0.0%
+SOXX 0.0% | SOXL 0.0%
+Tech exposure 0.250x | Emergency NORMAL
+Ranking fingerprint: 02eb62aae13f138149c28573dd53bf3c7b4c63f2aacd9fa984e78d935eaf0704
+Telegram eligible for send.

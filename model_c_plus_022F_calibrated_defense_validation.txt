@@ -1,0 +1,32 @@
+022F CALIBRATED DEFENSIVE / REAL ESTATE VALIDATION
+
+Design Being Validated
+- 022E tightened defensive breadth from 0.750 to 0.875.
+- XLP still represents consumer-staples recession defense, but weaker XLP calls are filtered out.
+- XLRE still requires real-estate strength, rate relief, and credit confirmation.
+- XLU remains a rate-relief defensive sleeve.
+- The volatility block was tested but rejected; best model uses no practical vol block.
+
+Common Period Versus 020C
+- Annual return delta: +0.0117
+- Sharpe delta: +0.1541
+- Max drawdown delta: +0.0203
+
+Cost Sensitivity
+- 2x cost Sharpe delta: +0.1010
+- 5x cost Sharpe delta: -0.0332
+
+Weak Windows
+- Rate-stress 2024H1 Sharpe delta: -0.2683
+- April 2025 Sharpe delta: -0.1441
+
+Exposure
+- Defensive active days: 169
+- XLP days: 39
+- XLRE days: 54
+- XLU days: 38
+- XLV days: 38
+
+Recommendation
+- 022E passes normal validation as the best defensive/real-estate allocation candidate so far.
+- It is a balanced/risk-quality candidate, not a clean replacement for every market window.
