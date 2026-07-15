@@ -1,4 +1,4 @@
-"""
+﻿"""
 model_c_plus_transition_conviction_overlay_011_LIGHT_EXECUTION_AND_RIGOROUS_TEST.py
 
 Purpose
@@ -741,6 +741,7 @@ def main():
 
     latest_df = pd.DataFrame([latest_out])
     latest_df.to_csv(SCRIPT_DIR / f"{PREFIX_OUT}_latest_recommendation.csv", index=False)
+    latest_df.to_csv(SCRIPT_DIR / GENERIC_LATEST, index=False)
 
     print("\nDEBUG LATEST OUT")
     print("TOP ASSET:", latest_out.get("top_asset"))
@@ -830,3 +831,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
