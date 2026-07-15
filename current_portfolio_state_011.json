@@ -12,7 +12,7 @@
   },
   "last_rebalance_date": null,
   "last_alert_date": null,
-  "trading_days_since_alert": 1002,
-  "trading_days_since_rebalance": 1002,
+  "trading_days_since_alert": 1003,
+  "trading_days_since_rebalance": 1003,
   "updated_at_utc": "2026-06-06T06:11:32+00:00"
 }
