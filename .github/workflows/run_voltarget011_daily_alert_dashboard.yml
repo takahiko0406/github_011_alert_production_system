@@ -1,26 +1,15 @@
-name: Run VolTarget011 Daily Alert Dashboard
+﻿name: Run Verified 034 Daily Dashboard
 
 on:
   schedule:
-    # 22:00 Japan time = 13:00 UTC.
-    # This is before regular US market open during daylight saving time.
     - cron: "0 13 * * 1-5"
   workflow_dispatch:
-    inputs:
-      mark_rebalanced:
-        description: "Set true only after you actually rebalanced manually"
-        required: false
-        default: "false"
-      no_run_model:
-        description: "Set true to skip model run and only reprocess existing latest CSV"
-        required: false
-        default: "false"
 
 permissions:
   contents: write
 
 jobs:
-  run-model-alert-dashboard:
+  run-verified-034-dashboard:
     runs-on: ubuntu-latest
 
     steps:
@@ -37,25 +26,18 @@ jobs:
           python -m pip install --upgrade pip
           pip install numpy pandas scikit-learn yfinance requests
 
-      - name: Run VolTarget011 daily alert dashboard
+      - name: Run verified 034 pipeline and send Telegram
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          MODEL_SCRIPT_NAME: ${{ vars.MODEL_SCRIPT_NAME }}
         run: |
-          EXTRA_ARGS=""
-          if [ "${{ github.event.inputs.mark_rebalanced }}" = "true" ]; then
-            EXTRA_ARGS="$EXTRA_ARGS --mark-rebalanced"
-          fi
-          if [ "${{ github.event.inputs.no_run_model }}" = "true" ]; then
-            EXTRA_ARGS="$EXTRA_ARGS --no-run-model"
-          fi
-          python run_011_daily_with_alert_dashboard.py $EXTRA_ARGS
+          python run_verified_034_daily.py --send-telegram
 
       - name: Commit dashboard outputs
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
-          git add *.csv *.json || true
-          git commit -m "Update VolTarget011 alert dashboard" || echo "No changes to commit"
+          git add *.csv *.json *.txt *.html || true
+          git commit -m "Update verified 034 daily dashboard" || echo "No changes to commit"
+          git pull --rebase origin main || true
           git push || echo "Nothing to push"
