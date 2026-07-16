@@ -15,6 +15,9 @@ LATEST_FILE = f"{PREFIX}_latest_recommendation.csv"
 SCOREBOARD_FILE = f"{PREFIX}_scoreboard.csv"
 PERFORMANCE_FILE = f"{PREFIX}_performance_summary.csv"
 VALIDATION_FILE = "model_c_plus_034_live_dashboard_validation.json"
+MARKET_FRESHNESS_FILE = "model_c_plus_market_data_freshness.csv"
+FEATURE_FRESHNESS_FILE = "model_c_plus_feature_freshness.csv"
+CURRENT_BEST_FILE = "model_c_plus_current_best_with_divergence_alerts_latest_recommendation.csv"
 OUT_FILES = [f"model_c_plus_034_live_dashboard_telegram_page_{i}.txt" for i in range(1, 5)]
 OUT_ALL = "model_c_plus_034_live_dashboard_telegram_preview.txt"
 
@@ -33,6 +36,19 @@ def read_json(path: Path) -> dict[str, Any]:
         return json.loads(path.read_text(encoding="utf-8"))
     except Exception:
         return {}
+
+
+def freshness_status(path: Path, expected_date: str) -> str:
+    row = read_last_csv(path)
+    if row.empty:
+        return "MISSING"
+    actual = date_text(first([row], ["latest_data_date", "data_date", "signal_date"]))
+    status = str(first([row], ["status", "freshness", "data_status"]) or "UNKNOWN").upper()
+    if actual == expected_date and status in {"PASS", "CURRENT", "OK"}:
+        return f"CURRENT ({actual})"
+    if actual == expected_date:
+        return f"{status} ({actual})"
+    return f"STALE ({actual}; expected {expected_date})"
 
 
 def number(value: Any) -> float | None:
@@ -192,12 +208,28 @@ def main() -> None:
         performance_row = matched.iloc[0] if not matched.empty else performance.iloc[0]
 
     validation = read_json(root / VALIDATION_FILE)
-    data_date = date_text(first([latest, validation], ["latest_data_date", "data_date"]))
+    feature_source = read_last_csv(root / CURRENT_BEST_FILE)
+    data_date = date_text(first([latest, validation, feature_source], ["latest_data_date", "data_date"]))
     allocation_date = date_text(first([latest, validation], ["allocation_date", "base_weight_date"]))
-    freshness = first([latest, validation], ["freshness", "data_status", "freshness_status"]) or "N/A"
+    market_freshness = freshness_status(root / MARKET_FRESHNESS_FILE, data_date)
+    feature_freshness = freshness_status(root / FEATURE_FRESHNESS_FILE, data_date)
+    allocation_freshness = "CURRENT" if allocation_date == data_date else f"STALE ({allocation_date}; expected {data_date})"
+    freshness = "CURRENT" if market_freshness.startswith("CURRENT") and feature_freshness.startswith("CURRENT") and allocation_freshness == "CURRENT" else "CHECK"
+
     weights = extract_weights(latest)
-    top_asset = first([latest], ["top_asset", "expanded_top_asset"]) or "N/A"
-    second_asset = first([latest], ["second_asset", "expanded_second_asset"]) or "N/A"
+    # The verified allocation is authoritative. Override any stale/intermediate scoreboard weights.
+    scoreboard["weight"] = scoreboard["asset"].map(weights).fillna(0.0)
+
+    live_ranked = scoreboard[scoreboard["weight"] > 1e-10].sort_values(["weight", "model_score"], ascending=[False, False])
+    live_top_asset = live_ranked.iloc[0]["asset"] if not live_ranked.empty else "N/A"
+    live_second_asset = live_ranked.iloc[1]["asset"] if len(live_ranked) > 1 else "N/A"
+
+    research_ranked = scoreboard.sort_values(["tradable_score", "expected_return"], ascending=[False, False], na_position="last")
+    research_top_asset = research_ranked.iloc[0]["asset"] if not research_ranked.empty else "N/A"
+    research_second_asset = research_ranked.iloc[1]["asset"] if len(research_ranked) > 1 else "N/A"
+
+    top_asset = first([latest], ["top_asset", "expanded_top_asset"]) or research_top_asset
+    second_asset = first([latest], ["second_asset", "expanded_second_asset"]) or research_second_asset
     score_gap = first([latest], ["score_gap", "expanded_score_gap"])
     expected_portfolio_return = float((scoreboard["expected_return"].fillna(0) * scoreboard["weight"].fillna(0)).sum())
 
@@ -211,8 +243,9 @@ def main() -> None:
         f"Execution safe: {yes_no(first([validation], ['execution_safe']))}",
         f"Emergency state: {first([latest], ['emergency_status', 'emergency_alert', 'emergency']) or 'N/A'}",
         f"Normal rebalance due: {yes_no(first([latest], ['normal_rebalance_due', 'rebalance_due']))}",
-        f"Top signal: {top_asset}",
-        f"Second signal: {second_asset}",
+        f"Live allocation leader: {live_top_asset}",
+        f"Second live holding: {live_second_asset}",
+        f"Research strength leader: {research_top_asset}",
         f"Top-two score gap: {num(score_gap, 4)}",
         f"Required gap: {num(first([latest], ['required_gap', 'score_gap_required']), 4)}",
         f"Effective technology exposure: {num(first([latest], ['effective_technology_exposure']))}x",
@@ -241,18 +274,18 @@ def main() -> None:
         "LIVE may execute. GATED, SHADOW and RESEARCH do not execute unless approved.",
     ])
 
-    growth = first([latest], ["growth_strength", "expanded_growth_strength"])
-    semis = first([latest], ["soxx_strength"])
-    credit = first([latest], ["credit_strength"])
-    industrials = first([latest], ["industrial_strength", "expanded_industrial_strength"])
-    materials = first([latest], ["materials_strength", "expanded_materials_strength"])
-    copper = first([latest], ["copper_strength"])
-    oil = first([latest], ["oil_strength", "oil_3m"])
-    usd = first([latest], ["usd_3m_strength"])
-    risk_off = first([latest], ["risk_off_strength"])
-    crash = first([latest], ["crash_pressure", "expanded_crash_pressure"])
-    vix = first([latest], ["vix_level", "vix"])
-    yield_curve = first([latest], ["yield_curve"])
+    growth = first([latest, feature_source], ["growth_strength", "expanded_growth_strength"])
+    semis = first([latest, feature_source], ["soxx_strength"])
+    credit = first([latest, feature_source], ["credit_strength"])
+    industrials = first([latest, feature_source], ["industrial_strength", "expanded_industrial_strength"])
+    materials = first([latest, feature_source], ["materials_strength", "expanded_materials_strength"])
+    copper = first([latest, feature_source], ["copper_strength"])
+    oil = first([latest, feature_source], ["oil_strength", "oil_3m"])
+    usd = first([latest, feature_source], ["usd_3m_strength"])
+    risk_off = first([latest, feature_source], ["risk_off_strength"])
+    crash = first([latest, feature_source], ["crash_pressure", "expanded_crash_pressure"])
+    vix = first([latest, feature_source], ["vix_level", "vix"])
+    yield_curve = first([latest, feature_source], ["yield_curve"])
 
     page3 = ["034 ECONOMIC AND MARKET REGIME", f"Data date: {data_date} | Freshness: {freshness}"]
     page3 += section("CORE ECONOMIC STATE")
@@ -291,7 +324,11 @@ def main() -> None:
         "Korean won / Asian export-cycle regime: NOT YET ACTIVE",
     ])
     page3 += section("ECONOMIC INTERPRETATION")
-    page3.append(f"{top_asset} ranks first and {second_asset} ranks second in the live execution model.")
+    page3.append(f"Verified live allocation is led by {live_top_asset}; {live_second_asset} is the next live holding.")
+    if research_top_asset != live_top_asset:
+        authority = row_for(scoreboard, research_top_asset)
+        authority_text = authority_code(authority["authority"]) if authority is not None else "RESEARCH"
+        page3.append(f"{research_top_asset} is the strongest research signal but has {authority_text} authority, so it does not replace the verified live allocation.")
     gap_value = number(score_gap)
     page3.append("The top-two gap is small, so leadership conviction is limited rather than dominant." if gap_value is not None and abs(gap_value) < 0.005 else "The top-two gap indicates comparatively clear leadership.")
     if number(credit) is not None and number(credit) > 0:
@@ -321,9 +358,9 @@ def main() -> None:
         f"Execution safe: {yes_no(first([validation], ['execution_safe']))}",
         f"Validation: {'PASS' if assertions and all(assertions.values()) else 'N/A'}",
         f"Model: {first([latest], ['model']) or 'N/A'}",
-        f"Market-data freshness: {first([validation], ['market_data_freshness']) or freshness}",
-        f"Feature freshness: {first([validation], ['feature_freshness']) or freshness}",
-        f"Allocation freshness: {first([validation], ['allocation_freshness']) or freshness}",
+        f"Market-data freshness: {market_freshness}",
+        f"Feature freshness: {feature_freshness}",
+        f"Allocation freshness: {allocation_freshness} ({allocation_date})",
         f"Ranking fingerprint: {first([validation], ['ranking_fingerprint']) or 'N/A'}",
     ])
     page4 += section("EXECUTION AUTHORITY")
