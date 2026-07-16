@@ -1,0 +1,27 @@
+034 DAILY EXECUTION
+Data date: 2026-07-16
+Allocation date: 2026-07-16
+Freshness: N/A
+
+━━ VERIFIED ALLOCATION ━━
+XSOE     70.0%
+QQQM     22.0%
+XLE       8.0%
+TOTAL   100.0%
+
+━━ EXECUTION STATE ━━
+Execution safe: YES
+Emergency state: N/A
+Normal rebalance due: N/A
+Top signal: SOXX
+Second signal: XSOE
+Top-two score gap: 0.0409
+Required gap: N/A
+Effective technology exposure: 0.220x
+
+━━ PORTFOLIO EVIDENCE ━━
+Expected 10-day portfolio return: 0.90%
+Historical annual return: 86.15%
+Historical volatility: 24.93%
+Historical Sharpe: 3.455
+Historical max drawdown: -17.80%

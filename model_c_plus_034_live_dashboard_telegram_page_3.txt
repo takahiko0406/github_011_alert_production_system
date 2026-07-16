@@ -1,0 +1,39 @@
+034 ECONOMIC AND MARKET REGIME
+Data date: 2026-07-16 | Freshness: N/A
+
+━━ CORE ECONOMIC STATE ━━
+Growth: Weak (-2.452)
+Credit: Unavailable (N/A)
+USD: Unavailable (N/A)
+Yield curve: N/A
+Risk-off pressure: Unavailable (N/A)
+Crash pressure: Low (-0.799)
+VIX: N/A
+
+━━ SECTOR AND CROSS-ASSET REGIME ━━
+Semiconductors / technology: Unavailable (N/A)
+Industrials: Mixed (-0.180)
+Materials: Mixed (-0.387)
+Copper: Unavailable (N/A)
+Oil / energy: Unavailable (N/A)
+Small caps — IWM: Weak | score 12.6 | Exp10D 0.37%
+Financials — XLF: Mixed | score 49.0 | Exp10D 0.59%
+Real estate — XLRE: Mixed | score 58.6 | Exp10D 0.72%
+Healthcare — XLV: Strong | score 82.3 | Exp10D 0.83%
+Utilities — XLU: Mixed | score 53.0 | Exp10D 0.72%
+Staples — XLP: Constructive | score 67.7 | Exp10D 0.73%
+Treasuries — TLT: Strong | score 83.3 | Exp10D 0.76%
+Gold — GLD: Constructive | score 60.2 | Exp10D 0.74%
+
+━━ GLOBAL AND EM REGIME ━━
+Europe — FEZ: Mixed | score 57.7 | Exp10D 0.72%
+Emerging markets — XSOE: Constructive | score 72.9 | Exp10D 1.04%
+China technology — CQQQ: NOT YET ACTIVE
+Latin America — ILF: NOT YET ACTIVE
+USD/CNY and USD/CNH regime: NOT YET ACTIVE
+Korean won / Asian export-cycle regime: NOT YET ACTIVE
+
+━━ ECONOMIC INTERPRETATION ━━
+SOXX ranks first and XSOE ranks second in the live execution model.
+The top-two gap indicates comparatively clear leadership.
+Real estate, small caps, defensives, bonds, gold, Europe and EM remain visible as economic confirmation signals even when their target weight is zero.

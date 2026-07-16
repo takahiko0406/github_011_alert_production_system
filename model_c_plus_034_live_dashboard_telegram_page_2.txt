@@ -1,0 +1,28 @@
+034 COMPLETE ETF STRENGTH RANKING
+Data date: 2026-07-16 | Freshness: N/A
+
+#  ETF    Wt   Exp10D  Strength  Model    Authority
+---------------------------------------------------
+ 1 XSOE   70%    1.04%     72.9   0.0146 LIVE
+ 2 QQQM   30%    0.58%     25.9   0.0055 LIVE
+ 3 SOXX    0%    5.13%     94.3   0.0513 RESEARCH
+ 4 TLT     0%    0.76%     83.3   0.0076 RESEARCH
+ 5 XLV     0%    0.83%     82.3   0.0083 RESEARCH
+ 6 XLP     0%    0.73%     67.7   0.0073 RESEARCH
+ 7 IEF     0%    0.68%     64.8   0.0068 RESEARCH
+ 8 GLD     0%    0.74%     60.2   0.0074 RESEARCH
+ 9 XLRE    0%    0.72%     58.6   0.0072 RESEARCH
+10 FEZ     0%    0.72%     57.7   0.0072 RESEARCH
+11 XLU     0%    0.72%     53.0   0.0072 RESEARCH
+12 XLF     0%    0.59%     49.0   0.0059 RESEARCH
+13 XLE     0%    0.61%     34.9   0.0019 LIVE
+14 XLB     0%    0.49%     28.2   0.0052 LIVE
+15 XLI     0%    0.46%     18.2   0.0015 LIVE
+16 IWM     0%    0.37%     12.6   0.0037 RESEARCH
+
+━━ HOW TO READ ━━
+Weight is the verified execution allocation.
+Exp10D is the expected return forecast for the next 10 trading days.
+Strength is the 0-100 tradable score.
+Model is the execution-model score and uses a different scale.
+LIVE may execute. GATED, SHADOW and RESEARCH do not execute unless approved.
