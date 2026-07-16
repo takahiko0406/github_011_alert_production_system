@@ -1,4 +1,4 @@
-"""Atomic, fail-closed daily orchestration for verified corrected 034."""
+﻿"""Atomic, fail-closed daily orchestration for verified corrected 034."""
 
 from __future__ import annotations
 
@@ -121,3 +121,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
