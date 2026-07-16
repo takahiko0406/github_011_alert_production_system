@@ -1,11 +1,11 @@
 {
   "execution_safe": true,
-  "data_date": "2026-07-15",
-  "prediction_date": "2026-07-15",
-  "allocation_date": "2026-07-15",
-  "score_date": "2026-07-15",
+  "data_date": "2026-07-16",
+  "prediction_date": "2026-07-16",
+  "allocation_date": "2026-07-16",
+  "score_date": "2026-07-16",
   "dashboard_date": "2026-07-16",
-  "ranking_fingerprint": "9fe1653e5e18c0db39b1738d50bb99b92e1048658cf891e74c6fe198e03f7967",
+  "ranking_fingerprint": "f01c7659e131bea450113074ce6362a7cf56791c78eb5e070720826a6987b269",
   "assertions": {
     "every_etf_once_in_main_ranking": true,
     "selected_etfs_first": true,

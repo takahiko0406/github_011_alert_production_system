@@ -1,30 +1,30 @@
 034 DAILY EXECUTION — SAFE
-Data 2026-07-15 | Allocation 2026-07-15 | Freshness CURRENT
+Data 2026-07-16 | Allocation 2026-07-16 | Freshness CURRENT
 Action: TRADE VERIFIED ALLOCATION
 
 RANKING (same order as dashboard)
-1. XLE | BUY | 8.0% | score 34.2
-2. XLB | BUY | 60.0% | score 30.4
-3. QQQM | INCREASE | 32.0% | score 25.1
-4. XSOE | SELL | 0.0% | score 85.8
-5. TLT | HOLD | 0.0% | score 83.1
-6. SOXX | HOLD | 0.0% | score 78.0
-7. XLV | HOLD | 0.0% | score 75.6
-8. XLU | HOLD | 0.0% | score 64.8
-9. FEZ | HOLD | 0.0% | score 62.6
-10. XLP | HOLD | 0.0% | score 61.0
-11. XLRE | HOLD | 0.0% | score 58.8
-12. XLI | HOLD | 0.0% | score 35.1
-13. IWM | HOLD | 0.0% | score 22.6
-14. GLD | HOLD | 0.0% | score 11.8
+1. XSOE | INCREASE | 60.0% | score 72.6
+2. XLB | BUY | 40.0% | score 26.9
+3. SOXX | HOLD | 0.0% | score 94.3
+4. TLT | HOLD | 0.0% | score 83.2
+5. XLV | HOLD | 0.0% | score 78.0
+6. XLP | HOLD | 0.0% | score 69.8
+7. FEZ | HOLD | 0.0% | score 64.4
+8. XLRE | HOLD | 0.0% | score 61.9
+9. XLU | HOLD | 0.0% | score 56.3
+10. GLD | HOLD | 0.0% | score 46.3
+11. QQQM | SELL | 0.0% | score 31.6
+12. XLE | HOLD | 0.0% | score 23.8
+13. XLI | HOLD | 0.0% | score 20.5
+14. IWM | HOLD | 0.0% | score 12.7
 15. TQQQ | SELL | 0.0% | score UNAVAILABLE
 16. SOXL | HOLD | 0.0% | score UNAVAILABLE
 17. BIL | HOLD | 0.0% | score UNAVAILABLE
-18. IEF | HOLD | 0.0% | score 74.9
-19. XLF | HOLD | 0.0% | score 61.7
+18. IEF | HOLD | 0.0% | score 64.8
+19. XLF | HOLD | 0.0% | score 54.7
 
-QQQM 32.0% | TQQQ 0.0%
+QQQM 0.0% | TQQQ 0.0%
 SOXX 0.0% | SOXL 0.0%
-Tech exposure 0.320x | Emergency NORMAL
-Ranking fingerprint: 9fe1653e5e18c0db39b1738d50bb99b92e1048658cf891e74c6fe198e03f7967
+Tech exposure 0.000x | Emergency NORMAL
+Ranking fingerprint: f01c7659e131bea450113074ce6362a7cf56791c78eb5e070720826a6987b269
 Telegram eligible for send.
