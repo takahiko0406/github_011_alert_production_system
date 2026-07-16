@@ -1,39 +1,43 @@
 034 ECONOMIC AND MARKET REGIME
-Data date: 2026-07-16 | Freshness: N/A
+Data date: 2026-07-16 | Freshness: CURRENT
 
 ━━ CORE ECONOMIC STATE ━━
-Growth: Weak (-2.452)
-Credit: Unavailable (N/A)
-USD: Unavailable (N/A)
+Growth: Weak (-2.454)
+Credit: Neutral (0.272)
+USD: Strong / tightening (1.735)
 Yield curve: N/A
-Risk-off pressure: Unavailable (N/A)
-Crash pressure: Low (-0.799)
+Risk-off pressure: Elevated (1.266)
+Crash pressure: Low (-0.779)
 VIX: N/A
 
 ━━ SECTOR AND CROSS-ASSET REGIME ━━
-Semiconductors / technology: Unavailable (N/A)
-Industrials: Mixed (-0.180)
-Materials: Mixed (-0.387)
-Copper: Unavailable (N/A)
+Semiconductors / technology: Weak (-2.455)
+Industrials: Mixed (-0.155)
+Materials: Mixed (-0.400)
+Copper: Neutral (-0.391)
 Oil / energy: Unavailable (N/A)
-Small caps — IWM: Weak | score 12.6 | Exp10D 0.37%
-Financials — XLF: Mixed | score 49.0 | Exp10D 0.59%
-Real estate — XLRE: Mixed | score 58.6 | Exp10D 0.72%
-Healthcare — XLV: Strong | score 82.3 | Exp10D 0.83%
-Utilities — XLU: Mixed | score 53.0 | Exp10D 0.72%
-Staples — XLP: Constructive | score 67.7 | Exp10D 0.73%
-Treasuries — TLT: Strong | score 83.3 | Exp10D 0.76%
-Gold — GLD: Constructive | score 60.2 | Exp10D 0.74%
+Small caps — IWM: Weak | score 12.6 | Exp10D 0.35%
+Financials — XLF: Mixed | score 54.6 | Exp10D 0.60%
+Real estate — XLRE: Constructive | score 67.7 | Exp10D 0.72%
+Healthcare — XLV: Mixed | score 56.4 | Exp10D 0.71%
+Utilities — XLU: Constructive | score 62.0 | Exp10D 0.71%
+Staples — XLP: Constructive | score 73.3 | Exp10D 0.72%
+Treasuries — TLT: Strong | score 86.7 | Exp10D 0.73%
+Gold — GLD: Mixed | score 43.0 | Exp10D 0.67%
 
 ━━ GLOBAL AND EM REGIME ━━
-Europe — FEZ: Mixed | score 57.7 | Exp10D 0.72%
-Emerging markets — XSOE: Constructive | score 72.9 | Exp10D 1.04%
+Europe — FEZ: Constructive | score 68.0 | Exp10D 0.72%
+Emerging markets — XSOE: Constructive | score 72.8 | Exp10D 1.10%
 China technology — CQQQ: NOT YET ACTIVE
 Latin America — ILF: NOT YET ACTIVE
 USD/CNY and USD/CNH regime: NOT YET ACTIVE
 Korean won / Asian export-cycle regime: NOT YET ACTIVE
 
 ━━ ECONOMIC INTERPRETATION ━━
-SOXX ranks first and XSOE ranks second in the live execution model.
+Verified live allocation is led by XSOE; QQQM is the next live holding.
+SOXX is the strongest research signal but has RESEARCH authority, so it does not replace the verified live allocation.
 The top-two gap indicates comparatively clear leadership.
+Credit remains supportive, reducing immediate stress risk.
+The strong-dollar regime remains a headwind for broad EM and international risk assets.
+The slow semiconductor regime remains weak even if short-term price action improves.
 Real estate, small caps, defensives, bonds, gold, Europe and EM remain visible as economic confirmation signals even when their target weight is zero.
