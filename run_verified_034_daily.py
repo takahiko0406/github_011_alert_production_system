@@ -70,8 +70,14 @@ def write_freshness_seed() -> str:
         str(light_source.iloc[-1]["latest_data_date"])[:10],
     }
     if len(dates) != 1:
+
         raise ValueError(f"Market/feature producers disagree: {dates}")
     common = next(iter(dates))
+    pd.DataFrame([{"latest_data_date": common, "producer": "fresh yfinance download", "status": "PASS"}]).to_csv(ROOT / "model_c_plus_market_data_freshness.csv", index=False)
+    pd.DataFrame([{"latest_data_date": common, "producer": "current-best/full-universe feature engine", "status": "PASS"}]).to_csv(ROOT / "model_c_plus_feature_freshness.csv", index=False)
+    return common
+
+
     pd.DataFrame([{"latest_data_date": common, "producer": "fresh yfinance download", "status": "PASS"}]).to_csv(ROOT / "model_c_plus_market_data_freshness.csv", index=False)
     pd.DataFrame([{"latest_data_date": common, "producer": "current-best/full-universe feature engine", "status": "PASS"}]).to_csv(ROOT / "model_c_plus_feature_freshness.csv", index=False)
     return common
@@ -81,17 +87,57 @@ def send_telegram_if_requested(enabled: bool) -> None:
     if not enabled:
         print("Telegram dry-run only; delivery disabled.")
         return
-    ready = json.loads((ROOT / "model_c_plus_034_execution_ready.json").read_text(encoding="utf-8"))
+
+    ready = json.loads(
+        (ROOT / "model_c_plus_034_execution_ready.json").read_text(
+            encoding="utf-8"
+        )
+    )
+
     if not ready.get("execution_safe"):
         raise RuntimeError("Telegram suppressed: execution is not safe")
+
     token = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
     chat_id = os.getenv("TELEGRAM_CHAT_ID", "").strip()
+
     if not token or not chat_id:
         raise RuntimeError("Telegram secrets missing")
+
     import requests
-    text = (ROOT / "model_c_plus_034_live_dashboard_telegram_preview.txt").read_text(encoding="utf-8")
-    response = requests.post(f"https://api.telegram.org/bot{token}/sendMessage", data={"chat_id": chat_id, "text": text}, timeout=20)
-    response.raise_for_status()
+
+    page_files = [
+        "model_c_plus_034_live_dashboard_telegram_page_1.txt",
+        "model_c_plus_034_live_dashboard_telegram_page_2.txt",
+        "model_c_plus_034_live_dashboard_telegram_page_3.txt",
+        "model_c_plus_034_live_dashboard_telegram_page_4.txt",
+    ]
+
+    for page_file in page_files:
+        page_path = ROOT / page_file
+
+        if not page_path.exists():
+            raise FileNotFoundError(
+                f"Missing Telegram page: {page_path}"
+            )
+
+        text = page_path.read_text(encoding="utf-8")
+
+        response = requests.post(
+            f"https://api.telegram.org/bot{token}/sendMessage",
+            data={
+                "chat_id": chat_id,
+                "text": text,
+            },
+            timeout=20,
+        )
+
+        response.raise_for_status()
+        print(f"Telegram sent: {page_file}")
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--send-telegram", action="store_true")
 
 
 def main() -> None:
@@ -110,6 +156,12 @@ def main() -> None:
         run("run_034_corrected_production.py")
         run("redesign_034_daily_trading_dashboard.py", {"DASHBOARD_INPUT_DIR": str(ROOT), "DASHBOARD_OUTPUT_PREFIX": "model_c_plus_034_live_dashboard"})
         run("validate_034_production.py")
+
+        run(
+            "redesign_082_clear_telegram_report.py",
+            {"DASHBOARD_INPUT_DIR": str(ROOT)},
+        )
+
         send_telegram_if_requested(args.send_telegram)
         block.unlink(missing_ok=True)
         print(f"VERIFIED 034 DAILY PIPELINE PASS: {common}; quarantine={quarantine_dir}")
