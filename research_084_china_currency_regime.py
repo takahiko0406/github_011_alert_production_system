@@ -178,10 +178,31 @@ def build_features(close: pd.DataFrame, fx_map: dict[str, str | None]) -> pd.Dat
     spread_component = -out["cnh_cny_spread_z"]
     dxy_component = -zscore(out["dxy_21d"])
 
+    # Combine only components that actually have data.
+    # CNH and the CNH-CNY spread are optional because Yahoo may return
+    # only sparse CNH history. Missing components are excluded and the
+    # remaining weights are renormalized row by row.
+    component_frame = pd.DataFrame(
+        {
+            "trend": trend_component,
+            "spread": spread_component,
+            "dxy": dxy_component,
+        }
+    )
+    component_weights = pd.Series(
+        {
+            "trend": 0.55,
+            "spread": 0.25,
+            "dxy": 0.20,
+        }
+    )
+
+    weighted_values = component_frame.mul(component_weights, axis=1)
+    available_weights = component_frame.notna().mul(component_weights, axis=1).sum(axis=1)
+
     out["yuan_support_score"] = (
-        0.55 * trend_component
-        + 0.25 * spread_component
-        + 0.20 * dxy_component
+        weighted_values.sum(axis=1, min_count=1)
+        / available_weights.replace(0.0, np.nan)
     )
     out["capital_flow_pressure_score"] = -out["yuan_support_score"]
 
