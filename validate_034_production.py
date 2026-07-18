@@ -9,8 +9,8 @@ from common_technology_leverage_080 import TECHNOLOGY_EXPOSURE_LIMIT
 
 
 ROOT = Path(__file__).resolve().parent
-VALIDATED = {"QQQM", "TQQQ", "SOXX", "SOXL", "IWM", "FEZ", "XLE", "XLB", "XLI", "XLV", "XLP", "XLU", "XLRE", "TLT", "GLD", "XSOE", "BIL"}
-FORBIDDEN = {"XLF", "IEF", "ERX", "UXI", "TNA", "UGL"}
+VALIDATED = {"QQQM", "TQQQ", "SOXX", "SOXL", "IWM", "FEZ", "XLE", "ERX", "XLB", "XLI", "UXI", "XLV", "XLP", "XLU", "XLRE", "TLT", "GLD", "XSOE", "BIL"}
+FORBIDDEN = {"XLF", "IEF", "TNA", "UGL"}
 
 
 def latest_date(path: str, columns=("latest_data_date", "signal_date", "date")) -> str:
@@ -56,6 +56,10 @@ def main() -> None:
         raise ValueError("TQQQ lacks selected QQQM base authority")
     if weights.get("SOXL", 0.0) > 1e-12 and float(latest.get("soxx_base_weight", 0.0)) <= 0:
         raise ValueError("SOXL lacks selected SOXX base authority")
+    if weights.get("ERX", 0.0) > 1e-12 and float(latest.get("xle_base_weight", 0.0)) <= 0:
+        raise ValueError("ERX lacks selected XLE base authority")
+    if weights.get("UXI", 0.0) > 1e-12 and float(latest.get("xli_base_weight", 0.0)) <= 0:
+        raise ValueError("UXI lacks selected XLI base authority")
     if str(latest.get("common_leverage_configuration")) != "D_BOTH_CAP_1.00":
         raise ValueError("Wrong common leverage configuration")
     if str(latest.get("common_leverage_framework")) != "TQQQ_STYLE_SHARED_BUDGET":

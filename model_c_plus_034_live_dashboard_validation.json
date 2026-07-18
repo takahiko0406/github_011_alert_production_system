@@ -4,8 +4,8 @@
   "prediction_date": "2026-07-17",
   "allocation_date": "2026-07-17",
   "score_date": "2026-07-17",
-  "dashboard_date": "2026-07-17",
-  "ranking_fingerprint": "889be790085f6875ababd9887a9cf9dd6e141435742b74a5fd2fb617c62a7ac3",
+  "dashboard_date": "2026-07-18",
+  "ranking_fingerprint": "b6e9d86e6064ecf2e8371ed3982182e1d1598d8087b9bd0f5d4a100f031c03aa",
   "assertions": {
     "every_etf_once_in_main_ranking": true,
     "selected_etfs_first": true,

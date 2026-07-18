@@ -114,15 +114,23 @@ def main() -> None:
         "iwm_score": iwm_score,
         **details,
     }
-    # Independently unvalidated leverage remains disabled in final 022F live authority.
-    for asset in ["TQQQ", "ERX", "UXI", "SOXL", "TNA"]:
+    # Publish the 022F source as an unlevered base while retaining the exact
+    # authoritative leverage seeds for the validated substitution framework.
+    # Conversion preserves 100% total weight and prevents leveraged ETFs from
+    # receiving independent ranking authority.
+    output["validated_tqqq_seed_weight"] = float(weights.get("TQQQ", 0.0))
+    output["validated_tqqq_seed_allowed"] = bool(row.get("allowed_TQQQ", False))
+    output["validated_soxl_seed_weight"] = float(weights.get("SOXL", 0.0))
+    # ERX and UXI are already final outputs of the mature 011 leverage producer;
+    # preserve them directly rather than reconstructing them downstream.
+    mappings = {"TQQQ": "QQQM", "SOXL": "SOXX", "TNA": "IWM"}
+    for asset, underlying in mappings.items():
+        removed = float(weights.get(asset, 0.0))
+        weights[underlying] = float(weights.get(underlying, 0.0)) + removed
         weights[asset] = 0.0
     direct_total = sum(float(weights.get(a, 0.0)) for a in r22b.EXEC_ASSETS_EXT)
     if abs(direct_total - 1.0) > 1e-8:
-        # Move removed leverage to its validated underlying where possible.
-        mappings = {"TQQQ": "QQQM", "ERX": "XLE", "UXI": "XLI", "SOXL": "SOXX", "TNA": "IWM"}
-        # Rebuild from the pre-disable values embedded above is impossible here, so fail closed.
-        raise ValueError("Unvalidated leverage was active in 022F live weights; promotion requires independent validation")
+        raise ValueError(f"Unlevered 022F live weights sum to {direct_total}")
     for asset in sorted(r22b.EXEC_ASSETS_EXT):
         output[f"exec_w_{asset}"] = float(weights.get(asset, 0.0))
     pd.DataFrame([output]).to_csv(OUT, index=False)

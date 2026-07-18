@@ -8,13 +8,14 @@ import numpy as np
 import pandas as pd
 
 import research_072b_034_hybrid_switching_cost_audit as audit
-from common_technology_leverage_080 import apply_common_overlay
+import research_022b_defensive_real_estate_allocation as r22b
+from common_technology_leverage_080 import apply_common_overlay, apply_common_overlay_history
 
 
 ROOT = Path(__file__).resolve().parent
 PREFIX = "model_c_plus_034_execution_grade_expected_return_signal"
-VALIDATED = {"QQQM", "TQQQ", "SOXX", "SOXL", "IWM", "FEZ", "XLE", "XLB", "XLI", "XLV", "XLP", "XLU", "XLRE", "TLT", "GLD", "XSOE", "BIL"}
-FORBIDDEN = {"XLF", "IEF", "ERX", "UXI", "TNA", "UGL"}
+VALIDATED = {"QQQM", "TQQQ", "SOXX", "SOXL", "IWM", "FEZ", "XLE", "ERX", "XLB", "XLI", "UXI", "XLV", "XLP", "XLU", "XLRE", "TLT", "GLD", "XSOE", "BIL"}
+FORBIDDEN = {"XLF", "IEF", "TNA", "UGL"}
 
 
 def main() -> None:
@@ -50,11 +51,46 @@ def main() -> None:
         cost = max(0.0, audit.BASE_RATE * turnover - embedded)
         costs.loc[date] = cost
         transition_rows.append({"date": date, "use_expanded": bool(gate.loc[date]), "turnover": turnover, "embedded_selected_source_cost": embedded, "missing_switch_cost": cost})
-    corrected = original - costs
-    pd.DataFrame({"portfolio_return": corrected, "use_expanded": gate, "source_switch_cost": costs}).to_csv(f"{PREFIX}_daily_returns.csv")
+    pre_common = original - costs
+
+    base_features = base_log.set_index("date").reindex(idx, method="ffill")
+    features = signal[["growth_strength", "soxx_strength", "risk_off_strength", "crash_pressure"]].copy()
+    features["total_budget"] = base_features["total_budget"]
+    features["conviction_scale"] = base_features["conviction_scale"]
+    if features.isna().any().any():
+        raise ValueError("Common leverage historical features contain missing values")
+    for asset in ["QQQM", "TQQQ", "SOXX", "SOXL"]:
+        if asset not in final_w.columns:
+            final_w[asset] = 0.0
+    final_w = final_w.reindex(columns=sorted(final_w.columns), fill_value=0.0)
+    start = (idx.min() - pd.Timedelta(days=30)).strftime("%Y-%m-%d")
+    prices = r22b.download_prices_checked(start)
+    missing_prices = [asset for asset in final_w.columns if asset not in prices.columns]
+    if missing_prices:
+        raise ValueError(f"Common leverage prices missing {missing_prices}")
+    aligned_prices = prices[final_w.columns].reindex(prices.index.union(idx)).sort_index().ffill().reindex(idx)
+    if aligned_prices.isna().any().any():
+        raise ValueError("Common leverage aligned prices contain missing values")
+    asset_returns = aligned_prices.pct_change().fillna(0.0)
+    common_w, corrected, common_costs = apply_common_overlay_history(final_w, features, pre_common, asset_returns)
+    daily = pd.DataFrame({
+        "portfolio_return": corrected,
+        "pre_common_return": pre_common,
+        "use_expanded": gate,
+        "source_switch_cost": costs,
+        "common_gross_return_delta": common_costs["gross_overlay_return_delta"],
+        "common_restored_embedded_cost": common_costs["restored_embedded_cost"],
+        "common_final_turnover": common_costs["overlay_final_turnover"],
+        "common_transaction_cost": common_costs["overlay_transaction_cost"],
+        "common_slippage": common_costs["overlay_slippage"],
+    })
+    daily.to_csv(f"{PREFIX}_daily_returns.csv")
+    common_w.assign(source_model=np.where(gate, "EXPANDED_CANDIDATE", "022F_BASE")).to_csv(f"{PREFIX}_effective_weights.csv", index_label="date")
+    common_costs.to_csv(f"{PREFIX}_common_overlay_turnover_costs.csv", index_label="date")
     pd.DataFrame(transition_rows).to_csv(f"{PREFIX}_gate_transition_costs.csv", index=False)
     summary = pd.DataFrame([
         {"model": "034_EXECUTION_GRADE_EXPECTED_RETURN_SIGNAL_CORRECTED", **audit.metrics(corrected)},
+        {"model": "034_PRE_COMMON_TECHNOLOGY_LEVERAGE", **audit.metrics(pre_common)},
         {"model": "022F_BASE_COMMON", **audit.metrics(base)},
         {"model": "EXPANDED_CANDIDATE_COMMON", **audit.metrics(expanded)},
     ])

@@ -19,9 +19,9 @@ import pandas as pd
 
 
 OUT = os.getenv("DASHBOARD_OUTPUT_PREFIX", "model_c_plus_074_034_daily_trading_dashboard")
-VALIDATED = ["QQQM", "TQQQ", "SOXX", "SOXL", "IWM", "FEZ", "XLE", "XLB", "XLI", "XLV", "XLP", "XLU", "XLRE", "TLT", "GLD", "XSOE", "BIL"]
+VALIDATED = ["QQQM", "TQQQ", "SOXX", "SOXL", "IWM", "FEZ", "XLE", "ERX", "XLB", "XLI", "UXI", "XLV", "XLP", "XLU", "XLRE", "TLT", "GLD", "XSOE", "BIL"]
 RESEARCH = ["XLF", "IEF"]
-DISABLED = ["ERX", "UXI", "UGL"]
+DISABLED = ["UGL"]
 DEFENSIVE = ["XLV", "XLP", "XLU", "XLRE", "TLT", "GLD", "BIL"]
 ROLES = {
     "QQQM": "Large-cap growth", "SOXX": "Semiconductor growth", "IWM": "Small-cap breadth",
@@ -31,6 +31,7 @@ ROLES = {
     "TLT": "Duration defense", "IEF": "Treasury research", "GLD": "Crisis / currency hedge",
     "XSOE": "Emerging-market quality", "BIL": "Cash reserve",
     "TQQQ": "QQQM replacement leverage", "SOXL": "SOXX replacement leverage",
+    "ERX": "XLE replacement leverage", "UXI": "XLI replacement leverage",
 }
 
 
@@ -162,7 +163,7 @@ def main() -> None:
     all_assets = VALIDATED + RESEARCH
     for asset in all_assets:
         s = score_map.get(asset, {})
-        authority = "MAPPED" if asset in {"TQQQ", "SOXL"} else "LIVE" if asset in VALIDATED else "RESEARCH" if asset in RESEARCH else "DISABLED"
+        authority = "MAPPED" if asset in {"TQQQ", "SOXL", "ERX", "UXI"} else "LIVE" if asset in VALIDATED else "RESEARCH" if asset in RESEARCH else "DISABLED"
         rec_w = recommended.get(asset, 0.0)
         cur_w = current.get(asset, 0.0)
         if rec_w > 1e-10:

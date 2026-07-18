@@ -123,7 +123,7 @@ Model: 034_EXECUTION_GRADE_EXPECTED_RETURN_SIGNAL
 Market-data freshness: CURRENT (2026-07-17)
 Feature freshness: CURRENT (2026-07-17)
 Allocation freshness: CURRENT (2026-07-17)
-Ranking fingerprint: 889be790085f6875ababd9887a9cf9dd6e141435742b74a5fd2fb617c62a7ac3
+Ranking fingerprint: b6e9d86e6064ecf2e8371ed3982182e1d1598d8087b9bd0f5d4a100f031c03aa
 
 ━━ EXECUTION AUTHORITY ━━
 Live execution: QQQM, XLE, XSOE, XLI, XLB
