@@ -15,14 +15,15 @@ from common_technology_leverage_080 import apply_common_overlay, apply_common_ov
 ROOT = Path(__file__).resolve().parent
 PREFIX = "model_c_plus_034_execution_grade_expected_return_signal"
 MATURE_REPLAY = ROOT / "model_c_plus_081_mature_common_leverage_replay.csv"
-MATURE_REPLAY_SHA256 = "8a8c719377fdf75e398cd8dbebc2894b238880033e0bb37c9c629044f932cebc"
+MATURE_REPLAY_SHA256 = "d0d11178f686d979ecc5020e71f7d6a93ee1544d35a86f226903aca318de0066"
 VALIDATED = {"QQQM", "TQQQ", "SOXX", "SOXL", "IWM", "FEZ", "XLE", "ERX", "XLB", "XLI", "UXI", "XLV", "XLP", "XLU", "XLRE", "TLT", "GLD", "XSOE", "BIL"}
 FORBIDDEN = {"XLF", "IEF", "TNA", "UGL"}
 
 
 def load_mature_replay():
     """Load the immutable Research-079d replay inputs, never live downloads."""
-    digest = hashlib.sha256(MATURE_REPLAY.read_bytes()).hexdigest()
+    canonical_bytes = MATURE_REPLAY.read_bytes().replace(b"\r\n", b"\n")
+    digest = hashlib.sha256(canonical_bytes).hexdigest()
     if digest != MATURE_REPLAY_SHA256:
         raise ValueError(f"Mature replay bundle hash mismatch: {digest}")
     table = pd.read_csv(MATURE_REPLAY, parse_dates=["date"], keep_default_na=False).set_index("date")
