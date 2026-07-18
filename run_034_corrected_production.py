@@ -1,6 +1,7 @@
 """Run recovered 034, add missing gate-switch costs, and build live authority."""
 
 from pathlib import Path
+import hashlib
 import subprocess
 import sys
 
@@ -8,14 +9,43 @@ import numpy as np
 import pandas as pd
 
 import research_072b_034_hybrid_switching_cost_audit as audit
-import research_022b_defensive_real_estate_allocation as r22b
 from common_technology_leverage_080 import apply_common_overlay, apply_common_overlay_history
 
 
 ROOT = Path(__file__).resolve().parent
 PREFIX = "model_c_plus_034_execution_grade_expected_return_signal"
+MATURE_REPLAY = ROOT / "model_c_plus_081_mature_common_leverage_replay.csv"
+MATURE_REPLAY_SHA256 = "8a8c719377fdf75e398cd8dbebc2894b238880033e0bb37c9c629044f932cebc"
 VALIDATED = {"QQQM", "TQQQ", "SOXX", "SOXL", "IWM", "FEZ", "XLE", "ERX", "XLB", "XLI", "UXI", "XLV", "XLP", "XLU", "XLRE", "TLT", "GLD", "XSOE", "BIL"}
 FORBIDDEN = {"XLF", "IEF", "TNA", "UGL"}
+
+
+def load_mature_replay():
+    """Load the immutable Research-079d replay inputs, never live downloads."""
+    digest = hashlib.sha256(MATURE_REPLAY.read_bytes()).hexdigest()
+    if digest != MATURE_REPLAY_SHA256:
+        raise ValueError(f"Mature replay bundle hash mismatch: {digest}")
+    table = pd.read_csv(MATURE_REPLAY, parse_dates=["date"], keep_default_na=False).set_index("date")
+    for column in table.columns:
+        sample = next((value for value in table[column] if str(value) != ""), "")
+        text = str(sample).lower()
+        if text.startswith(("0x", "-0x")) or text in {"nan", "inf", "-inf"}:
+            table[column] = table[column].map(
+                lambda value: np.nan if str(value) == "" else float.fromhex(str(value))
+            )
+    weight_columns = [column for column in table if column.startswith("weight_")]
+    assets = [column.removeprefix("weight_") for column in weight_columns]
+    original = table[weight_columns].copy()
+    original.columns = assets
+    asset_returns = table[[f"asset_return_{asset}" for asset in assets]].copy()
+    asset_returns.columns = assets
+    feature_columns = [column for column in table if column.startswith("feature_")]
+    features = table[feature_columns].copy()
+    features.columns = [column.removeprefix("feature_") for column in feature_columns]
+    archived = table["daily_corrected_034_return"].astype(float)
+    if original.isna().any().any() or asset_returns.isna().any().any() or archived.isna().any():
+        raise ValueError("Mature replay bundle contains missing required values")
+    return original, features, archived, asset_returns, table
 
 
 def main() -> None:
@@ -63,21 +93,15 @@ def main() -> None:
         if asset not in final_w.columns:
             final_w[asset] = 0.0
     final_w = final_w.reindex(columns=sorted(final_w.columns), fill_value=0.0)
-    start = (idx.min() - pd.Timedelta(days=30)).strftime("%Y-%m-%d")
-    prices = r22b.download_prices_checked(start)
-    missing_prices = [asset for asset in final_w.columns if asset not in prices.columns]
-    if missing_prices:
-        raise ValueError(f"Common leverage prices missing {missing_prices}")
-    aligned_prices = prices[final_w.columns].reindex(prices.index.union(idx)).sort_index().ffill().reindex(idx)
-    if aligned_prices.isna().any().any():
-        raise ValueError("Common leverage aligned prices contain missing values")
-    asset_returns = aligned_prices.pct_change().fillna(0.0)
-    common_w, corrected, common_costs = apply_common_overlay_history(final_w, features, pre_common, asset_returns)
+    replay_w, replay_features, replay_returns, replay_asset_returns, replay_meta = load_mature_replay()
+    common_w, corrected, common_costs = apply_common_overlay_history(
+        replay_w, replay_features, replay_returns, replay_asset_returns
+    )
     daily = pd.DataFrame({
         "portfolio_return": corrected,
-        "pre_common_return": pre_common,
-        "use_expanded": gate,
-        "source_switch_cost": costs,
+        "pre_common_return": replay_returns,
+        "use_expanded": replay_meta["daily_use_expanded"].astype(bool),
+        "source_switch_cost": replay_meta["daily_source_switch_cost"],
         "common_gross_return_delta": common_costs["gross_overlay_return_delta"],
         "common_restored_embedded_cost": common_costs["restored_embedded_cost"],
         "common_final_turnover": common_costs["overlay_final_turnover"],
@@ -85,12 +109,21 @@ def main() -> None:
         "common_slippage": common_costs["overlay_slippage"],
     })
     daily.to_csv(f"{PREFIX}_daily_returns.csv")
-    common_w.assign(source_model=np.where(gate, "EXPANDED_CANDIDATE", "022F_BASE")).to_csv(f"{PREFIX}_effective_weights.csv", index_label="date")
+    common_w.assign(source_model=replay_meta["source_model"]).to_csv(f"{PREFIX}_effective_weights.csv", index_label="date")
     common_costs.to_csv(f"{PREFIX}_common_overlay_turnover_costs.csv", index_label="date")
-    pd.DataFrame(transition_rows).to_csv(f"{PREFIX}_gate_transition_costs.csv", index=False)
+    replay_transitions = replay_meta[replay_meta["switch_transition"].notna()].reset_index()
+    replay_transitions = replay_transitions.rename(columns={
+        "daily_use_expanded": "use_expanded",
+        "switch_gross_source_switch_turnover": "turnover",
+        "switch_selected_source_cost_already_embedded_on_transition_date": "embedded_selected_source_cost",
+        "switch_missing_source_switch_cost": "missing_switch_cost",
+    })
+    replay_transitions[["date", "use_expanded", "turnover", "embedded_selected_source_cost", "missing_switch_cost"]].to_csv(
+        f"{PREFIX}_gate_transition_costs.csv", index=False
+    )
     summary = pd.DataFrame([
         {"model": "034_EXECUTION_GRADE_EXPECTED_RETURN_SIGNAL_CORRECTED", **audit.metrics(corrected)},
-        {"model": "034_PRE_COMMON_TECHNOLOGY_LEVERAGE", **audit.metrics(pre_common)},
+        {"model": "034_PRE_COMMON_TECHNOLOGY_LEVERAGE", **audit.metrics(replay_returns)},
         {"model": "022F_BASE_COMMON", **audit.metrics(base)},
         {"model": "EXPANDED_CANDIDATE_COMMON", **audit.metrics(expanded)},
     ])
@@ -139,7 +172,7 @@ def main() -> None:
     latest.update({f"exec_w_{asset}": weights[asset] for asset in sorted(weights)})
     latest["latest_weights"] = ", ".join(f"{a} {w:.1%}" for a, w in weights.items() if w > 1e-8)
     pd.DataFrame([latest]).to_csv(f"{PREFIX}_latest_recommendation.csv", index=False)
-    print(f"Corrected 034 generated through {idx.max().date()}; live source {source_model} on {common_date}")
+    print(f"Corrected 034 mature replay generated through {common_w.index.max().date()}; live source {source_model} on {common_date}")
 
 
 if __name__ == "__main__":
