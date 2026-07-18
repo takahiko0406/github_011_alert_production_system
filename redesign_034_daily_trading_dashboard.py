@@ -72,19 +72,19 @@ def fnum(value, default=np.nan) -> float:
 
 
 def pct(value, digits=1) -> str:
-    return "UNAVAILABLE" if pd.isna(value) else f"{100 * float(value):+.{digits}f}%"
+    return "DATA_UNAVAILABLE" if pd.isna(value) else f"{100 * float(value):+.{digits}f}%"
 
 
 def weight(value) -> str:
-    return "UNAVAILABLE" if pd.isna(value) else f"{100 * float(value):.1f}%"
+    return "DATA_UNAVAILABLE" if pd.isna(value) else f"{100 * float(value):.1f}%"
 
 
 def score(value) -> str:
-    return "UNAVAILABLE" if pd.isna(value) else f"{float(value):.1f}"
+    return "DATA_UNAVAILABLE" if pd.isna(value) else f"{float(value):.1f}"
 
 
 def state(value: float) -> str:
-    if pd.isna(value): return "Unavailable"
+    if pd.isna(value): return "DATA_UNAVAILABLE"
     if value >= 1.0: return "Strong"
     if value > 0.0: return "Positive"
     if value <= -1.0: return "Weak"
@@ -120,6 +120,8 @@ def main() -> None:
     expanded = pd.read_csv(root / "model_c_plus_expanded_execution_candidate_latest_recommendation.csv").iloc[-1]
     scores = pd.read_csv(root / "model_c_plus_full_universe_expected_returns_trading_scores.csv")
     light = pd.read_csv(root / "model_c_plus_transition_conviction_overlay_011_LIGHT_latest_recommendation.csv").iloc[-1]
+    market_freshness = pd.read_csv(root / "model_c_plus_market_data_freshness.csv").iloc[-1]
+    feature_freshness = pd.read_csv(root / "model_c_plus_feature_freshness.csv").iloc[-1]
     state_path = root / "current_portfolio_state_011.json"
     saved_state = json.loads(state_path.read_text(encoding="utf-8")) if state_path.exists() else {"current_portfolio": {"BIL": 1.0}}
 
@@ -127,13 +129,25 @@ def main() -> None:
     prediction_date = str(latest["signal_date"])[:10]
     allocation_date = str(latest["base_weight_date"])[:10]
     score_date = str(scores["signal_date"].iloc[-1])[:10]
+    market_data_date = str(market_freshness["latest_data_date"])[:10]
+    feature_date = str(feature_freshness["latest_data_date"])[:10]
+    source_files = {
+        "022F_BASE": "model_c_plus_022F_calibrated_defense_validation_best_latest_recommendation.csv",
+        "EXPANDED_CANDIDATE": "model_c_plus_expanded_execution_candidate_latest_recommendation.csv",
+    }
+    source_model = str(latest["source_model"])
+    if source_model not in source_files:
+        raise ValueError(f"Unsupported selected source model: {source_model}")
+    source_file = source_files[source_model]
+    source_recommendation = pd.read_csv(root / source_file).iloc[-1]
+    source_recommendation_date = str(source_recommendation["latest_data_date"])[:10]
     now_utc = datetime.now(timezone.utc)
     dashboard_date = now_utc.date()
     # Before the U.S. cash close, today's session is not a completed session and
     # must not count as staleness. This is important for the scheduled Tokyo run.
     completed_cutoff = (pd.Timestamp(dashboard_date) - pd.offsets.BDay(1)).date() if now_utc.hour < 21 else dashboard_date
     age = business_age(data_date, completed_cutoff)
-    common_dates = data_date == prediction_date == score_date == allocation_date
+    common_dates = data_date == prediction_date == score_date == allocation_date == market_data_date == feature_date == source_recommendation_date
     freshness_current = age <= 1
     execution_safe = common_dates and freshness_current
 
@@ -157,6 +171,45 @@ def main() -> None:
         "copper": fnum(expanded.get("copper_strength")), "usd": fnum(expanded.get("usd_3m_strength")),
         "soxx": fnum(expanded.get("soxx_strength")), "hyg": fnum(expanded.get("hyg_strength")),
         "tech": fnum(light.get("tech_state")),
+        "energy": fnum(source_recommendation.get("energy_state")),
+    }
+
+    def report_field(display, status, artifact, field, source_date, *, missing_sources=None):
+        return {
+            "display": str(display), "status": status, "source_artifact": artifact,
+            "source_field": field, "source_date": source_date,
+            "missing_sources": missing_sources or [],
+        }
+
+    source_name_raw = source_recommendation.get("model")
+    source_name = str(source_name_raw) if pd.notna(source_name_raw) else source_model
+    source_configuration_raw = source_recommendation.get("configuration")
+    source_configuration = str(source_configuration_raw) if pd.notna(source_configuration_raw) else "NOT_AVAILABLE_FROM_VALIDATED_SOURCE"
+    source_rebalance = source_recommendation.get("source_rebalance_date")
+    source_rebalance_display = str(source_rebalance)[:10] if pd.notna(source_rebalance) else "NOT_AVAILABLE_FROM_VALIDATED_SOURCE"
+    energy_value = fnum(source_recommendation.get("energy_state"))
+    energy_display = "DATA_UNAVAILABLE" if pd.isna(energy_value) else f"{state(energy_value)} ({energy_value:.3f})"
+    emergency_value = str(latest.get("portfolio_wide_emergency", "")).strip()
+    emergency_display = emergency_value if emergency_value else "NOT_AVAILABLE_FROM_VALIDATED_SOURCE"
+    robust_active = str(latest.get("robust_gate_active", False)).strip().lower() in {"true", "1", "yes"}
+    reporting_fields = {
+        "selected_source_model": report_field(source_model, "AVAILABLE", "model_c_plus_034_execution_grade_expected_return_signal_latest_recommendation.csv", "source_model", data_date),
+        "source_model_name": report_field(source_name, "AVAILABLE", source_file, "model", source_recommendation_date),
+        "source_configuration": report_field(source_configuration, "AVAILABLE" if source_configuration != "NOT_AVAILABLE_FROM_VALIDATED_SOURCE" else "NOT_AVAILABLE_FROM_VALIDATED_SOURCE", source_file, "configuration", source_recommendation_date, missing_sources=[] if source_configuration != "NOT_AVAILABLE_FROM_VALIDATED_SOURCE" else [f"{source_file}:configuration"]),
+        "source_recommendation_date": report_field(source_recommendation_date, "AVAILABLE", source_file, "latest_data_date", source_recommendation_date),
+        "allocation_date": report_field(allocation_date, "AVAILABLE", "model_c_plus_034_execution_grade_expected_return_signal_latest_recommendation.csv", "allocation_date", data_date),
+        "market_data_date": report_field(market_data_date, "AVAILABLE", "model_c_plus_market_data_freshness.csv", "latest_data_date", market_data_date),
+        "feature_date": report_field(feature_date, "AVAILABLE", "model_c_plus_feature_freshness.csv", "latest_data_date", feature_date),
+        "last_rebalance_date": report_field(source_rebalance_display, "AVAILABLE" if pd.notna(source_rebalance) else "NOT_AVAILABLE_FROM_VALIDATED_SOURCE", source_file, "source_rebalance_date", source_recommendation_date, missing_sources=[] if pd.notna(source_rebalance) else [f"{source_file}:source_rebalance_date"]),
+        "next_scheduled_rebalance_date": report_field("NOT_AVAILABLE_FROM_VALIDATED_SOURCE", "NOT_AVAILABLE_FROM_VALIDATED_SOURCE", source_file, "next_scheduled_rebalance_date", source_recommendation_date, missing_sources=[f"{source_file}:next_scheduled_rebalance_date"]),
+        "emergency_state": report_field(emergency_display, "AVAILABLE" if emergency_value else "NOT_AVAILABLE_FROM_VALIDATED_SOURCE", "model_c_plus_034_execution_grade_expected_return_signal_latest_recommendation.csv", "portfolio_wide_emergency", data_date),
+        "normal_rebalance_due": report_field("NOT_AVAILABLE_FROM_VALIDATED_SOURCE", "NOT_AVAILABLE_FROM_VALIDATED_SOURCE", source_file, "normal_rebalance_due", source_recommendation_date, missing_sources=[f"{source_file}:normal_rebalance_due"]),
+        "required_gap": report_field("NOT_USED_BY_SOURCE_MODEL", "NOT_USED_BY_SOURCE_MODEL", source_file, "required_gap", source_recommendation_date),
+        "yield_curve": report_field("DATA_UNAVAILABLE", "DATA_UNAVAILABLE", "model_c_plus_feature_freshness.csv", "yield_curve", feature_date, missing_sources=["model_c_plus_expanded_execution_candidate_latest_recommendation.csv:yield_curve", f"{source_file}:yield_curve"]),
+        "vix": report_field("DATA_UNAVAILABLE", "DATA_UNAVAILABLE", "model_c_plus_feature_freshness.csv", "vix_level|vix", feature_date, missing_sources=["model_c_plus_expanded_execution_candidate_latest_recommendation.csv:vix_level|vix", f"{source_file}:vix_level|vix"]),
+        "oil_energy_regime": report_field(energy_display, "AVAILABLE" if pd.notna(energy_value) else "DATA_UNAVAILABLE", source_file, "energy_state", source_recommendation_date, missing_sources=[] if pd.notna(energy_value) else [f"{source_file}:energy_state"]),
+        "robust_gate": report_field("TRIGGERED" if robust_active else "NOT_TRIGGERED", "AVAILABLE" if robust_active else "NOT_TRIGGERED", "model_c_plus_034_execution_grade_expected_return_signal_latest_recommendation.csv", "robust_gate_active", data_date),
+        "opportunistic_gate": report_field("NOT_APPLICABLE", "NOT_APPLICABLE", "model_c_plus_034_execution_grade_expected_return_signal_latest_recommendation.csv", "opportunistic_gate_active", data_date),
     }
 
     rows = []
@@ -200,8 +253,14 @@ def main() -> None:
         "all_model_inputs_share_common_date": common_dates,
         "no_stale_data_shown_as_executable": bool(not execution_safe and ranking.loc[ranking["Weight"].gt(0), "ETF"].tolist() == ["BIL"] or execution_safe),
         "no_research_only_buy": not bool(ranking[ranking["Authority"].isin(["RESEARCH", "DISABLED"])]["Recommendation"].isin(["BUY", "INCREASE"]).any()),
+        "reporting_dates_share_common_date": common_dates,
+        "required_reporting_fields_traceable": all(
+            value.get("source_artifact") and value.get("source_field") and value.get("source_date")
+            for value in reporting_fields.values()
+        ),
+        "no_ambiguous_required_na": all(value["display"].strip().upper() != "N/A" for value in reporting_fields.values()),
     }
-    if not all(v for k, v in assertions.items() if k != "all_model_inputs_share_common_date"):
+    if not all(assertions.values()):
         raise AssertionError(assertions)
 
     ranking_export = ranking[["Rank", "ETF", "Recommendation", "Weight", "Live Score", "Expected 10-day Return", "Confidence", "Regime Role", "Authority", "Freshness"]]
@@ -227,9 +286,9 @@ def main() -> None:
     themes = [
         ("Growth", [("Growth score", macro["growth"], "Growth impulse", "Prefer cyclicals only when positive."), ("SOXX", macro["soxx"], "Semiconductor strength", "Controls the robust overlay gate."), ("Technology", macro["tech"], "Technology trend", "Supports or limits growth exposure."), ("AI leadership", np.nan, "Unavailable", "No validated standalone AI input.")]),
         ("Credit", [("Credit score", macro["credit"], "Credit conditions", "Positive credit supports risk assets."), ("High yield", macro["hyg"], "High-yield confirmation", "Weak readings favor defense."), ("Financial conditions", np.nan, "Unavailable", "Not inferred from unrelated fields.")]),
-        ("Risk", [("Risk-off", macro["risk"], "Risk pressure", "High values favor defense."), ("VIX", np.nan, "Unavailable", "Leverage remains disabled without a validated current reading."), ("Crash probability", macro["crash"], "Crash pressure proxy", "Below 0.50 is required for the SOXX gate.")]),
-        ("Economy", [("Industrial", macro["industrial"], "Industrial cycle", "Positive values can confirm the SOXX gate."), ("Materials", macro["materials"], "Materials cycle", "Positive values can confirm the SOXX gate."), ("Copper", macro["copper"], "Copper signal", "Confirms real-economy strength.")]),
-        ("Rates", [("Treasuries", fnum(score_map.get("TLT", {}).get("tradable_score_0_100")), "TLT live score", "Higher relative score supports duration."), ("Yield curve", np.nan, "Unavailable", "No validated current curve input."), ("Real estate", fnum(score_map.get("XLRE", {}).get("tradable_score_0_100")), "XLRE live score", "Rate relief can support real estate.")]),
+        ("Risk", [("Risk-off", macro["risk"], "Risk pressure", "High values favor defense."), ("VIX", np.nan, "DATA_UNAVAILABLE", "No date-matched VIX field exists in the validated production artifacts."), ("Crash probability", macro["crash"], "Crash pressure proxy", "Below 0.50 is required for the SOXX gate.")]),
+        ("Economy", [("Industrial", macro["industrial"], "Industrial cycle", "Positive values can confirm the SOXX gate."), ("Materials", macro["materials"], "Materials cycle", "Positive values can confirm the SOXX gate."), ("Copper", macro["copper"], "Copper signal", "Confirms real-economy strength."), ("Energy", macro["energy"], "Selected-source energy state", "Date-matched source energy regime; not a substituted oil-price series.")]),
+        ("Rates", [("Treasuries", fnum(score_map.get("TLT", {}).get("tradable_score_0_100")), "TLT live score", "Higher relative score supports duration."), ("Yield curve", np.nan, "DATA_UNAVAILABLE", "No date-matched yield-curve field exists in the validated production artifacts."), ("Real estate", fnum(score_map.get("XLRE", {}).get("tradable_score_0_100")), "XLRE live score", "Rate relief can support real estate.")]),
         ("Currencies", [("USD", macro["usd"], "Dollar pressure", "Strong USD weighs on international, gold, and real estate."), ("International pressure", macro["usd"], "USD-derived pressure", "Prefer domestic sectors when elevated.")]),
     ]
     theme_html = "".join(f'<section class="theme"><h3>{name}</h3>' + "".join(f'<article><div><b>{label}</b><strong>{score(val)}</strong></div><p><b>State:</b> {state(val)} · {interp}</p><p><b>Trading implication:</b> {imp}</p></article>' for label, val, interp, imp in items) + "</section>" for name, items in themes)
@@ -256,6 +315,15 @@ def main() -> None:
 
     nav = "".join(f'<button data-page="p{i}" class="{"active" if i==1 else ""}">{i}. {name}</button>' for i, name in enumerate(["Today’s Execution", "Market Regime", "ETF Analysis", "Defensive Analysis", "SOXX / Overlay", "Model Health"], 1))
     warning = "All model dates agree and inputs are current." if execution_safe else f"Signal/score date {data_date}, selected allocation date {allocation_date}, and dashboard date {dashboard_date}. Stale or mixed-date inputs cannot execute."
+    provenance_rows = [[
+        html.escape(name.replace("_", " ").title()), html.escape(value["display"]),
+        html.escape(value["status"]),
+        html.escape(f'{value["source_artifact"]}:{value["source_field"]} @ {value["source_date"]}'),
+    ] for name, value in reporting_fields.items()]
+    warning += "<br><br><b>Validated reporting fields</b><br>" + "<br>".join(
+        f"{name}: {display} [{status}] — {source}"
+        for name, display, status, source in provenance_rows
+    )
     html_doc = f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>034 Daily Trading Dashboard</title><style>
     :root{{--bg:#f4f1ea;--paper:#fffdf8;--ink:#16211d;--muted:#64716b;--line:#d9ddd6;--green:#0c6b4f;--red:#a63d36;--amber:#b56a08;--nav:#122d26}}*{{box-sizing:border-box}}body{{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}}header{{background:var(--nav);color:white;padding:22px 28px;display:flex;justify-content:space-between;gap:18px;align-items:end}}header h1{{margin:0;font:700 26px/1.1 Georgia,serif}}header p{{margin:6px 0 0;color:#bcd0c8}}.status{{text-align:right}}nav{{display:flex;gap:6px;padding:10px 20px;background:#e4e9e3;overflow:auto;position:sticky;top:0;z-index:3;border-bottom:1px solid var(--line)}}nav button{{white-space:nowrap;border:0;background:transparent;padding:9px 13px;border-radius:7px;color:#42514b;font-weight:700;cursor:pointer}}nav button.active{{background:white;color:var(--green);box-shadow:0 1px 4px #0002}}main{{max-width:1480px;margin:auto;padding:22px}}.page{{display:none}}.page.active{{display:block}}h2{{font:700 25px Georgia,serif;margin:0 0 14px}}h3{{margin:0 0 10px}}.alert{{border-left:6px solid var(--red);background:#fff0ed;padding:18px 20px;border-radius:8px;margin-bottom:18px}}.alert h2{{color:var(--red);font-family:inherit;font-size:22px}}.grid{{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}}.card{{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:16px;box-shadow:0 2px 7px #1832290a}}.span4{{grid-column:span 4}}.span6{{grid-column:span 6}}.span8{{grid-column:span 8}}.span12{{grid-column:span 12}}.kpis{{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}}.kpi{{padding:10px;background:#edf1ec;border-radius:7px}}.kpi small{{display:block;color:var(--muted)}}.kpi strong{{display:block;margin-top:3px}}.badge{{display:inline-block;padding:3px 7px;border-radius:999px;background:#e7ebe7;font-size:11px;font-weight:800;white-space:nowrap}}.badge.ok{{background:#d8eee4;color:var(--green)}}.badge.bad{{background:#f5dad6;color:var(--red)}}.badge.warn{{background:#fae7c8;color:#8b5108}}.table-wrap{{overflow:auto}}table{{width:100%;border-collapse:collapse;white-space:nowrap}}th{{text-align:left;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.04em;padding:9px;border-bottom:2px solid var(--line)}}td{{padding:9px;border-bottom:1px solid #e9ebe7}}tbody tr:first-child{{background:#eef7f1}}.themes{{columns:2;column-gap:14px}}.theme{{break-inside:avoid;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:16px;margin:0 0 14px}}.theme article{{border-top:1px solid var(--line);padding:10px 0}}.theme article>div{{display:flex;justify-content:space-between}}.theme strong{{font-size:18px}}.theme p{{margin:5px 0;color:#4d5b55}}details{{background:var(--paper);border:1px solid var(--line);border-radius:8px;margin:8px 0;padding:11px}}summary{{display:flex;justify-content:space-between;cursor:pointer}}.drivers{{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;color:#4d5b55}}.health-row{{display:grid;grid-template-columns:1.2fr .4fr 2fr;gap:12px;padding:12px;border-bottom:1px solid var(--line)}}footer{{padding:30px;color:var(--muted);text-align:center}}@media(max-width:850px){{header{{align-items:start;flex-direction:column}}.status{{text-align:left}}.span4,.span6,.span8{{grid-column:span 12}}.kpis{{grid-template-columns:1fr 1fr}}.themes{{columns:1}}.drivers{{grid-template-columns:1fr}}main{{padding:14px}}}}
     </style></head><body><header><div><h1>034 Daily Trading Dashboard</h1><p>Execution first. Analysis second. One authority path.</p></div><div class="status">{badge("EXECUTION SAFE" if execution_safe else "EXECUTION BLOCKED", "ok" if execution_safe else "bad")}<br><small>Generated {dashboard_date}</small></div></header><nav>{nav}</nav><main>
@@ -270,7 +338,23 @@ def main() -> None:
 
     telegram_lines = [
         "034 DAILY EXECUTION — " + ("SAFE" if execution_safe else "BLOCKED"),
-        f"Data {data_date} | Allocation {allocation_date} | Freshness {'CURRENT' if execution_safe else 'STALE'}",
+        f"Source model: {reporting_fields['selected_source_model']['display']}",
+        f"Source model name: {reporting_fields['source_model_name']['display']}",
+        f"Source configuration: {reporting_fields['source_configuration']['display']}",
+        f"Source recommendation date: {reporting_fields['source_recommendation_date']['display']}",
+        f"Market-data date: {reporting_fields['market_data_date']['display']}",
+        f"Feature date: {reporting_fields['feature_date']['display']}",
+        f"Allocation date: {reporting_fields['allocation_date']['display']}",
+        f"Last rebalance date: {reporting_fields['last_rebalance_date']['display']}",
+        f"Next scheduled rebalance date: {reporting_fields['next_scheduled_rebalance_date']['display']}",
+        f"Emergency state: {reporting_fields['emergency_state']['display']}",
+        f"Normal rebalance due: {reporting_fields['normal_rebalance_due']['display']}",
+        f"Required gap: {reporting_fields['required_gap']['display']}",
+        f"Yield curve: {reporting_fields['yield_curve']['display']}",
+        f"VIX: {reporting_fields['vix']['display']}",
+        f"Oil / energy: {reporting_fields['oil_energy_regime']['display']}",
+        f"Robust gate: {reporting_fields['robust_gate']['display']}",
+        f"Opportunistic gate: {reporting_fields['opportunistic_gate']['display']}",
         "Action: " + ("TRADE VERIFIED ALLOCATION" if execution_safe else "DO NOT TRADE — MOVE TO CASH"),
         "", "RANKING (same order as dashboard)",
     ]
@@ -278,10 +362,49 @@ def main() -> None:
     telegram_lines += ["", f"QQQM {weight(fnum(latest.get('qqqm_final_weight')))} | TQQQ {weight(fnum(latest.get('tqqq_substituted_weight')))}", f"SOXX {weight(fnum(latest.get('soxx_final_weight')))} | SOXL {weight(fnum(latest.get('soxl_substituted_weight')))}", f"Tech exposure {fnum(latest.get('effective_technology_exposure')):.3f}x | Emergency {latest.get('portfolio_wide_emergency','UNKNOWN')}", f"Ranking fingerprint: {digest}", "Telegram send suppressed because execution safety checks failed." if not execution_safe else "Telegram eligible for send."]
     Path(f"{OUT}_telegram_preview.txt").write_text("\n".join(telegram_lines) + "\n", encoding="utf-8")
 
+    performance = pd.read_csv(root / "model_c_plus_034_execution_grade_expected_return_signal_performance_summary.csv")
+    performance_row = performance[performance["model"].astype(str).str.contains("CORRECTED")].iloc[0]
+    expected_portfolio_return = float((ranking["Weight"].fillna(0.0) * ranking["Expected 10-day Return"].fillna(0.0)).sum())
+    artifact_names = {
+        "effective_weights": "model_c_plus_034_execution_grade_expected_return_signal_effective_weights.csv",
+        "daily_returns": "model_c_plus_034_execution_grade_expected_return_signal_daily_returns.csv",
+        "turnover": "model_c_plus_034_execution_grade_expected_return_signal_common_overlay_turnover_costs.csv",
+        "expected_returns": "model_c_plus_034_execution_grade_expected_return_signal_scoreboard.csv",
+    }
+    artifact_hashes = {}
+    for name, filename in artifact_names.items():
+        path = root / filename
+        if not path.exists():
+            raise FileNotFoundError(f"Required economic-equivalence artifact missing: {path}")
+        artifact_hashes[name] = {"file": filename, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
+    economic_snapshot = {
+        "allocation_weights": {asset: value for asset, value in recommended.items() if value > 1e-12},
+        "expected_10_day_portfolio_return": expected_portfolio_return,
+        "historical_annual_return": float(performance_row["annual_return"]),
+        "historical_volatility": float(performance_row["volatility"]),
+        "historical_sharpe": float(performance_row["sharpe"]),
+        "historical_max_drawdown": float(performance_row["max_drawdown"]),
+        "execution_safe": execution_safe,
+        "ranking": ranking_export["ETF"].tolist(),
+        "ranking_fingerprint": digest,
+    }
+    displayed_number_sources = {
+        "current_portfolio_weights": {"source_artifact": "current_portfolio_state_011.json", "source_field": "current_portfolio", "source_date": str(saved_state.get("updated_at_utc", "NOT_AVAILABLE_FROM_VALIDATED_SOURCE"))[:10]},
+        "recommended_weights_and_leverage": {"source_artifact": "model_c_plus_034_execution_grade_expected_return_signal_latest_recommendation.csv", "source_field": "exec_w_*|*_base_weight|*_substituted_weight|effective_technology_exposure", "source_date": data_date},
+        "ranking_scores_expected_returns": {"source_artifact": "model_c_plus_full_universe_expected_returns_trading_scores.csv", "source_field": "tradable_score_0_100|adjusted_expected_10d_return", "source_date": score_date},
+        "expanded_macro_features": {"source_artifact": "model_c_plus_expanded_execution_candidate_latest_recommendation.csv", "source_field": "growth_strength|credit_strength|risk_off_strength|crash_pressure|industrial_strength|materials_strength|copper_strength|usd_3m_strength|soxx_strength|hyg_strength", "source_date": data_date},
+        "technology_state": {"source_artifact": "model_c_plus_transition_conviction_overlay_011_LIGHT_latest_recommendation.csv", "source_field": "tech_state", "source_date": data_date},
+        "energy_state": {"source_artifact": source_file, "source_field": "energy_state", "source_date": source_recommendation_date},
+        "historical_performance": {"source_artifact": "model_c_plus_034_execution_grade_expected_return_signal_performance_summary.csv", "source_field": "annual_return|volatility|sharpe|max_drawdown", "source_date": data_date},
+    }
     validation = {
         "execution_safe": execution_safe, "data_date": data_date, "prediction_date": prediction_date,
-        "allocation_date": allocation_date, "score_date": score_date, "dashboard_date": dashboard_date.isoformat(),
-        "ranking_fingerprint": digest, "assertions": assertions, "production_modified": True,
+        "allocation_date": allocation_date, "market_data_date": market_data_date, "feature_date": feature_date,
+        "source_recommendation_date": source_recommendation_date, "score_date": score_date,
+        "dashboard_date": dashboard_date.isoformat(), "ranking_fingerprint": digest,
+        "reporting_fields": reporting_fields, "displayed_number_sources": displayed_number_sources,
+        "artifact_hashes": artifact_hashes,
+        "economic_snapshot": economic_snapshot, "assertions": assertions, "production_modified": False,
     }
     Path(f"{OUT}_validation.json").write_text(json.dumps(validation, indent=2), encoding="utf-8")
     print(json.dumps(validation, indent=2))

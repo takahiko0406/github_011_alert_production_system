@@ -208,9 +208,29 @@ def main() -> None:
         performance_row = matched.iloc[0] if not matched.empty else performance.iloc[0]
 
     validation = read_json(root / VALIDATION_FILE)
+    reporting_fields = validation.get("reporting_fields", {})
+    required_reporting_fields = {
+        "selected_source_model", "source_model_name", "source_configuration",
+        "source_recommendation_date", "allocation_date", "market_data_date", "feature_date",
+        "last_rebalance_date", "next_scheduled_rebalance_date", "emergency_state",
+        "normal_rebalance_due", "required_gap", "yield_curve", "vix",
+        "oil_energy_regime", "robust_gate", "opportunistic_gate",
+    }
+    missing_reporting = sorted(required_reporting_fields - set(reporting_fields))
+    if missing_reporting:
+        raise ValueError(f"Canonical dashboard reporting fields missing: {missing_reporting}")
+
+    def reported(name: str) -> str:
+        value = str(reporting_fields[name].get("display", "")).strip()
+        if not value or value.upper() == "N/A":
+            raise ValueError(f"Ambiguous canonical reporting field: {name}={value!r}")
+        return value
+
     feature_source = read_last_csv(root / CURRENT_BEST_FILE)
-    data_date = date_text(first([latest, validation, feature_source], ["latest_data_date", "data_date"]))
-    allocation_date = date_text(first([latest, validation], ["allocation_date", "base_weight_date"]))
+    data_date = reported("market_data_date")
+    allocation_date = reported("allocation_date")
+    feature_date = reported("feature_date")
+    source_recommendation_date = reported("source_recommendation_date")
     market_freshness = freshness_status(root / MARKET_FRESHNESS_FILE, data_date)
     feature_freshness = freshness_status(root / FEATURE_FRESHNESS_FILE, data_date)
     allocation_freshness = "CURRENT" if allocation_date == data_date else f"STALE ({allocation_date}; expected {data_date})"
@@ -233,7 +253,17 @@ def main() -> None:
     score_gap = first([latest], ["score_gap", "expanded_score_gap"])
     expected_portfolio_return = float((scoreboard["expected_return"].fillna(0) * scoreboard["weight"].fillna(0)).sum())
 
-    page1 = ["034 DAILY EXECUTION", f"Data date: {data_date}", f"Allocation date: {allocation_date}", f"Freshness: {freshness}"]
+    page1 = [
+        "034 DAILY EXECUTION",
+        f"Source model: {reported('selected_source_model')}",
+        f"Source model name: {reported('source_model_name')}",
+        f"Source configuration: {reported('source_configuration')}",
+        f"Source recommendation date: {source_recommendation_date}",
+        f"Market-data date: {data_date}",
+        f"Feature date: {feature_date}",
+        f"Allocation date: {allocation_date}",
+        f"Freshness: {freshness}",
+    ]
     page1 += section("VERIFIED ALLOCATION")
     for asset, weight in weights.items():
         page1.append(f"{asset:<6} {weight * 100:>6.1f}%")
@@ -241,13 +271,15 @@ def main() -> None:
     page1 += section("EXECUTION STATE")
     page1.extend([
         f"Execution safe: {yes_no(first([validation], ['execution_safe']))}",
-        f"Emergency state: {first([latest], ['emergency_status', 'emergency_alert', 'emergency']) or 'N/A'}",
-        f"Normal rebalance due: {yes_no(first([latest], ['normal_rebalance_due', 'rebalance_due']))}",
+        f"Last rebalance date: {reported('last_rebalance_date')}",
+        f"Next scheduled rebalance date: {reported('next_scheduled_rebalance_date')}",
+        f"Emergency state: {reported('emergency_state')}",
+        f"Normal rebalance due: {reported('normal_rebalance_due')}",
         f"Live allocation leader: {live_top_asset}",
         f"Second live holding: {live_second_asset}",
         f"Research strength leader: {research_top_asset}",
         f"Top-two score gap: {num(score_gap, 4)}",
-        f"Required gap: {num(first([latest], ['required_gap', 'score_gap_required']), 4)}",
+        f"Required gap: {reported('required_gap')}",
         f"Effective technology exposure: {num(first([latest], ['effective_technology_exposure']))}x",
     ])
     page1 += section("PORTFOLIO EVIDENCE")
@@ -259,7 +291,20 @@ def main() -> None:
         f"Historical max drawdown: {pct(first([performance_row], ['max_drawdown']))}",
     ])
 
-    ranked = scoreboard.sort_values(["weight", "tradable_score", "expected_return", "asset"], ascending=[False, False, False, True], na_position="last").reset_index(drop=True)
+    canonical_ranking = validation.get("economic_snapshot", {}).get("ranking", [])
+    extra_assets = set(scoreboard["asset"]) - set(canonical_ranking)
+    if extra_assets:
+        raise ValueError(f"Telegram scoreboard contains ETFs outside the canonical dashboard ranking: {sorted(extra_assets)}")
+    missing_assets = [asset for asset in canonical_ranking if asset not in set(scoreboard["asset"])]
+    if missing_assets:
+        placeholders = pd.DataFrame([{
+            "asset": asset, "expected_return": float("nan"), "tradable_score": float("nan"),
+            "model_score": float("nan"), "weight": weights.get(asset, 0.0),
+            "authority": "LIVE_EXECUTION_SUBSTITUTION" if asset in {"TQQQ", "SOXL", "ERX", "UXI"} else "LIVE_EXECUTION_MODEL",
+        } for asset in missing_assets])
+        scoreboard = pd.concat([scoreboard, placeholders], ignore_index=True)
+    ranking_order = {asset: index for index, asset in enumerate(canonical_ranking)}
+    ranked = scoreboard.assign(_canonical_order=scoreboard["asset"].map(ranking_order)).sort_values("_canonical_order").drop(columns="_canonical_order").reset_index(drop=True)
     page2 = ["034 COMPLETE ETF STRENGTH RANKING", f"Data date: {data_date} | Freshness: {freshness}", "", "#  ETF    Wt   Exp10D  Strength  Model    Authority", "---------------------------------------------------"]
     for index, row in ranked.iterrows():
         strength = "N/A" if pd.isna(row["tradable_score"]) else f"{row['tradable_score']:.1f}"
@@ -293,10 +338,10 @@ def main() -> None:
         f"Growth: {state(growth, 'Strong', 'Mixed', 'Weak')} ({num(growth)})",
         f"Credit: {state(credit, 'Supportive', 'Neutral', 'Deteriorating')} ({num(credit)})",
         f"USD: {state(usd, 'Strong / tightening', 'Neutral', 'Weak / easing')} ({num(usd)})",
-        f"Yield curve: {num(yield_curve)}",
+        f"Yield curve: {reported('yield_curve')}",
         f"Risk-off pressure: {state(risk_off, 'Elevated', 'Moderate', 'Low')} ({num(risk_off)})",
         f"Crash pressure: {state(crash, 'Elevated', 'Moderate', 'Low')} ({num(crash)})",
-        f"VIX: {num(vix)}",
+        f"VIX: {reported('vix')}",
     ])
     page3 += section("SECTOR AND CROSS-ASSET REGIME")
     page3.extend([
@@ -304,7 +349,7 @@ def main() -> None:
         f"Industrials: {state(industrials, 'Strong', 'Mixed', 'Weak')} ({num(industrials)})",
         f"Materials: {state(materials, 'Strong', 'Mixed', 'Weak')} ({num(materials)})",
         f"Copper: {state(copper, 'Supportive', 'Neutral', 'Weak')} ({num(copper)})",
-        f"Oil / energy: {state(oil, 'Strong', 'Neutral', 'Weak')} ({num(oil)})",
+        f"Oil / energy: {reported('oil_energy_regime')}",
         f"Small caps — IWM: {strength_text(scoreboard, 'IWM')}",
         f"Financials — XLF: {strength_text(scoreboard, 'XLF')}",
         f"Real estate — XLRE: {strength_text(scoreboard, 'XLRE')}",
@@ -348,20 +393,20 @@ def main() -> None:
         f"SOXL substituted weight: {pct(first([latest], ['soxl_substituted_weight']))}",
         f"Common leverage budget: {pct(first([latest], ['common_leverage_budget']))}",
         f"Effective technology exposure: {num(first([latest], ['effective_technology_exposure']))}x",
-        f"Leverage configuration: {first([latest], ['common_leverage_configuration']) or 'N/A'}",
-        f"Robust gate: {yes_no(first([latest], ['robust_gate_active', 'robust_gate']))}",
-        f"Opportunistic gate: {yes_no(first([latest], ['opportunistic_gate_active', 'opportunistic_gate']))}",
+        f"Leverage configuration: {first([latest], ['common_leverage_configuration']) or 'NOT_AVAILABLE_FROM_VALIDATED_SOURCE'}",
+        f"Robust gate: {reported('robust_gate')}",
+        f"Opportunistic gate: {reported('opportunistic_gate')}",
     ])
     page4 += section("FRESHNESS AND VALIDATION")
     assertions = validation.get("assertions", {})
     page4.extend([
         f"Execution safe: {yes_no(first([validation], ['execution_safe']))}",
-        f"Validation: {'PASS' if assertions and all(assertions.values()) else 'N/A'}",
-        f"Model: {first([latest], ['model']) or 'N/A'}",
+        f"Validation: {'PASS' if assertions and all(assertions.values()) else 'NOT_AVAILABLE_FROM_VALIDATED_SOURCE'}",
+        f"Model: {first([latest], ['model']) or 'NOT_AVAILABLE_FROM_VALIDATED_SOURCE'}",
         f"Market-data freshness: {market_freshness}",
         f"Feature freshness: {feature_freshness}",
         f"Allocation freshness: {allocation_freshness} ({allocation_date})",
-        f"Ranking fingerprint: {first([validation], ['ranking_fingerprint']) or 'N/A'}",
+        f"Ranking fingerprint: {first([validation], ['ranking_fingerprint']) or 'NOT_AVAILABLE_FROM_VALIDATED_SOURCE'}",
     ])
     page4 += section("EXECUTION AUTHORITY")
     page4.extend([
@@ -378,9 +423,30 @@ def main() -> None:
 
     pages = [page1, page2, page3, page4]
     texts = ["\n".join(page).strip() + "\n" for page in pages]
+    expected_ranking = validation.get("economic_snapshot", {}).get("ranking", [])
+    if ranked["asset"].tolist() != expected_ranking:
+        raise ValueError("Telegram ETF ranking differs from canonical dashboard ranking")
+    combined = "\n\n".join(texts)
+    dashboard_html = (root / "model_c_plus_034_live_dashboard.html").read_text(encoding="utf-8")
+    for name in sorted(required_reporting_fields):
+        display = reported(name)
+        if display not in dashboard_html or display not in combined:
+            raise ValueError(f"Dashboard/Telegram canonical field disagreement: {name}={display}")
+    required_labels = {
+        "Source model", "Source recommendation date", "Market-data date", "Feature date",
+        "Allocation date", "Last rebalance date", "Next scheduled rebalance date",
+        "Emergency state", "Normal rebalance due", "Required gap", "Yield curve", "VIX",
+        "Oil / energy", "Robust gate", "Opportunistic gate",
+    }
+    for line in combined.splitlines():
+        label, separator, value = line.partition(":")
+        if separator and label.strip() in required_labels and value.strip().upper() == "N/A":
+            raise ValueError(f"Ambiguous bare N/A remains in required Telegram field: {line}")
     for filename, text in zip(OUT_FILES, texts):
         (root / filename).write_text(text, encoding="utf-8")
-    (root / OUT_ALL).write_text("\n\n".join(texts), encoding="utf-8")
+    (root / OUT_ALL).write_text(combined, encoding="utf-8")
+    if (root / OUT_ALL).read_text(encoding="utf-8") != combined:
+        raise ValueError("Combined Telegram preview differs from the four canonical pages")
     print("Saved four-page high-information Telegram macro briefing.")
     print("No model logic, weights, scores, gates, leverage or rebalance rules changed.")
 
