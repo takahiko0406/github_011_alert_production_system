@@ -1,0 +1,90 @@
+{
+  "model_configuration": "D_BOTH_CAP_1.00",
+  "production_implementation": "common_technology_leverage_080.py:apply_common_overlay",
+  "historical_implementation": "common_technology_leverage_080.py:apply_common_overlay_history",
+  "inputs": {
+    "growth_strength": {
+      "source": "model_c_plus_081_mature_common_leverage_replay.csv:feature_growth_strength",
+      "required": true
+    },
+    "soxx_strength": {
+      "source": "model_c_plus_081_mature_common_leverage_replay.csv:feature_soxx_strength",
+      "required": true
+    },
+    "risk_off_strength": {
+      "source": "model_c_plus_081_mature_common_leverage_replay.csv:feature_risk_off_strength",
+      "required": true
+    },
+    "crash_pressure": {
+      "source": "model_c_plus_081_mature_common_leverage_replay.csv:feature_crash_pressure",
+      "required": true
+    },
+    "total_budget": {
+      "source": "model_c_plus_081_mature_common_leverage_replay.csv:feature_total_budget",
+      "required": true
+    }
+  },
+  "thresholds": {
+    "growth_min_inclusive": -0.1,
+    "soxx_strength_min_inclusive": -0.1,
+    "ordinary_risk_off_max_inclusive": 1.25,
+    "hard_risk_off_max_exclusive": 1.6,
+    "hard_crash_max_exclusive": 2.5,
+    "technology_exposure_limit": 2.1390000001
+  },
+  "exact_hard_safe_expression": "inputs_finite AND risk_off_strength < HARD_RISK_OFF_MAX AND crash_pressure < HARD_CRASH_MAX",
+  "emergency_expression": "NOT hard_safe",
+  "boolean_nesting": {
+    "inputs_finite": "ALL(required growth_strength, soxx_strength, risk_off_strength, crash_pressure, total_budget are finite)",
+    "hard_safe": "ALL(inputs_finite, risk_off_strength < HARD_RISK_OFF_MAX, crash_pressure < HARD_CRASH_MAX)",
+    "emergency": "NOT(hard_safe)",
+    "live_tqqq_allowed": "ALL(QQQM base > 0, saved validated TQQQ seed > 0, hard_safe)",
+    "live_soxl_allowed": "ALL(SOXX base > 0, growth_strength >= GROWTH_MIN, soxx_strength >= SOXX_STRENGTH_MIN, risk_off_strength <= RISK_OFF_MAX, hard_safe)"
+  },
+  "equality_behavior": "risk_off_strength == HARD_RISK_OFF_MAX or crash_pressure == HARD_CRASH_MAX triggers EXIT",
+  "missing_nan_behavior": "live apply_common_overlay raises ValueError; historical replay fails closed by disallowing SOXL; archived TQQQ weights are retained",
+  "entry_rule": "state changes to EXIT immediately whenever the emergency expression is true",
+  "continuation_rule": "EXIT continues while the emergency expression remains true",
+  "reduction_rule": "live path fully suppresses TQQQ and SOXL substitution; no partial tier",
+  "exit_rule": "when hard_safe becomes true, state returns to NORMAL on that call",
+  "reentry_rule": "ordinary substitution gates are reevaluated immediately; no cooldown",
+  "state_persistence": "none; stateless current-row evaluation",
+  "live_weight_adjustment": "TQQQ -> QQQM and SOXL -> SOXX before final validation",
+  "historical_weight_adjustment": "hard gate is directly applied to SOXL only; TQQQ is reconstructed from immutable archived weights",
+  "removed_capital_destination": {
+    "TQQQ": "QQQM",
+    "SOXL": "SOXX"
+  },
+  "maximum_technology_exposure_formula": "QQQM + SOXX + 3*(TQQQ + SOXL)",
+  "maximum_technology_exposure": 2.1390000001,
+  "normalization": "none; source weights must already sum to 1.0 and the overlay raises instead of normalizing",
+  "ordering": [
+    "source/base allocation",
+    "unlever base and recover saved seeds",
+    "evaluate portfolio-wide emergency hard gate",
+    "ordinary leveraged substitution eligibility",
+    "shared-budget scaling",
+    "apply substitutions or retain base sleeves on EXIT",
+    "sum and exposure validation (no normalization)",
+    "portfolio return delta",
+    "turnover",
+    "restore archived embedded cost",
+    "transaction cost",
+    "slippage"
+  ],
+  "transaction_cost_rate": 0.001,
+  "slippage_rate": 0.001,
+  "leveraged_mappings": {
+    "QQQM": "TQQQ",
+    "SOXX": "SOXL",
+    "XLE": "ERX",
+    "XLI": "UXI"
+  },
+  "immutable_replay": {
+    "file": "model_c_plus_081_mature_common_leverage_replay.csv",
+    "canonical_lf_sha256": "d0d11178f686d979ecc5020e71f7d6a93ee1544d35a86f226903aca318de0066",
+    "rows": 668,
+    "start": "2023-10-18",
+    "end": "2026-06-17"
+  }
+}

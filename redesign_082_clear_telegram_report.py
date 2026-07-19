@@ -211,8 +211,8 @@ def main() -> None:
     reporting_fields = validation.get("reporting_fields", {})
     required_reporting_fields = {
         "selected_source_model", "source_model_name", "source_configuration",
-        "source_recommendation_date", "allocation_date", "market_data_date", "feature_date",
-        "last_rebalance_date", "next_scheduled_rebalance_date", "emergency_state",
+        "source_recommendation_date", "allocation_date", "base_weight_date", "market_data_date", "feature_date",
+        "last_rebalance_date", "source_history_through_date", "next_scheduled_rebalance_date", "emergency_state",
         "normal_rebalance_due", "required_gap", "yield_curve", "vix",
         "oil_energy_regime", "robust_gate", "opportunistic_gate",
     }
@@ -262,6 +262,7 @@ def main() -> None:
         f"Market-data date: {data_date}",
         f"Feature date: {feature_date}",
         f"Allocation date: {allocation_date}",
+        f"Base weight date: {reported('base_weight_date')}",
         f"Freshness: {freshness}",
     ]
     page1 += section("VERIFIED ALLOCATION")
@@ -272,6 +273,7 @@ def main() -> None:
     page1.extend([
         f"Execution safe: {yes_no(first([validation], ['execution_safe']))}",
         f"Last rebalance date: {reported('last_rebalance_date')}",
+        f"Source history through date: {reported('source_history_through_date')}",
         f"Next scheduled rebalance date: {reported('next_scheduled_rebalance_date')}",
         f"Emergency state: {reported('emergency_state')}",
         f"Normal rebalance due: {reported('normal_rebalance_due')}",
@@ -397,6 +399,35 @@ def main() -> None:
         f"Robust gate: {reported('robust_gate')}",
         f"Opportunistic gate: {reported('opportunistic_gate')}",
     ])
+    emergency = validation.get("emergency_evidence", {})
+    required_emergency = {
+        "state_today", "applied_today", "reason", "criteria_passed", "tqqq_functional_test",
+        "soxl_functional_test", "combined_functional_test", "historical_emergency_episodes",
+        "historical_active_position_episodes",
+        "effect_on_annual_return", "effect_on_volatility", "effect_on_sharpe",
+        "effect_on_maximum_drawdown", "effect_on_final_equity_after_costs",
+        "false_positive_episodes", "evidence_quality",
+    }
+    if required_emergency - set(emergency):
+        raise ValueError(f"Canonical emergency evidence missing: {sorted(required_emergency - set(emergency))}")
+    page4 += section("🚨 EMERGENCY SYSTEM EVIDENCE 🚨")
+    page4.extend([
+        f"State today: {emergency['state_today']}",
+        f"Applied today: {'YES' if emergency['applied_today'] else 'NO'}",
+        f"Reason: {emergency['reason']}",
+        f"Criteria passed: {emergency['criteria_passed']}",
+        f"TQQQ functional test: {emergency['tqqq_functional_test']}",
+        f"SOXL functional test: {emergency['soxl_functional_test']}",
+        f"Combined TQQQ+SOXL test: {emergency['combined_functional_test']}",
+        f"Historical emergency episodes: {emergency['historical_emergency_episodes']} total; {emergency['historical_active_position_episodes']} with TQQQ/SOXL active",
+        f"Effect on annual return: {pct(emergency['effect_on_annual_return'])}",
+        f"Effect on volatility: {pct(emergency['effect_on_volatility'])}",
+        f"Effect on Sharpe: {num(emergency['effect_on_sharpe'])}",
+        f"Effect on maximum drawdown: {pct(emergency['effect_on_maximum_drawdown'])}",
+        f"Effect on final equity after costs: {num(emergency['effect_on_final_equity_after_costs'], 6)}",
+        f"False-positive episodes: {emergency['false_positive_episodes']}",
+        f"Evidence quality: {emergency['evidence_quality']}",
+    ])
     page4 += section("FRESHNESS AND VALIDATION")
     assertions = validation.get("assertions", {})
     page4.extend([
@@ -434,7 +465,7 @@ def main() -> None:
             raise ValueError(f"Dashboard/Telegram canonical field disagreement: {name}={display}")
     required_labels = {
         "Source model", "Source recommendation date", "Market-data date", "Feature date",
-        "Allocation date", "Last rebalance date", "Next scheduled rebalance date",
+        "Allocation date", "Base weight date", "Last rebalance date", "Source history through date", "Next scheduled rebalance date",
         "Emergency state", "Normal rebalance due", "Required gap", "Yield curve", "VIX",
         "Oil / energy", "Robust gate", "Opportunistic gate",
     }

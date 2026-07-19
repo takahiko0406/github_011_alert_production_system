@@ -17,8 +17,10 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from audit_083_emergency_tqqq_soxl import emergency_criteria
 
-OUT = os.getenv("DASHBOARD_OUTPUT_PREFIX", "model_c_plus_074_034_daily_trading_dashboard")
+
+OUT = os.getenv("DASHBOARD_OUTPUT_PREFIX", "model_c_plus_034_live_dashboard")
 VALIDATED = ["QQQM", "TQQQ", "SOXX", "SOXL", "IWM", "FEZ", "XLE", "ERX", "XLB", "XLI", "UXI", "XLV", "XLP", "XLU", "XLRE", "TLT", "GLD", "XSOE", "BIL"]
 RESEARCH = ["XLF", "IEF"]
 DISABLED = ["UGL"]
@@ -122,12 +124,16 @@ def main() -> None:
     light = pd.read_csv(root / "model_c_plus_transition_conviction_overlay_011_LIGHT_latest_recommendation.csv").iloc[-1]
     market_freshness = pd.read_csv(root / "model_c_plus_market_data_freshness.csv").iloc[-1]
     feature_freshness = pd.read_csv(root / "model_c_plus_feature_freshness.csv").iloc[-1]
+    emergency_validation = json.loads((root / "emergency_tqqq_soxl_functional_validation.json").read_text(encoding="utf-8"))
+    emergency_performance = pd.read_csv(root / "emergency_tqqq_soxl_ab_performance.csv")
+    emergency_episodes = pd.read_csv(root / "emergency_tqqq_soxl_episode_audit.csv")
     state_path = root / "current_portfolio_state_011.json"
     saved_state = json.loads(state_path.read_text(encoding="utf-8")) if state_path.exists() else {"current_portfolio": {"BIL": 1.0}}
 
     data_date = str(latest["latest_data_date"])[:10]
     prediction_date = str(latest["signal_date"])[:10]
     allocation_date = str(latest["base_weight_date"])[:10]
+    base_weight_date = str(latest["base_weight_date"])[:10]
     score_date = str(scores["signal_date"].iloc[-1])[:10]
     market_data_date = str(market_freshness["latest_data_date"])[:10]
     feature_date = str(feature_freshness["latest_data_date"])[:10]
@@ -185,8 +191,8 @@ def main() -> None:
     source_name = str(source_name_raw) if pd.notna(source_name_raw) else source_model
     source_configuration_raw = source_recommendation.get("configuration")
     source_configuration = str(source_configuration_raw) if pd.notna(source_configuration_raw) else "NOT_AVAILABLE_FROM_VALIDATED_SOURCE"
-    source_rebalance = source_recommendation.get("source_rebalance_date")
-    source_rebalance_display = str(source_rebalance)[:10] if pd.notna(source_rebalance) else "NOT_AVAILABLE_FROM_VALIDATED_SOURCE"
+    source_history_through = source_recommendation.get("source_rebalance_date")
+    source_history_through_display = str(source_history_through)[:10] if pd.notna(source_history_through) else "NOT_AVAILABLE_FROM_VALIDATED_SOURCE"
     energy_value = fnum(source_recommendation.get("energy_state"))
     energy_display = "DATA_UNAVAILABLE" if pd.isna(energy_value) else f"{state(energy_value)} ({energy_value:.3f})"
     emergency_value = str(latest.get("portfolio_wide_emergency", "")).strip()
@@ -198,9 +204,11 @@ def main() -> None:
         "source_configuration": report_field(source_configuration, "AVAILABLE" if source_configuration != "NOT_AVAILABLE_FROM_VALIDATED_SOURCE" else "NOT_AVAILABLE_FROM_VALIDATED_SOURCE", source_file, "configuration", source_recommendation_date, missing_sources=[] if source_configuration != "NOT_AVAILABLE_FROM_VALIDATED_SOURCE" else [f"{source_file}:configuration"]),
         "source_recommendation_date": report_field(source_recommendation_date, "AVAILABLE", source_file, "latest_data_date", source_recommendation_date),
         "allocation_date": report_field(allocation_date, "AVAILABLE", "model_c_plus_034_execution_grade_expected_return_signal_latest_recommendation.csv", "allocation_date", data_date),
+        "base_weight_date": report_field(base_weight_date, "AVAILABLE", "model_c_plus_034_execution_grade_expected_return_signal_latest_recommendation.csv", "base_weight_date", data_date),
         "market_data_date": report_field(market_data_date, "AVAILABLE", "model_c_plus_market_data_freshness.csv", "latest_data_date", market_data_date),
         "feature_date": report_field(feature_date, "AVAILABLE", "model_c_plus_feature_freshness.csv", "latest_data_date", feature_date),
-        "last_rebalance_date": report_field(source_rebalance_display, "AVAILABLE" if pd.notna(source_rebalance) else "NOT_AVAILABLE_FROM_VALIDATED_SOURCE", source_file, "source_rebalance_date", source_recommendation_date, missing_sources=[] if pd.notna(source_rebalance) else [f"{source_file}:source_rebalance_date"]),
+        "last_rebalance_date": report_field("NOT_AVAILABLE_FROM_VALIDATED_SOURCE", "NOT_AVAILABLE_FROM_VALIDATED_SOURCE", source_file, "actual_last_rebalance_date", source_recommendation_date, missing_sources=[f"{source_file}:actual_last_rebalance_date"]),
+        "source_history_through_date": report_field(source_history_through_display, "AVAILABLE" if pd.notna(source_history_through) else "NOT_AVAILABLE_FROM_VALIDATED_SOURCE", source_file, "source_rebalance_date (historical source-log maximum date; not an actual live rebalance date)", source_recommendation_date, missing_sources=[] if pd.notna(source_history_through) else [f"{source_file}:source_rebalance_date"]),
         "next_scheduled_rebalance_date": report_field("NOT_AVAILABLE_FROM_VALIDATED_SOURCE", "NOT_AVAILABLE_FROM_VALIDATED_SOURCE", source_file, "next_scheduled_rebalance_date", source_recommendation_date, missing_sources=[f"{source_file}:next_scheduled_rebalance_date"]),
         "emergency_state": report_field(emergency_display, "AVAILABLE" if emergency_value else "NOT_AVAILABLE_FROM_VALIDATED_SOURCE", "model_c_plus_034_execution_grade_expected_return_signal_latest_recommendation.csv", "portfolio_wide_emergency", data_date),
         "normal_rebalance_due": report_field("NOT_AVAILABLE_FROM_VALIDATED_SOURCE", "NOT_AVAILABLE_FROM_VALIDATED_SOURCE", source_file, "normal_rebalance_due", source_recommendation_date, missing_sources=[f"{source_file}:normal_rebalance_due"]),
@@ -210,6 +218,36 @@ def main() -> None:
         "oil_energy_regime": report_field(energy_display, "AVAILABLE" if pd.notna(energy_value) else "DATA_UNAVAILABLE", source_file, "energy_state", source_recommendation_date, missing_sources=[] if pd.notna(energy_value) else [f"{source_file}:energy_state"]),
         "robust_gate": report_field("TRIGGERED" if robust_active else "NOT_TRIGGERED", "AVAILABLE" if robust_active else "NOT_TRIGGERED", "model_c_plus_034_execution_grade_expected_return_signal_latest_recommendation.csv", "robust_gate_active", data_date),
         "opportunistic_gate": report_field("NOT_APPLICABLE", "NOT_APPLICABLE", "model_c_plus_034_execution_grade_expected_return_signal_latest_recommendation.csv", "opportunistic_gate_active", data_date),
+    }
+
+    current_emergency = emergency_criteria({
+        "growth_strength": expanded.get("growth_strength"),
+        "soxx_strength": expanded.get("soxx_strength"),
+        "risk_off_strength": expanded.get("risk_off_strength"),
+        "crash_pressure": expanded.get("crash_pressure"),
+        "total_budget": source_recommendation.get("total_budget"),
+    })
+    if current_emergency["state"] != emergency_display:
+        raise ValueError(f"Displayed emergency state cannot be reproduced: {emergency_display} != {current_emergency['state']}")
+    full_emergency = emergency_performance.loc[emergency_performance["sample"].eq("full_validated_replay")].iloc[0]
+    emergency_evidence = {
+        "state_today": current_emergency["state"],
+        "applied_today": bool(current_emergency["state"] == "EXIT" and (fnum(latest.get("qqqm_base_weight"), 0.0) > fnum(latest.get("qqqm_final_weight"), 0.0) or fnum(latest.get("soxx_base_weight"), 0.0) > fnum(latest.get("soxx_final_weight"), 0.0))),
+        "reason": current_emergency["reason"],
+        "criteria_passed": f"{sum(bool(current_emergency[key]) for key in ['inputs_finite', 'risk_off_lt_hard_max', 'crash_pressure_lt_hard_max'])}/3",
+        "tqqq_functional_test": emergency_validation["tqqq_functional_test"],
+        "soxl_functional_test": emergency_validation["soxl_functional_test"],
+        "combined_functional_test": emergency_validation["combined_functional_test"],
+        "historical_emergency_episodes": int(len(emergency_episodes)),
+        "historical_active_position_episodes": int(emergency_episodes["technology_position_active"].sum()),
+        "effect_on_annual_return": float(full_emergency["delta_annual_return"]),
+        "effect_on_volatility": float(full_emergency["delta_volatility"]),
+        "effect_on_sharpe": float(full_emergency["delta_sharpe"]),
+        "effect_on_maximum_drawdown": float(full_emergency["delta_max_drawdown"]),
+        "effect_on_final_equity_after_costs": float(full_emergency["delta_final_equity"]),
+        "false_positive_episodes": int(emergency_episodes["outcome"].eq("HURT").sum()),
+        "evidence_quality": "FUNCTIONAL_STRONG_HISTORICAL_INSUFFICIENT",
+        "source_artifacts": ["emergency_rule_definition.json", "emergency_tqqq_soxl_functional_validation.json", "emergency_tqqq_soxl_ab_performance.csv", "emergency_tqqq_soxl_episode_audit.csv"],
     }
 
     rows = []
@@ -324,6 +362,16 @@ def main() -> None:
         f"{name}: {display} [{status}] — {source}"
         for name, display, status, source in provenance_rows
     )
+    emergency_evidence_html = "<div class=\"card span12\"><h3>🚨 Emergency system evidence 🚨</h3>" + "".join([
+        f"<p><b>State today:</b> {emergency_evidence['state_today']}</p>",
+        f"<p><b>Applied today:</b> {'YES' if emergency_evidence['applied_today'] else 'NO'}</p>",
+        f"<p><b>Reason:</b> {html.escape(emergency_evidence['reason'])}</p>",
+        f"<p><b>Criteria passed:</b> {emergency_evidence['criteria_passed']}</p>",
+        f"<p><b>TQQQ / SOXL / combined functional tests:</b> {emergency_evidence['tqqq_functional_test']} / {emergency_evidence['soxl_functional_test']} / {emergency_evidence['combined_functional_test']}</p>",
+        f"<p><b>Historical emergency episodes:</b> {emergency_evidence['historical_emergency_episodes']} ({emergency_evidence['historical_active_position_episodes']} with leveraged technology active)</p>",
+        f"<p><b>Annual return / volatility / Sharpe / max drawdown / final-equity effects:</b> {emergency_evidence['effect_on_annual_return']:+.6f} / {emergency_evidence['effect_on_volatility']:+.6f} / {emergency_evidence['effect_on_sharpe']:+.6f} / {emergency_evidence['effect_on_maximum_drawdown']:+.6f} / {emergency_evidence['effect_on_final_equity_after_costs']:+.6f}</p>",
+        f"<p><b>False-positive reductions:</b> {emergency_evidence['false_positive_episodes']} · <b>Evidence quality:</b> {emergency_evidence['evidence_quality']}</p>",
+    ]) + "</div>"
     html_doc = f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>034 Daily Trading Dashboard</title><style>
     :root{{--bg:#f4f1ea;--paper:#fffdf8;--ink:#16211d;--muted:#64716b;--line:#d9ddd6;--green:#0c6b4f;--red:#a63d36;--amber:#b56a08;--nav:#122d26}}*{{box-sizing:border-box}}body{{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}}header{{background:var(--nav);color:white;padding:22px 28px;display:flex;justify-content:space-between;gap:18px;align-items:end}}header h1{{margin:0;font:700 26px/1.1 Georgia,serif}}header p{{margin:6px 0 0;color:#bcd0c8}}.status{{text-align:right}}nav{{display:flex;gap:6px;padding:10px 20px;background:#e4e9e3;overflow:auto;position:sticky;top:0;z-index:3;border-bottom:1px solid var(--line)}}nav button{{white-space:nowrap;border:0;background:transparent;padding:9px 13px;border-radius:7px;color:#42514b;font-weight:700;cursor:pointer}}nav button.active{{background:white;color:var(--green);box-shadow:0 1px 4px #0002}}main{{max-width:1480px;margin:auto;padding:22px}}.page{{display:none}}.page.active{{display:block}}h2{{font:700 25px Georgia,serif;margin:0 0 14px}}h3{{margin:0 0 10px}}.alert{{border-left:6px solid var(--red);background:#fff0ed;padding:18px 20px;border-radius:8px;margin-bottom:18px}}.alert h2{{color:var(--red);font-family:inherit;font-size:22px}}.grid{{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}}.card{{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:16px;box-shadow:0 2px 7px #1832290a}}.span4{{grid-column:span 4}}.span6{{grid-column:span 6}}.span8{{grid-column:span 8}}.span12{{grid-column:span 12}}.kpis{{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}}.kpi{{padding:10px;background:#edf1ec;border-radius:7px}}.kpi small{{display:block;color:var(--muted)}}.kpi strong{{display:block;margin-top:3px}}.badge{{display:inline-block;padding:3px 7px;border-radius:999px;background:#e7ebe7;font-size:11px;font-weight:800;white-space:nowrap}}.badge.ok{{background:#d8eee4;color:var(--green)}}.badge.bad{{background:#f5dad6;color:var(--red)}}.badge.warn{{background:#fae7c8;color:#8b5108}}.table-wrap{{overflow:auto}}table{{width:100%;border-collapse:collapse;white-space:nowrap}}th{{text-align:left;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.04em;padding:9px;border-bottom:2px solid var(--line)}}td{{padding:9px;border-bottom:1px solid #e9ebe7}}tbody tr:first-child{{background:#eef7f1}}.themes{{columns:2;column-gap:14px}}.theme{{break-inside:avoid;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:16px;margin:0 0 14px}}.theme article{{border-top:1px solid var(--line);padding:10px 0}}.theme article>div{{display:flex;justify-content:space-between}}.theme strong{{font-size:18px}}.theme p{{margin:5px 0;color:#4d5b55}}details{{background:var(--paper);border:1px solid var(--line);border-radius:8px;margin:8px 0;padding:11px}}summary{{display:flex;justify-content:space-between;cursor:pointer}}.drivers{{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;color:#4d5b55}}.health-row{{display:grid;grid-template-columns:1.2fr .4fr 2fr;gap:12px;padding:12px;border-bottom:1px solid var(--line)}}footer{{padding:30px;color:var(--muted);text-align:center}}@media(max-width:850px){{header{{align-items:start;flex-direction:column}}.status{{text-align:left}}.span4,.span6,.span8{{grid-column:span 12}}.kpis{{grid-template-columns:1fr 1fr}}.themes{{columns:1}}.drivers{{grid-template-columns:1fr}}main{{padding:14px}}}}
     </style></head><body><header><div><h1>034 Daily Trading Dashboard</h1><p>Execution first. Analysis second. One authority path.</p></div><div class="status">{badge("EXECUTION SAFE" if execution_safe else "EXECUTION BLOCKED", "ok" if execution_safe else "bad")}<br><small>Generated {dashboard_date}</small></div></header><nav>{nav}</nav><main>
@@ -331,7 +379,7 @@ def main() -> None:
     <section id="p2" class="page"><h2>Market Regime</h2><p>Why the model is cautious. All values are from {data_date} and are analytical while execution is blocked.</p><div class="themes">{theme_html}</div></section>
     <section id="p3" class="page"><h2>ETF Analysis</h2>{table(["Rank","ETF","Live Score","Expected Return","Current Weight","Recommended Weight","Confidence","Regime","Selection Reason"],analysis_rows)}<h3 style="margin-top:20px">Drivers and selection explanations</h3>{detail_html}</section>
     <section id="p4" class="page"><h2>Defensive Analysis</h2><p>Only validated defensive ETFs are shown.</p>{table(["ETF","Live Score","Expected Return","Weight","Trigger","Reason"],defensive_rows)}</section>
-    <section id="p5" class="page"><h2>SOXX / Common Overlay</h2><div class="grid"><div class="card span4"><h3>SOXX</h3><p>Score <b>{score(score_map.get('SOXX',{}).get('tradable_score_0_100',np.nan))}</b></p><p>Expected return <b>{pct(score_map.get('SOXX',{}).get('adjusted_expected_10d_return',np.nan),2)}</b></p><p>Base / final <b>{weight(fnum(latest.get('soxx_base_weight')))} / {weight(fnum(latest.get('soxx_final_weight')))}</b></p></div><div class="card span4"><h3>Portfolio-wide emergency</h3><p>{badge(str(latest.get('portfolio_wide_emergency','UNKNOWN')), "ok" if str(latest.get('portfolio_wide_emergency')) == "NORMAL" else "bad")}</p><p>Growth {score(macro['growth'])} · Crash {score(macro['crash'])}<br>No SOXL-specific timing or emergency system.</p></div><div class="card span4"><h3>SOXL replacement</h3><p>{badge("VALIDATED COMMON FRAMEWORK", "ok")}</p><p>Replacement fraction: {pct(fnum(latest.get('soxl_replacement_fraction')),1)}<br>Final SOXL: {weight(fnum(latest.get('soxl_substituted_weight')))}</p></div></div></section>
+    <section id="p5" class="page"><h2>SOXX / Common Overlay</h2><div class="grid"><div class="card span4"><h3>SOXX</h3><p>Score <b>{score(score_map.get('SOXX',{}).get('tradable_score_0_100',np.nan))}</b></p><p>Expected return <b>{pct(score_map.get('SOXX',{}).get('adjusted_expected_10d_return',np.nan),2)}</b></p><p>Base / final <b>{weight(fnum(latest.get('soxx_base_weight')))} / {weight(fnum(latest.get('soxx_final_weight')))}</b></p></div><div class="card span4"><h3>Portfolio-wide emergency</h3><p>{badge(str(latest.get('portfolio_wide_emergency','UNKNOWN')), "ok" if str(latest.get('portfolio_wide_emergency')) == "NORMAL" else "bad")}</p><p>Growth {score(macro['growth'])} · Crash {score(macro['crash'])}<br>No SOXL-specific timing or emergency system.</p></div><div class="card span4"><h3>SOXL replacement</h3><p>{badge("VALIDATED COMMON FRAMEWORK", "ok")}</p><p>Replacement fraction: {pct(fnum(latest.get('soxl_replacement_fraction')),1)}<br>Final SOXL: {weight(fnum(latest.get('soxl_substituted_weight')))}</p></div>{emergency_evidence_html}</div></section>
     <section id="p6" class="page"><h2>Model Health</h2><div class="card">{"".join(f'<div class="health-row"><b>{n}</b>{badge(v,"ok" if v=="PASS" else "bad")}<span>{d}</span></div>' for n,v,d in health)}</div><div class="card" style="margin-top:14px"><h3>Final validation</h3>{"".join(f'<p>{badge("PASS" if v else "FAIL","ok" if v else "bad")} {html.escape(k.replace("_"," ").title())}</p>' for k,v in assertions.items())}<p><small>Ranking fingerprint: {digest}</small></p></div></section>
     </main><footer>Source dates are always visible. Research data never receives live authority.</footer><script>document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{{document.querySelectorAll('nav button,.page').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.getElementById(b.dataset.page).classList.add('active');window.scrollTo(0,0)}})</script></body></html>'''
     Path(f"{OUT}.html").write_text(html_doc, encoding="utf-8")
@@ -345,7 +393,9 @@ def main() -> None:
         f"Market-data date: {reporting_fields['market_data_date']['display']}",
         f"Feature date: {reporting_fields['feature_date']['display']}",
         f"Allocation date: {reporting_fields['allocation_date']['display']}",
+        f"Base weight date: {reporting_fields['base_weight_date']['display']}",
         f"Last rebalance date: {reporting_fields['last_rebalance_date']['display']}",
+        f"Source history through date: {reporting_fields['source_history_through_date']['display']}",
         f"Next scheduled rebalance date: {reporting_fields['next_scheduled_rebalance_date']['display']}",
         f"Emergency state: {reporting_fields['emergency_state']['display']}",
         f"Normal rebalance due: {reporting_fields['normal_rebalance_due']['display']}",
@@ -355,6 +405,16 @@ def main() -> None:
         f"Oil / energy: {reporting_fields['oil_energy_regime']['display']}",
         f"Robust gate: {reporting_fields['robust_gate']['display']}",
         f"Opportunistic gate: {reporting_fields['opportunistic_gate']['display']}",
+        "", "🚨 EMERGENCY SYSTEM EVIDENCE 🚨",
+        f"State today: {emergency_evidence['state_today']}",
+        f"Applied today: {'YES' if emergency_evidence['applied_today'] else 'NO'}",
+        f"Reason: {emergency_evidence['reason']}",
+        f"Criteria passed: {emergency_evidence['criteria_passed']}",
+        f"TQQQ functional test: {emergency_evidence['tqqq_functional_test']}",
+        f"SOXL functional test: {emergency_evidence['soxl_functional_test']}",
+        f"Combined TQQQ+SOXL test: {emergency_evidence['combined_functional_test']}",
+        f"Historical emergency episodes: {emergency_evidence['historical_emergency_episodes']}",
+        f"Evidence quality: {emergency_evidence['evidence_quality']}",
         "Action: " + ("TRADE VERIFIED ALLOCATION" if execution_safe else "DO NOT TRADE — MOVE TO CASH"),
         "", "RANKING (same order as dashboard)",
     ]
@@ -399,12 +459,14 @@ def main() -> None:
     }
     validation = {
         "execution_safe": execution_safe, "data_date": data_date, "prediction_date": prediction_date,
-        "allocation_date": allocation_date, "market_data_date": market_data_date, "feature_date": feature_date,
+        "allocation_date": allocation_date, "base_weight_date": base_weight_date,
+        "market_data_date": market_data_date, "feature_date": feature_date,
         "source_recommendation_date": source_recommendation_date, "score_date": score_date,
         "dashboard_date": dashboard_date.isoformat(), "ranking_fingerprint": digest,
         "reporting_fields": reporting_fields, "displayed_number_sources": displayed_number_sources,
         "artifact_hashes": artifact_hashes,
-        "economic_snapshot": economic_snapshot, "assertions": assertions, "production_modified": False,
+        "economic_snapshot": economic_snapshot, "emergency_evidence": emergency_evidence,
+        "assertions": assertions, "production_modified": False,
     }
     Path(f"{OUT}_validation.json").write_text(json.dumps(validation, indent=2), encoding="utf-8")
     print(json.dumps(validation, indent=2))

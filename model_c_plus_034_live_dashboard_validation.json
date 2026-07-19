@@ -3,9 +3,294 @@
   "data_date": "2026-07-17",
   "prediction_date": "2026-07-17",
   "allocation_date": "2026-07-17",
+  "base_weight_date": "2026-07-17",
+  "market_data_date": "2026-07-17",
+  "feature_date": "2026-07-17",
+  "source_recommendation_date": "2026-07-17",
   "score_date": "2026-07-17",
-  "dashboard_date": "2026-07-18",
+  "dashboard_date": "2026-07-19",
   "ranking_fingerprint": "b6e9d86e6064ecf2e8371ed3982182e1d1598d8087b9bd0f5d4a100f031c03aa",
+  "reporting_fields": {
+    "selected_source_model": {
+      "display": "022F_BASE",
+      "status": "AVAILABLE",
+      "source_artifact": "model_c_plus_034_execution_grade_expected_return_signal_latest_recommendation.csv",
+      "source_field": "source_model",
+      "source_date": "2026-07-17",
+      "missing_sources": []
+    },
+    "source_model_name": {
+      "display": "022F_CALIBRATED_DEFENSE_VALIDATION_BEST",
+      "status": "AVAILABLE",
+      "source_artifact": "model_c_plus_022F_calibrated_defense_validation_best_latest_recommendation.csv",
+      "source_field": "model",
+      "source_date": "2026-07-17",
+      "missing_sources": []
+    },
+    "source_configuration": {
+      "display": "CONVICTION_00051",
+      "status": "AVAILABLE",
+      "source_artifact": "model_c_plus_022F_calibrated_defense_validation_best_latest_recommendation.csv",
+      "source_field": "configuration",
+      "source_date": "2026-07-17",
+      "missing_sources": []
+    },
+    "source_recommendation_date": {
+      "display": "2026-07-17",
+      "status": "AVAILABLE",
+      "source_artifact": "model_c_plus_022F_calibrated_defense_validation_best_latest_recommendation.csv",
+      "source_field": "latest_data_date",
+      "source_date": "2026-07-17",
+      "missing_sources": []
+    },
+    "allocation_date": {
+      "display": "2026-07-17",
+      "status": "AVAILABLE",
+      "source_artifact": "model_c_plus_034_execution_grade_expected_return_signal_latest_recommendation.csv",
+      "source_field": "allocation_date",
+      "source_date": "2026-07-17",
+      "missing_sources": []
+    },
+    "base_weight_date": {
+      "display": "2026-07-17",
+      "status": "AVAILABLE",
+      "source_artifact": "model_c_plus_034_execution_grade_expected_return_signal_latest_recommendation.csv",
+      "source_field": "base_weight_date",
+      "source_date": "2026-07-17",
+      "missing_sources": []
+    },
+    "market_data_date": {
+      "display": "2026-07-17",
+      "status": "AVAILABLE",
+      "source_artifact": "model_c_plus_market_data_freshness.csv",
+      "source_field": "latest_data_date",
+      "source_date": "2026-07-17",
+      "missing_sources": []
+    },
+    "feature_date": {
+      "display": "2026-07-17",
+      "status": "AVAILABLE",
+      "source_artifact": "model_c_plus_feature_freshness.csv",
+      "source_field": "latest_data_date",
+      "source_date": "2026-07-17",
+      "missing_sources": []
+    },
+    "last_rebalance_date": {
+      "display": "NOT_AVAILABLE_FROM_VALIDATED_SOURCE",
+      "status": "NOT_AVAILABLE_FROM_VALIDATED_SOURCE",
+      "source_artifact": "model_c_plus_022F_calibrated_defense_validation_best_latest_recommendation.csv",
+      "source_field": "actual_last_rebalance_date",
+      "source_date": "2026-07-17",
+      "missing_sources": [
+        "model_c_plus_022F_calibrated_defense_validation_best_latest_recommendation.csv:actual_last_rebalance_date"
+      ]
+    },
+    "source_history_through_date": {
+      "display": "2026-06-22",
+      "status": "AVAILABLE",
+      "source_artifact": "model_c_plus_022F_calibrated_defense_validation_best_latest_recommendation.csv",
+      "source_field": "source_rebalance_date (historical source-log maximum date; not an actual live rebalance date)",
+      "source_date": "2026-07-17",
+      "missing_sources": []
+    },
+    "next_scheduled_rebalance_date": {
+      "display": "NOT_AVAILABLE_FROM_VALIDATED_SOURCE",
+      "status": "NOT_AVAILABLE_FROM_VALIDATED_SOURCE",
+      "source_artifact": "model_c_plus_022F_calibrated_defense_validation_best_latest_recommendation.csv",
+      "source_field": "next_scheduled_rebalance_date",
+      "source_date": "2026-07-17",
+      "missing_sources": [
+        "model_c_plus_022F_calibrated_defense_validation_best_latest_recommendation.csv:next_scheduled_rebalance_date"
+      ]
+    },
+    "emergency_state": {
+      "display": "NORMAL",
+      "status": "AVAILABLE",
+      "source_artifact": "model_c_plus_034_execution_grade_expected_return_signal_latest_recommendation.csv",
+      "source_field": "portfolio_wide_emergency",
+      "source_date": "2026-07-17",
+      "missing_sources": []
+    },
+    "normal_rebalance_due": {
+      "display": "NOT_AVAILABLE_FROM_VALIDATED_SOURCE",
+      "status": "NOT_AVAILABLE_FROM_VALIDATED_SOURCE",
+      "source_artifact": "model_c_plus_022F_calibrated_defense_validation_best_latest_recommendation.csv",
+      "source_field": "normal_rebalance_due",
+      "source_date": "2026-07-17",
+      "missing_sources": [
+        "model_c_plus_022F_calibrated_defense_validation_best_latest_recommendation.csv:normal_rebalance_due"
+      ]
+    },
+    "required_gap": {
+      "display": "NOT_USED_BY_SOURCE_MODEL",
+      "status": "NOT_USED_BY_SOURCE_MODEL",
+      "source_artifact": "model_c_plus_022F_calibrated_defense_validation_best_latest_recommendation.csv",
+      "source_field": "required_gap",
+      "source_date": "2026-07-17",
+      "missing_sources": []
+    },
+    "yield_curve": {
+      "display": "DATA_UNAVAILABLE",
+      "status": "DATA_UNAVAILABLE",
+      "source_artifact": "model_c_plus_feature_freshness.csv",
+      "source_field": "yield_curve",
+      "source_date": "2026-07-17",
+      "missing_sources": [
+        "model_c_plus_expanded_execution_candidate_latest_recommendation.csv:yield_curve",
+        "model_c_plus_022F_calibrated_defense_validation_best_latest_recommendation.csv:yield_curve"
+      ]
+    },
+    "vix": {
+      "display": "DATA_UNAVAILABLE",
+      "status": "DATA_UNAVAILABLE",
+      "source_artifact": "model_c_plus_feature_freshness.csv",
+      "source_field": "vix_level|vix",
+      "source_date": "2026-07-17",
+      "missing_sources": [
+        "model_c_plus_expanded_execution_candidate_latest_recommendation.csv:vix_level|vix",
+        "model_c_plus_022F_calibrated_defense_validation_best_latest_recommendation.csv:vix_level|vix"
+      ]
+    },
+    "oil_energy_regime": {
+      "display": "Negative (-0.037)",
+      "status": "AVAILABLE",
+      "source_artifact": "model_c_plus_022F_calibrated_defense_validation_best_latest_recommendation.csv",
+      "source_field": "energy_state",
+      "source_date": "2026-07-17",
+      "missing_sources": []
+    },
+    "robust_gate": {
+      "display": "NOT_TRIGGERED",
+      "status": "NOT_TRIGGERED",
+      "source_artifact": "model_c_plus_034_execution_grade_expected_return_signal_latest_recommendation.csv",
+      "source_field": "robust_gate_active",
+      "source_date": "2026-07-17",
+      "missing_sources": []
+    },
+    "opportunistic_gate": {
+      "display": "NOT_APPLICABLE",
+      "status": "NOT_APPLICABLE",
+      "source_artifact": "model_c_plus_034_execution_grade_expected_return_signal_latest_recommendation.csv",
+      "source_field": "opportunistic_gate_active",
+      "source_date": "2026-07-17",
+      "missing_sources": []
+    }
+  },
+  "displayed_number_sources": {
+    "current_portfolio_weights": {
+      "source_artifact": "current_portfolio_state_011.json",
+      "source_field": "current_portfolio",
+      "source_date": "2026-06-06"
+    },
+    "recommended_weights_and_leverage": {
+      "source_artifact": "model_c_plus_034_execution_grade_expected_return_signal_latest_recommendation.csv",
+      "source_field": "exec_w_*|*_base_weight|*_substituted_weight|effective_technology_exposure",
+      "source_date": "2026-07-17"
+    },
+    "ranking_scores_expected_returns": {
+      "source_artifact": "model_c_plus_full_universe_expected_returns_trading_scores.csv",
+      "source_field": "tradable_score_0_100|adjusted_expected_10d_return",
+      "source_date": "2026-07-17"
+    },
+    "expanded_macro_features": {
+      "source_artifact": "model_c_plus_expanded_execution_candidate_latest_recommendation.csv",
+      "source_field": "growth_strength|credit_strength|risk_off_strength|crash_pressure|industrial_strength|materials_strength|copper_strength|usd_3m_strength|soxx_strength|hyg_strength",
+      "source_date": "2026-07-17"
+    },
+    "technology_state": {
+      "source_artifact": "model_c_plus_transition_conviction_overlay_011_LIGHT_latest_recommendation.csv",
+      "source_field": "tech_state",
+      "source_date": "2026-07-17"
+    },
+    "energy_state": {
+      "source_artifact": "model_c_plus_022F_calibrated_defense_validation_best_latest_recommendation.csv",
+      "source_field": "energy_state",
+      "source_date": "2026-07-17"
+    },
+    "historical_performance": {
+      "source_artifact": "model_c_plus_034_execution_grade_expected_return_signal_performance_summary.csv",
+      "source_field": "annual_return|volatility|sharpe|max_drawdown",
+      "source_date": "2026-07-17"
+    }
+  },
+  "artifact_hashes": {
+    "effective_weights": {
+      "file": "model_c_plus_034_execution_grade_expected_return_signal_effective_weights.csv",
+      "sha256": "e4818cd73ca945bd1bafe4d759b49b69c5cb8b1928388a65805f0bdd86f804ef"
+    },
+    "daily_returns": {
+      "file": "model_c_plus_034_execution_grade_expected_return_signal_daily_returns.csv",
+      "sha256": "51c72f06549f8ace733aebedebaff2fc2e923c7d1c01ac39424504c2e3741a85"
+    },
+    "turnover": {
+      "file": "model_c_plus_034_execution_grade_expected_return_signal_common_overlay_turnover_costs.csv",
+      "sha256": "691d7f48b198c86e87a141f3821aa690c93b35758c2aed885713caf6cfbb03aa"
+    },
+    "expected_returns": {
+      "file": "model_c_plus_034_execution_grade_expected_return_signal_scoreboard.csv",
+      "sha256": "4d5be044653e9480ec499b6155118357446e68d39f3229328f7e092c692f83ad"
+    }
+  },
+  "economic_snapshot": {
+    "allocation_weights": {
+      "QQQM": 0.1999999999999999,
+      "XSOE": 0.8
+    },
+    "expected_10_day_portfolio_return": 0.00976593359079984,
+    "historical_annual_return": 1.1074669728441604,
+    "historical_volatility": 0.2460930784240977,
+    "historical_sharpe": 4.500195535510501,
+    "historical_max_drawdown": -0.114453003426848,
+    "execution_safe": true,
+    "ranking": [
+      "XSOE",
+      "QQQM",
+      "SOXX",
+      "TLT",
+      "XLP",
+      "FEZ",
+      "XLRE",
+      "XLU",
+      "XLV",
+      "GLD",
+      "XLE",
+      "XLB",
+      "XLI",
+      "IWM",
+      "TQQQ",
+      "SOXL",
+      "ERX",
+      "UXI",
+      "BIL",
+      "IEF",
+      "XLF"
+    ],
+    "ranking_fingerprint": "b6e9d86e6064ecf2e8371ed3982182e1d1598d8087b9bd0f5d4a100f031c03aa"
+  },
+  "emergency_evidence": {
+    "state_today": "NORMAL",
+    "applied_today": false,
+    "reason": "all_hard_safety_criteria_passed",
+    "criteria_passed": "3/3",
+    "tqqq_functional_test": "PASS",
+    "soxl_functional_test": "PASS",
+    "combined_functional_test": "PASS",
+    "historical_emergency_episodes": 2,
+    "historical_active_position_episodes": 0,
+    "effect_on_annual_return": 0.0,
+    "effect_on_volatility": 0.0,
+    "effect_on_sharpe": 0.0,
+    "effect_on_maximum_drawdown": 0.0,
+    "effect_on_final_equity_after_costs": 0.0,
+    "false_positive_episodes": 0,
+    "evidence_quality": "FUNCTIONAL_STRONG_HISTORICAL_INSUFFICIENT",
+    "source_artifacts": [
+      "emergency_rule_definition.json",
+      "emergency_tqqq_soxl_functional_validation.json",
+      "emergency_tqqq_soxl_ab_performance.csv",
+      "emergency_tqqq_soxl_episode_audit.csv"
+    ]
+  },
   "assertions": {
     "every_etf_once_in_main_ranking": true,
     "selected_etfs_first": true,
@@ -14,7 +299,10 @@
     "dashboard_telegram_rankings_identical": true,
     "all_model_inputs_share_common_date": true,
     "no_stale_data_shown_as_executable": true,
-    "no_research_only_buy": true
+    "no_research_only_buy": true,
+    "reporting_dates_share_common_date": true,
+    "required_reporting_fields_traceable": true,
+    "no_ambiguous_required_na": true
   },
-  "production_modified": true
+  "production_modified": false
 }

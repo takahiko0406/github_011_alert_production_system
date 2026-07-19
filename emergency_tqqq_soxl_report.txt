@@ -1,0 +1,57 @@
+EMERGENCY TQQQ/SOXL FUNCTIONAL AND ECONOMIC AUDIT
+
+RULE
+hard_safe = inputs_finite AND risk_off_strength < 1.6 AND crash_pressure < 2.5
+emergency = NOT hard_safe
+Equality at either hard threshold triggers EXIT. Live missing/non-finite inputs raise ValueError.
+Live EXIT fully redirects TQQQ to QQQM and SOXL to SOXX. ERX and UXI are unchanged.
+The mechanism is stateless: no hold, cooldown, or persisted emergency state exists.
+
+HISTORICAL IMPLEMENTATION LIMITATION
+The frozen historical function directly applies the hard gate only to SOXL. TQQQ is reconstructed from
+the immutable archived validated weights. All archived EXIT rows already have zero TQQQ and zero SOXL,
+so the live TQQQ emergency path has functional-test evidence but no active-position historical episode.
+
+REPLAY EVIDENCE
+Rows: 668
+Emergency sessions: 19
+Independent emergency episodes: 2
+Episodes with TQQQ or SOXL active before emergency: 0
+Episodes helped: 0
+Episodes hurt / false-positive reductions: 0
+Help rate: 0.000000
+Average episode benefit: 0.000000000000
+Median episode benefit: 0.000000000000
+Best protection episode: NONE_NO_ECONOMIC_EFFECT
+Worst false-positive episode: NONE_NO_ECONOMIC_EFFECT
+Largest drawdown reduction: 0.000000000000
+Largest upside sacrifice: -0.000000000000
+Emergency sessions that changed weights: 0
+Maximum WITH production weight difference: 0
+Maximum WITH production return difference: 0
+Maximum WITH production turnover difference: 0
+Pre-emergency A/B weight difference: 0 (both paths use the same candidate weights)
+
+FULL REPLAY WITH_EMERGENCY / WITHOUT_EMERGENCY
+Annual return: 1.107466972844 / 1.107466972844 (delta 0.000000000000)
+Volatility: 0.246093078424 / 0.246093078424 (delta 0.000000000000)
+Sharpe: 4.500195535511 / 4.500195535511 (delta 0.000000000000)
+Sortino: 7.947943332702 / 7.947943332702 (delta 0.000000000000)
+Maximum drawdown: -0.114453003427 / -0.114453003427 (delta 0.000000000000)
+Final equity: 7.214778673544 / 7.214778673544 (delta 0.000000000000)
+Turnover: 45.758317762293 / 45.758317762293 (delta 0.000000000000)
+Transaction cost plus slippage: 0.091516635525 / 0.091516635525 (delta 0.000000000000)
+
+CONCLUSIONS
+TQQQ: INSUFFICIENT_INDEPENDENT_EPISODES
+SOXL: INSUFFICIENT_INDEPENDENT_EPISODES
+Combined technology: INSUFFICIENT_INDEPENDENT_EPISODES
+Did emergency reduce volatility? NO OBSERVED DIFFERENCE
+Did emergency reduce maximum drawdown? NO OBSERVED DIFFERENCE
+Did emergency improve Sharpe? NO OBSERVED DIFFERENCE
+Did emergency improve final equity after costs? NO OBSERVED DIFFERENCE
+How much turnover did it add? 0.000000000000
+How many independent episodes exist? 2 emergency-state episodes; 0 with leveraged technology active
+How many false positives? 0
+Is functional evidence strong? YES - all 18 deterministic cases pass
+Is historical performance evidence sufficient? NO - zero active-position emergency episodes

@@ -1,0 +1,32 @@
+{
+  "all_18_tests_pass": true,
+  "test_count": 18,
+  "tqqq_functional_test": "PASS",
+  "soxl_functional_test": "PASS",
+  "combined_functional_test": "PASS",
+  "mechanism_is_stateless": true,
+  "state_persistence": "none; every call reevaluates current required inputs",
+  "checks": {
+    "production_replay_weights_exact": true,
+    "pre_emergency_weights_shared_by_ab": true,
+    "displayed_state_reproducible": true,
+    "normal_state_has_zero_emergency_adjustment": true,
+    "triggered_adjustment_matches_historical_function": true,
+    "tqqq_soxl_post_weights_match_emergency_function": true,
+    "removed_capital_fully_accounted": true,
+    "weights_sum_to_100_percent": true,
+    "no_forbidden_weight": true,
+    "emergency_never_increases_technology_exposure": true,
+    "technology_exposure_limit_respected": true,
+    "costs_present": true,
+    "all_18_functional_tests_pass": true
+  },
+  "all_validation_checks_pass": true,
+  "maximum_production_weight_difference": 0.0,
+  "maximum_production_return_difference": 0.0,
+  "maximum_production_turnover_difference": 0.0,
+  "negative_control_sessions": 213,
+  "negative_control_max_weight_adjustment": 0.0,
+  "negative_control_added_turnover": 0.0,
+  "negative_control_added_cost": 0.0
+}

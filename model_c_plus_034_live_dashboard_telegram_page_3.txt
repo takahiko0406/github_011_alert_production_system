@@ -5,17 +5,17 @@ Data date: 2026-07-17 | Freshness: CURRENT
 Growth: Weak (-2.099)
 Credit: Neutral (0.108)
 USD: Strong / tightening (1.626)
-Yield curve: N/A
+Yield curve: DATA_UNAVAILABLE
 Risk-off pressure: Elevated (1.281)
 Crash pressure: Low (-0.518)
-VIX: N/A
+VIX: DATA_UNAVAILABLE
 
 ━━ SECTOR AND CROSS-ASSET REGIME ━━
 Semiconductors / technology: Weak (-2.025)
 Industrials: Mixed (-0.228)
 Materials: Mixed (-0.449)
 Copper: Neutral (-0.481)
-Oil / energy: Unavailable (N/A)
+Oil / energy: Negative (-0.037)
 Small caps — IWM: Weak | score 12.6 | Exp10D 0.39%
 Financials — XLF: Mixed | score 46.8 | Exp10D 0.57%
 Real estate — XLRE: Constructive | score 64.7 | Exp10D 0.74%

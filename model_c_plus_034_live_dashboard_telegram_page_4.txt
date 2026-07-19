@@ -9,8 +9,25 @@ SOXL substituted weight: 0.00%
 Common leverage budget: 0.00%
 Effective technology exposure: 0.200x
 Leverage configuration: D_BOTH_CAP_1.00
-Robust gate: NO
-Opportunistic gate: N/A
+Robust gate: NOT_TRIGGERED
+Opportunistic gate: NOT_APPLICABLE
+
+━━ 🚨 EMERGENCY SYSTEM EVIDENCE 🚨 ━━
+State today: NORMAL
+Applied today: NO
+Reason: all_hard_safety_criteria_passed
+Criteria passed: 3/3
+TQQQ functional test: PASS
+SOXL functional test: PASS
+Combined TQQQ+SOXL test: PASS
+Historical emergency episodes: 2 total; 0 with TQQQ/SOXL active
+Effect on annual return: 0.00%
+Effect on volatility: 0.00%
+Effect on Sharpe: 0.000
+Effect on maximum drawdown: 0.00%
+Effect on final equity after costs: 0.000000
+False-positive episodes: 0
+Evidence quality: FUNCTIONAL_STRONG_HISTORICAL_INSUFFICIENT
 
 ━━ FRESHNESS AND VALIDATION ━━
 Execution safe: YES

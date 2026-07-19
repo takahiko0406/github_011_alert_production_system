@@ -6,7 +6,8 @@ import math
 from pathlib import Path
 
 import pandas as pd
-from common_technology_leverage_080 import TECHNOLOGY_EXPOSURE_LIMIT
+from audit_083_emergency_tqqq_soxl import emergency_criteria
+from common_technology_leverage_080 import TECHNOLOGY_EXPOSURE_LIMIT, apply_common_overlay
 
 
 ROOT = Path(__file__).resolve().parent
@@ -77,6 +78,7 @@ def main() -> None:
     reporting_dates = {
         "data_date": dashboard.get("data_date"), "market_data_date": dashboard.get("market_data_date"),
         "feature_date": dashboard.get("feature_date"), "allocation_date": dashboard.get("allocation_date"),
+        "base_weight_date": dashboard.get("base_weight_date"),
         "source_recommendation_date": dashboard.get("source_recommendation_date"),
     }
     if set(reporting_dates.values()) != {common_date}:
@@ -84,8 +86,8 @@ def main() -> None:
     reporting_fields = dashboard.get("reporting_fields", {})
     required_reporting_fields = {
         "selected_source_model", "source_model_name", "source_configuration",
-        "source_recommendation_date", "allocation_date", "market_data_date", "feature_date",
-        "last_rebalance_date", "next_scheduled_rebalance_date", "emergency_state",
+        "source_recommendation_date", "allocation_date", "base_weight_date", "market_data_date", "feature_date",
+        "last_rebalance_date", "source_history_through_date", "next_scheduled_rebalance_date", "emergency_state",
         "normal_rebalance_due", "required_gap", "yield_curve", "vix",
         "oil_energy_regime", "robust_gate", "opportunistic_gate",
     }
@@ -164,6 +166,51 @@ def main() -> None:
         raise ValueError("ETF ranking or ranking fingerprint changed")
     if bool(snapshot.get("execution_safe")) != bool(dashboard.get("execution_safe")):
         raise ValueError("Execution-safe state changed")
+
+    base_latest = pd.read_csv(ROOT / artifacts["022f"][0]).iloc[-1]
+    expanded_latest = pd.read_csv(ROOT / artifacts["expanded"][0]).iloc[-1]
+    chosen = expanded_latest if str(latest["source_model"]) == "EXPANDED_CANDIDATE" else base_latest
+    raw_weights = {asset: float(chosen.get(f"exec_w_{asset}", 0.0) or 0.0) for asset in sorted(VALIDATED | FORBIDDEN)}
+    reproduced_weights, reproduced_metadata = apply_common_overlay(raw_weights, base_latest, expanded_latest)
+    if any(abs(reproduced_weights.get(asset, 0.0) - weights.get(asset, 0.0)) > 1e-12 for asset in set(reproduced_weights) | set(weights)):
+        raise ValueError("TQQQ/SOXL post-weights differ from the production emergency function")
+    if str(reproduced_metadata["portfolio_wide_emergency"]) != str(latest.get("portfolio_wide_emergency")):
+        raise ValueError("Displayed emergency state cannot be reproduced")
+    criteria = emergency_criteria({
+        "growth_strength": expanded_latest.get("growth_strength"),
+        "soxx_strength": expanded_latest.get("soxx_strength"),
+        "risk_off_strength": expanded_latest.get("risk_off_strength"),
+        "crash_pressure": expanded_latest.get("crash_pressure"),
+        "total_budget": base_latest.get("total_budget"),
+    })
+    if criteria["state"] != str(latest.get("portfolio_wide_emergency")):
+        raise ValueError("Emergency Boolean criteria disagree with production state")
+    if criteria["state"] == "EXIT" and (weights.get("TQQQ", 0.0) > 1e-12 or weights.get("SOXL", 0.0) > 1e-12):
+        raise ValueError("Triggered emergency did not create the required TQQQ/SOXL adjustment")
+
+    emergency_validation = json.loads((ROOT / "emergency_tqqq_soxl_functional_validation.json").read_text(encoding="utf-8"))
+    if not emergency_validation.get("all_18_tests_pass") or not emergency_validation.get("all_validation_checks_pass"):
+        raise ValueError("Emergency deterministic or historical audit validation failed")
+    if not all(emergency_validation.get("checks", {}).values()):
+        raise ValueError("Emergency audit contains a failed accounting, exposure, or cost check")
+    rule = json.loads((ROOT / "emergency_rule_definition.json").read_text(encoding="utf-8"))
+    for name in ("risk_off_strength", "crash_pressure", "total_budget"):
+        if name not in rule.get("inputs", {}) or not rule["inputs"][name].get("source"):
+            raise ValueError(f"Emergency criterion lacks traceable provenance: {name}")
+    emergency_evidence = dashboard.get("emergency_evidence", {})
+    if emergency_evidence.get("state_today") != criteria["state"]:
+        raise ValueError("Dashboard emergency evidence is not reproducible")
+    required_emergency_lines = {
+        "State today": emergency_evidence.get("state_today"),
+        "Reason": emergency_evidence.get("reason"),
+        "TQQQ functional test": emergency_evidence.get("tqqq_functional_test"),
+        "SOXL functional test": emergency_evidence.get("soxl_functional_test"),
+        "Combined TQQQ+SOXL test": emergency_evidence.get("combined_functional_test"),
+        "Evidence quality": emergency_evidence.get("evidence_quality"),
+    }
+    for label, value in required_emergency_lines.items():
+        if not value or str(value) not in dashboard_html or f"{label}: {value}" not in telegram:
+            raise ValueError(f"Dashboard and Telegram emergency evidence disagree: {label}={value}")
 
     output = pd.DataFrame([{"component": name, "date": value, "status": "PASS"} for name, value in dates.items()])
     output.to_csv(ROOT / "model_c_plus_034_freshness_validation.csv", index=False)
