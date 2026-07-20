@@ -1,29 +1,29 @@
 034 COMPLETE ETF STRENGTH RANKING
-Data date: 2026-07-17 | Freshness: CURRENT
+Data date: 2026-07-20 | Freshness: CURRENT
 
 #  ETF    Wt   Exp10D  Strength  Model    Authority
 ---------------------------------------------------
- 1 XSOE   80%    1.08%     72.7   0.0232 LIVE
- 2 QQQM   20%    0.56%     23.7   0.0070 LIVE
- 3 SOXX    0%    3.04%     94.3   0.0304 RESEARCH
- 4 TLT     0%    0.77%     83.3   0.0077 RESEARCH
- 5 XLP     0%    0.74%     72.0   0.0074 RESEARCH
- 6 FEZ     0%    0.78%     71.4   0.0078 RESEARCH
- 7 XLRE    0%    0.74%     64.7   0.0074 RESEARCH
- 8 XLU     0%    0.74%     60.3   0.0074 RESEARCH
- 9 XLV     0%    0.74%     53.0   0.0074 RESEARCH
-10 GLD     0%    0.68%     43.0   0.0068 RESEARCH
-11 XLE     0%    0.63%     34.9   0.0046 LIVE
-12 XLB     0%    0.51%     28.2   0.0070 LIVE
-13 XLI     0%    0.49%     20.4   0.0045 LIVE
-14 IWM     0%    0.39%     12.6   0.0039 RESEARCH
+ 1 XSOE   70%    1.12%     70.4   0.0216 LIVE
+ 2 XLE     8%    0.72%     30.7   0.0005 LIVE
+ 3 QQQM   22%    0.69%     21.6   0.0093 LIVE
+ 4 SOXX    0%    6.03%     94.3   0.0603 RESEARCH
+ 5 TLT     0%    0.85%     83.4   0.0085 RESEARCH
+ 6 XLV     0%    0.88%     75.9   0.0088 RESEARCH
+ 7 XLRE    0%    0.82%     69.9   0.0082 RESEARCH
+ 8 GLD     0%    0.83%     62.4   0.0083 RESEARCH
+ 9 XLP     0%    0.82%     60.9   0.0082 RESEARCH
+10 FEZ     0%    0.82%     57.7   0.0082 RESEARCH
+11 XLU     0%    0.80%     53.1   0.0080 RESEARCH
+12 XLB     0%    0.63%     26.8   0.0072 LIVE
+13 XLI     0%    0.60%     21.2   0.0065 LIVE
+14 IWM     0%    0.55%     15.6   0.0055 RESEARCH
 15 TQQQ    0%      N/A      N/A      N/A LIVE
 16 SOXL    0%      N/A      N/A      N/A LIVE
 17 ERX     0%      N/A      N/A      N/A LIVE
 18 UXI     0%      N/A      N/A      N/A LIVE
 19 BIL     0%      N/A      N/A      N/A LIVE
-20 IEF     0%    0.75%     82.0   0.0075 RESEARCH
-21 XLF     0%    0.57%     46.8   0.0057 RESEARCH
+20 IEF     0%    0.80%     64.9   0.0080 RESEARCH
+21 XLF     0%    0.71%     51.3   0.0071 RESEARCH
 
 ━━ HOW TO READ ━━
 Weight is the verified execution allocation.
