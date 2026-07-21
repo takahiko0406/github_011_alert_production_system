@@ -1,6 +1,6 @@
 {
   "execution_safe": true,
-  "common_date": "2026-07-20",
+  "common_date": "2026-07-21",
   "source_model": "022F_BASE",
   "weights_sum": 0.9999999999999998,
   "selected_assets": [
@@ -8,7 +8,7 @@
     "XLE",
     "XSOE"
   ],
-  "ranking_fingerprint": "29d0c86fd272b83f703617fe1653427823670b50402c04c56869b2c948164068",
+  "ranking_fingerprint": "f7dd3386790d4cb6e00491a79a52ae201e920c6f5d91771738e263865d126cc4",
   "effective_technology_exposure": 0.2199999999999999,
   "common_leverage_configuration": "D_BOTH_CAP_1.00"
 }

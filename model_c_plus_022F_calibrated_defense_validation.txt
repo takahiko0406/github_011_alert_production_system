@@ -8,13 +8,13 @@ Design Being Validated
 - The volatility block was tested but rejected; best model uses no practical vol block.
 
 Common Period Versus 020C
-- Annual return delta: +0.0164
-- Sharpe delta: +0.1621
-- Max drawdown delta: +0.0213
+- Annual return delta: +0.0156
+- Sharpe delta: +0.1603
+- Max drawdown delta: +0.0216
 
 Cost Sensitivity
-- 2x cost Sharpe delta: +0.1117
-- 5x cost Sharpe delta: -0.0163
+- 2x cost Sharpe delta: +0.1093
+- 5x cost Sharpe delta: -0.0197
 
 Weak Windows
 - Rate-stress 2024H1 Sharpe delta: -0.2683

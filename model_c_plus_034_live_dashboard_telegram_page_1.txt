@@ -2,11 +2,11 @@
 Source model: 022F_BASE
 Source model name: 022F_CALIBRATED_DEFENSE_VALIDATION_BEST
 Source configuration: CONVICTION_00051
-Source recommendation date: 2026-07-20
-Market-data date: 2026-07-20
-Feature date: 2026-07-20
-Allocation date: 2026-07-20
-Base weight date: 2026-07-20
+Source recommendation date: 2026-07-21
+Market-data date: 2026-07-21
+Feature date: 2026-07-21
+Allocation date: 2026-07-21
+Base weight date: 2026-07-21
 Freshness: CURRENT
 
 ━━ VERIFIED ALLOCATION ━━
@@ -18,19 +18,19 @@ TOTAL   100.0%
 ━━ EXECUTION STATE ━━
 Execution safe: YES
 Last rebalance date: NOT_AVAILABLE_FROM_VALIDATED_SOURCE
-Source history through date: 2026-06-22
+Source history through date: 2026-07-07
 Next scheduled rebalance date: NOT_AVAILABLE_FROM_VALIDATED_SOURCE
 Emergency state: NORMAL
 Normal rebalance due: NOT_AVAILABLE_FROM_VALIDATED_SOURCE
 Live allocation leader: XSOE
 Second live holding: QQQM
 Research strength leader: SOXX
-Top-two score gap: 0.0491
+Top-two score gap: 0.0326
 Required gap: NOT_USED_BY_SOURCE_MODEL
 Effective technology exposure: 0.220x
 
 ━━ PORTFOLIO EVIDENCE ━━
-Expected 10-day portfolio return: 0.99%
+Expected 10-day portfolio return: 1.10%
 Historical annual return: 110.75%
 Historical volatility: 24.61%
 Historical Sharpe: 4.500
