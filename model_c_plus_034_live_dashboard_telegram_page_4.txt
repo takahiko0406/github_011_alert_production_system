@@ -6,7 +6,7 @@ QQQM base weight: 22.00%
 TQQQ substituted weight: 0.00%
 SOXX base weight: 0.00%
 SOXL substituted weight: 0.00%
-Common leverage budget: 0.98%
+Common leverage budget: 2.58%
 Effective technology exposure: 0.220x
 Leverage configuration: D_BOTH_CAP_1.00
 Robust gate: NOT_TRIGGERED
@@ -36,7 +36,7 @@ Model: 034_EXECUTION_GRADE_EXPECTED_RETURN_SIGNAL
 Market-data freshness: CURRENT (2026-07-21)
 Feature freshness: CURRENT (2026-07-21)
 Allocation freshness: CURRENT (2026-07-21)
-Ranking fingerprint: f7dd3386790d4cb6e00491a79a52ae201e920c6f5d91771738e263865d126cc4
+Ranking fingerprint: 58baf49ad9227b28e0209f3a253f187fbe505dfb18676d4f59d5b2781e62d110
 
 ━━ EXECUTION AUTHORITY ━━
 Live execution: QQQM, XLE, XSOE, XLI, XLB

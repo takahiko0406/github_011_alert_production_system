@@ -8,8 +8,8 @@
   "feature_date": "2026-07-21",
   "source_recommendation_date": "2026-07-21",
   "score_date": "2026-07-21",
-  "dashboard_date": "2026-07-21",
-  "ranking_fingerprint": "f7dd3386790d4cb6e00491a79a52ae201e920c6f5d91771738e263865d126cc4",
+  "dashboard_date": "2026-07-22",
+  "ranking_fingerprint": "58baf49ad9227b28e0209f3a253f187fbe505dfb18676d4f59d5b2781e62d110",
   "reporting_fields": {
     "selected_source_model": {
       "display": "022F_BASE",
@@ -152,7 +152,7 @@
       ]
     },
     "oil_energy_regime": {
-      "display": "Negative (-0.051)",
+      "display": "Negative (-0.074)",
       "status": "AVAILABLE",
       "source_artifact": "model_c_plus_022F_calibrated_defense_validation_best_latest_recommendation.csv",
       "source_field": "energy_state",
@@ -228,7 +228,7 @@
     },
     "expected_returns": {
       "file": "model_c_plus_034_execution_grade_expected_return_signal_scoreboard.csv",
-      "sha256": "114e4527f1e75932bcda86cd4c27c55df51eb98f978ff248708661de43cc65bf"
+      "sha256": "643279733cc08aab6736d3de0797180bd0bcbcb19e45f6a76ea81874a892c392"
     }
   },
   "economic_snapshot": {
@@ -237,7 +237,7 @@
       "XLE": 0.08,
       "XSOE": 0.7
     },
-    "expected_10_day_portfolio_return": 0.011047529984036368,
+    "expected_10_day_portfolio_return": 0.009122838554392798,
     "historical_annual_return": 1.1074669728441604,
     "historical_volatility": 0.2460930784240977,
     "historical_sharpe": 4.500195535510501,
@@ -245,15 +245,15 @@
     "execution_safe": true,
     "ranking": [
       "XSOE",
-      "QQQM",
       "XLE",
+      "QQQM",
       "SOXX",
       "XLV",
-      "XLU",
       "XLP",
       "TLT",
-      "FEZ",
+      "XLU",
       "XLRE",
+      "FEZ",
       "GLD",
       "XLB",
       "XLI",
@@ -266,7 +266,7 @@
       "IEF",
       "XLF"
     ],
-    "ranking_fingerprint": "f7dd3386790d4cb6e00491a79a52ae201e920c6f5d91771738e263865d126cc4"
+    "ranking_fingerprint": "58baf49ad9227b28e0209f3a253f187fbe505dfb18676d4f59d5b2781e62d110"
   },
   "emergency_evidence": {
     "state_today": "NORMAL",

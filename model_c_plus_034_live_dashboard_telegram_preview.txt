@@ -25,12 +25,12 @@ Normal rebalance due: NOT_AVAILABLE_FROM_VALIDATED_SOURCE
 Live allocation leader: XSOE
 Second live holding: QQQM
 Research strength leader: SOXX
-Top-two score gap: 0.0326
+Top-two score gap: 0.0318
 Required gap: NOT_USED_BY_SOURCE_MODEL
 Effective technology exposure: 0.220x
 
 ━━ PORTFOLIO EVIDENCE ━━
-Expected 10-day portfolio return: 1.10%
+Expected 10-day portfolio return: 0.91%
 Historical annual return: 110.75%
 Historical volatility: 24.61%
 Historical Sharpe: 4.500
@@ -42,27 +42,27 @@ Data date: 2026-07-21 | Freshness: CURRENT
 
 #  ETF    Wt   Exp10D  Strength  Model    Authority
 ---------------------------------------------------
- 1 XSOE   70%    1.27%     72.8   0.0193 LIVE
- 2 QQQM   22%    0.73%     32.6   0.0052 LIVE
- 3 XLE     8%    0.68%     26.9  -0.0040 LIVE
- 4 SOXX    0%    4.54%     94.4   0.0454 RESEARCH
- 5 XLV     0%    1.01%     82.5   0.0101 RESEARCH
- 6 XLU     0%    0.90%     72.5   0.0090 RESEARCH
- 7 XLP     0%    0.88%     70.0   0.0088 RESEARCH
- 8 TLT     0%    0.75%     65.7   0.0075 RESEARCH
- 9 FEZ     0%    0.90%     64.7   0.0090 RESEARCH
-10 XLRE    0%    0.85%     64.3   0.0085 RESEARCH
-11 GLD     0%    0.83%     47.8   0.0083 RESEARCH
-12 XLB     0%    0.67%     32.2   0.0041 LIVE
-13 XLI     0%    0.65%     24.4   0.0031 LIVE
-14 IWM     0%    0.48%     12.7   0.0048 RESEARCH
+ 1 XSOE   70%    1.06%     72.6   0.0184 LIVE
+ 2 XLE     8%    0.67%     42.6  -0.0051 LIVE
+ 3 QQQM   22%    0.55%     23.5   0.0042 LIVE
+ 4 SOXX    0%    4.24%     94.4   0.0424 RESEARCH
+ 5 XLV     0%    0.87%     82.2   0.0087 RESEARCH
+ 6 XLP     0%    0.75%     76.4   0.0075 RESEARCH
+ 7 TLT     0%    0.70%     69.2   0.0070 RESEARCH
+ 8 XLU     0%    0.74%     66.4   0.0074 RESEARCH
+ 9 XLRE    0%    0.71%     63.9   0.0071 RESEARCH
+10 FEZ     0%    0.74%     60.8   0.0074 RESEARCH
+11 GLD     0%    0.66%     37.0   0.0066 RESEARCH
+12 XLB     0%    0.51%     26.2   0.0041 LIVE
+13 XLI     0%    0.51%     20.6   0.0026 LIVE
+14 IWM     0%    0.39%     12.7   0.0039 RESEARCH
 15 TQQQ    0%      N/A      N/A      N/A LIVE
 16 SOXL    0%      N/A      N/A      N/A LIVE
 17 ERX     0%      N/A      N/A      N/A LIVE
 18 UXI     0%      N/A      N/A      N/A LIVE
 19 BIL     0%      N/A      N/A      N/A LIVE
-20 IEF     0%    0.73%     64.4   0.0073 RESEARCH
-21 XLF     0%    0.61%     31.9   0.0061 RESEARCH
+20 IEF     0%    0.69%     68.0   0.0069 RESEARCH
+21 XLF     0%    0.56%     44.4   0.0056 RESEARCH
 
 ━━ HOW TO READ ━━
 Weight is the verified execution allocation.
@@ -76,32 +76,32 @@ LIVE may execute. GATED, SHADOW and RESEARCH do not execute unless approved.
 Data date: 2026-07-21 | Freshness: CURRENT
 
 ━━ CORE ECONOMIC STATE ━━
-Growth: Weak (-2.245)
-Credit: Neutral (0.104)
-USD: Strong / tightening (1.943)
+Growth: Weak (-2.184)
+Credit: Neutral (0.141)
+USD: Strong / tightening (1.991)
 Yield curve: DATA_UNAVAILABLE
-Risk-off pressure: Elevated (1.228)
-Crash pressure: Low (-0.930)
+Risk-off pressure: Elevated (1.132)
+Crash pressure: Low (-0.900)
 VIX: DATA_UNAVAILABLE
 
 ━━ SECTOR AND CROSS-ASSET REGIME ━━
-Semiconductors / technology: Weak (-2.271)
-Industrials: Mixed (-0.035)
-Materials: Mixed (0.146)
-Copper: Neutral (0.283)
-Oil / energy: Negative (-0.051)
-Small caps — IWM: Weak | score 12.7 | Exp10D 0.48%
-Financials — XLF: Weak | score 31.9 | Exp10D 0.61%
-Real estate — XLRE: Constructive | score 64.3 | Exp10D 0.85%
-Healthcare — XLV: Strong | score 82.5 | Exp10D 1.01%
-Utilities — XLU: Constructive | score 72.5 | Exp10D 0.90%
-Staples — XLP: Constructive | score 70.0 | Exp10D 0.88%
-Treasuries — TLT: Constructive | score 65.7 | Exp10D 0.75%
-Gold — GLD: Mixed | score 47.8 | Exp10D 0.83%
+Semiconductors / technology: Weak (-2.203)
+Industrials: Mixed (-0.097)
+Materials: Mixed (0.093)
+Copper: Neutral (0.237)
+Oil / energy: Negative (-0.074)
+Small caps — IWM: Weak | score 12.7 | Exp10D 0.39%
+Financials — XLF: Mixed | score 44.4 | Exp10D 0.56%
+Real estate — XLRE: Constructive | score 63.9 | Exp10D 0.71%
+Healthcare — XLV: Strong | score 82.2 | Exp10D 0.87%
+Utilities — XLU: Constructive | score 66.4 | Exp10D 0.74%
+Staples — XLP: Strong | score 76.4 | Exp10D 0.75%
+Treasuries — TLT: Constructive | score 69.2 | Exp10D 0.70%
+Gold — GLD: Weak | score 37.0 | Exp10D 0.66%
 
 ━━ GLOBAL AND EM REGIME ━━
-Europe — FEZ: Constructive | score 64.7 | Exp10D 0.90%
-Emerging markets — XSOE: Constructive | score 72.8 | Exp10D 1.27%
+Europe — FEZ: Constructive | score 60.8 | Exp10D 0.74%
+Emerging markets — XSOE: Constructive | score 72.6 | Exp10D 1.06%
 China technology — CQQQ: NOT YET ACTIVE
 Latin America — ILF: NOT YET ACTIVE
 USD/CNY and USD/CNH regime: NOT YET ACTIVE
@@ -125,7 +125,7 @@ QQQM base weight: 22.00%
 TQQQ substituted weight: 0.00%
 SOXX base weight: 0.00%
 SOXL substituted weight: 0.00%
-Common leverage budget: 0.98%
+Common leverage budget: 2.58%
 Effective technology exposure: 0.220x
 Leverage configuration: D_BOTH_CAP_1.00
 Robust gate: NOT_TRIGGERED
@@ -155,7 +155,7 @@ Model: 034_EXECUTION_GRADE_EXPECTED_RETURN_SIGNAL
 Market-data freshness: CURRENT (2026-07-21)
 Feature freshness: CURRENT (2026-07-21)
 Allocation freshness: CURRENT (2026-07-21)
-Ranking fingerprint: f7dd3386790d4cb6e00491a79a52ae201e920c6f5d91771738e263865d126cc4
+Ranking fingerprint: 58baf49ad9227b28e0209f3a253f187fbe505dfb18676d4f59d5b2781e62d110
 
 ━━ EXECUTION AUTHORITY ━━
 Live execution: QQQM, XLE, XSOE, XLI, XLB

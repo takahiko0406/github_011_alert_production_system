@@ -25,12 +25,12 @@ Normal rebalance due: NOT_AVAILABLE_FROM_VALIDATED_SOURCE
 Live allocation leader: XSOE
 Second live holding: QQQM
 Research strength leader: SOXX
-Top-two score gap: 0.0326
+Top-two score gap: 0.0318
 Required gap: NOT_USED_BY_SOURCE_MODEL
 Effective technology exposure: 0.220x
 
 ━━ PORTFOLIO EVIDENCE ━━
-Expected 10-day portfolio return: 1.10%
+Expected 10-day portfolio return: 0.91%
 Historical annual return: 110.75%
 Historical volatility: 24.61%
 Historical Sharpe: 4.500
