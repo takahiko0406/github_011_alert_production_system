@@ -85,6 +85,17 @@ def score(value) -> str:
     return "DATA_UNAVAILABLE" if pd.isna(value) else f"{float(value):.1f}"
 
 
+def metric_display(label: str, value) -> str:
+    numeric = fnum(value)
+    if not np.isfinite(numeric):
+        return "DATA_UNAVAILABLE"
+    if label == "VIX":
+        return f"{numeric:.2f}"
+    if label == "Yield curve (10Y−3M)":
+        return f"{100 * numeric:+.2f}%"
+    return score(numeric)
+
+
 def state(value: float) -> str:
     if pd.isna(value): return "DATA_UNAVAILABLE"
     if value >= 1.0: return "Strong"
@@ -137,6 +148,7 @@ def main() -> None:
     score_date = str(scores["signal_date"].iloc[-1])[:10]
     market_data_date = str(market_freshness["latest_data_date"])[:10]
     feature_date = str(feature_freshness["latest_data_date"])[:10]
+    metric_date = str(latest.get("feature_date", ""))[:10]
     source_files = {
         "022F_BASE": "model_c_plus_022F_calibrated_defense_validation_best_latest_recommendation.csv",
         "EXPANDED_CANDIDATE": "model_c_plus_expanded_execution_candidate_latest_recommendation.csv",
@@ -153,7 +165,7 @@ def main() -> None:
     # must not count as staleness. This is important for the scheduled Tokyo run.
     completed_cutoff = (pd.Timestamp(dashboard_date) - pd.offsets.BDay(1)).date() if now_utc.hour < 21 else dashboard_date
     age = business_age(data_date, completed_cutoff)
-    common_dates = data_date == prediction_date == score_date == allocation_date == market_data_date == feature_date == source_recommendation_date
+    common_dates = data_date == prediction_date == score_date == allocation_date == market_data_date == feature_date == metric_date == source_recommendation_date
     freshness_current = age <= 1
     execution_safe = common_dates and freshness_current
 
@@ -198,6 +210,15 @@ def main() -> None:
     emergency_value = str(latest.get("portfolio_wide_emergency", "")).strip()
     emergency_display = emergency_value if emergency_value else "NOT_AVAILABLE_FROM_VALIDATED_SOURCE"
     robust_active = str(latest.get("robust_gate_active", False)).strip().lower() in {"true", "1", "yes"}
+    yield_curve_value = fnum(latest.get("yield_curve"))
+    vix_level_value = fnum(latest.get("vix_level"))
+    metric_date_available = common_dates and freshness_current and metric_date <= dashboard_date.isoformat()
+    yield_curve_available = metric_date_available and np.isfinite(yield_curve_value)
+    vix_level_available = metric_date_available and np.isfinite(vix_level_value)
+    yield_curve_display = f"{100 * yield_curve_value:+.2f}%" if yield_curve_available else "DATA_UNAVAILABLE"
+    vix_level_display = f"{vix_level_value:.2f}" if vix_level_available else "DATA_UNAVAILABLE"
+    yield_curve_missing = [] if yield_curve_available else ["model_c_plus_034_execution_grade_expected_return_signal_latest_recommendation.csv:feature_date|yield_curve (absent, non-finite, stale, misdated, or future-dated)"]
+    vix_level_missing = [] if vix_level_available else ["model_c_plus_034_execution_grade_expected_return_signal_latest_recommendation.csv:feature_date|vix_level (absent, non-finite, stale, misdated, or future-dated)"]
     reporting_fields = {
         "selected_source_model": report_field(source_model, "AVAILABLE", "model_c_plus_034_execution_grade_expected_return_signal_latest_recommendation.csv", "source_model", data_date),
         "source_model_name": report_field(source_name, "AVAILABLE", source_file, "model", source_recommendation_date),
@@ -213,8 +234,8 @@ def main() -> None:
         "emergency_state": report_field(emergency_display, "AVAILABLE" if emergency_value else "NOT_AVAILABLE_FROM_VALIDATED_SOURCE", "model_c_plus_034_execution_grade_expected_return_signal_latest_recommendation.csv", "portfolio_wide_emergency", data_date),
         "normal_rebalance_due": report_field("NOT_AVAILABLE_FROM_VALIDATED_SOURCE", "NOT_AVAILABLE_FROM_VALIDATED_SOURCE", source_file, "normal_rebalance_due", source_recommendation_date, missing_sources=[f"{source_file}:normal_rebalance_due"]),
         "required_gap": report_field("NOT_USED_BY_SOURCE_MODEL", "NOT_USED_BY_SOURCE_MODEL", source_file, "required_gap", source_recommendation_date),
-        "yield_curve": report_field("DATA_UNAVAILABLE", "DATA_UNAVAILABLE", "model_c_plus_feature_freshness.csv", "yield_curve", feature_date, missing_sources=["model_c_plus_expanded_execution_candidate_latest_recommendation.csv:yield_curve", f"{source_file}:yield_curve"]),
-        "vix": report_field("DATA_UNAVAILABLE", "DATA_UNAVAILABLE", "model_c_plus_feature_freshness.csv", "vix_level|vix", feature_date, missing_sources=["model_c_plus_expanded_execution_candidate_latest_recommendation.csv:vix_level|vix", f"{source_file}:vix_level|vix"]),
+        "yield_curve": report_field(yield_curve_display, "AVAILABLE" if yield_curve_available else "DATA_UNAVAILABLE", "model_c_plus_034_execution_grade_expected_return_signal_latest_recommendation.csv", "yield_curve", metric_date or feature_date, missing_sources=yield_curve_missing),
+        "vix": report_field(vix_level_display, "AVAILABLE" if vix_level_available else "DATA_UNAVAILABLE", "model_c_plus_034_execution_grade_expected_return_signal_latest_recommendation.csv", "vix_level", metric_date or feature_date, missing_sources=vix_level_missing),
         "oil_energy_regime": report_field(energy_display, "AVAILABLE" if pd.notna(energy_value) else "DATA_UNAVAILABLE", source_file, "energy_state", source_recommendation_date, missing_sources=[] if pd.notna(energy_value) else [f"{source_file}:energy_state"]),
         "robust_gate": report_field("TRIGGERED" if robust_active else "NOT_TRIGGERED", "AVAILABLE" if robust_active else "NOT_TRIGGERED", "model_c_plus_034_execution_grade_expected_return_signal_latest_recommendation.csv", "robust_gate_active", data_date),
         "opportunistic_gate": report_field("NOT_APPLICABLE", "NOT_APPLICABLE", "model_c_plus_034_execution_grade_expected_return_signal_latest_recommendation.csv", "opportunistic_gate_active", data_date),
@@ -324,12 +345,12 @@ def main() -> None:
     themes = [
         ("Growth", [("Growth score", macro["growth"], "Growth impulse", "Prefer cyclicals only when positive."), ("SOXX", macro["soxx"], "Semiconductor strength", "Controls the robust overlay gate."), ("Technology", macro["tech"], "Technology trend", "Supports or limits growth exposure."), ("AI leadership", np.nan, "Unavailable", "No validated standalone AI input.")]),
         ("Credit", [("Credit score", macro["credit"], "Credit conditions", "Positive credit supports risk assets."), ("High yield", macro["hyg"], "High-yield confirmation", "Weak readings favor defense."), ("Financial conditions", np.nan, "Unavailable", "Not inferred from unrelated fields.")]),
-        ("Risk", [("Risk-off", macro["risk"], "Risk pressure", "High values favor defense."), ("VIX", np.nan, "DATA_UNAVAILABLE", "No date-matched VIX field exists in the validated production artifacts."), ("Crash probability", macro["crash"], "Crash pressure proxy", "Below 0.50 is required for the SOXX gate.")]),
+        ("Risk", [("Risk-off", macro["risk"], "Risk pressure", "High values favor defense."), ("VIX", vix_level_value if vix_level_available else np.nan, "Current ^VIX level", "Higher readings indicate greater implied equity volatility."), ("Crash probability", macro["crash"], "Crash pressure proxy", "Below 0.50 is required for the SOXX gate.")]),
         ("Economy", [("Industrial", macro["industrial"], "Industrial cycle", "Positive values can confirm the SOXX gate."), ("Materials", macro["materials"], "Materials cycle", "Positive values can confirm the SOXX gate."), ("Copper", macro["copper"], "Copper signal", "Confirms real-economy strength."), ("Energy", macro["energy"], "Selected-source energy state", "Date-matched source energy regime; not a substituted oil-price series.")]),
-        ("Rates", [("Treasuries", fnum(score_map.get("TLT", {}).get("tradable_score_0_100")), "TLT live score", "Higher relative score supports duration."), ("Yield curve", np.nan, "DATA_UNAVAILABLE", "No date-matched yield-curve field exists in the validated production artifacts."), ("Real estate", fnum(score_map.get("XLRE", {}).get("tradable_score_0_100")), "XLRE live score", "Rate relief can support real estate.")]),
+        ("Rates", [("Treasuries", fnum(score_map.get("TLT", {}).get("tradable_score_0_100")), "TLT live score", "Higher relative score supports duration."), ("Yield curve (10Y−3M)", yield_curve_value if yield_curve_available else np.nan, "^TNX minus ^IRX", "A positive value means the 10-year yield exceeds the 3-month yield."), ("Real estate", fnum(score_map.get("XLRE", {}).get("tradable_score_0_100")), "XLRE live score", "Rate relief can support real estate.")]),
         ("Currencies", [("USD", macro["usd"], "Dollar pressure", "Strong USD weighs on international, gold, and real estate."), ("International pressure", macro["usd"], "USD-derived pressure", "Prefer domestic sectors when elevated.")]),
     ]
-    theme_html = "".join(f'<section class="theme"><h3>{name}</h3>' + "".join(f'<article><div><b>{label}</b><strong>{score(val)}</strong></div><p><b>State:</b> {state(val)} · {interp}</p><p><b>Trading implication:</b> {imp}</p></article>' for label, val, interp, imp in items) + "</section>" for name, items in themes)
+    theme_html = "".join(f'<section class="theme"><h3>{name}</h3>' + "".join(f'<article><div><b>{label}</b><strong>{metric_display(label, val)}</strong></div><p><b>State:</b> {state(val)} · {interp}</p><p><b>Trading implication:</b> {imp}</p></article>' for label, val, interp, imp in items) + "</section>" for name, items in themes)
 
     analysis_rows = [[str(r["Rank"]), r["ETF"], score(r["Live Score"]), pct(r["Expected 10-day Return"], 2), weight(r["Current Weight"]), weight(r["Weight"]), badge(r["Confidence"]), html.escape(r["Regime Role"]), html.escape(r["Selection Reason"])] for _, r in ranking.iterrows()]
     detail_html = "".join(f'<details><summary><b>{r["ETF"]}</b><span>{score(r["Live Score"])} · {pct(r["Expected 10-day Return"],2)}</span></summary><div class="drivers"><p><b>Positive</b><br>{html.escape(r["Positive"])}</p><p><b>Negative</b><br>{html.escape(r["Negative"])}</p><p><b>Why selected</b><br>{html.escape(r["Selection Reason"])}</p><p><b>Why not replaced</b><br>{"Safety allocation remains until inputs agree." if r["ETF"] == "BIL" else "It has no current execution authority while the pipeline is stale."}</p></div></details>' for _, r in ranking.iterrows())
@@ -400,7 +421,7 @@ def main() -> None:
         f"Emergency state: {reporting_fields['emergency_state']['display']}",
         f"Normal rebalance due: {reporting_fields['normal_rebalance_due']['display']}",
         f"Required gap: {reporting_fields['required_gap']['display']}",
-        f"Yield curve: {reporting_fields['yield_curve']['display']}",
+        f"Yield curve (10Y−3M): {reporting_fields['yield_curve']['display']}",
         f"VIX: {reporting_fields['vix']['display']}",
         f"Oil / energy: {reporting_fields['oil_energy_regime']['display']}",
         f"Robust gate: {reporting_fields['robust_gate']['display']}",
@@ -469,6 +490,12 @@ def main() -> None:
         "assertions": assertions, "production_modified": False,
     }
     Path(f"{OUT}_validation.json").write_text(json.dumps(validation, indent=2), encoding="utf-8")
+    print(
+        "Dashboard macro metrics "
+        f"for {metric_date}: "
+        f"yield_curve={yield_curve_value:.17g} ({yield_curve_display}), "
+        f"vix_level={vix_level_value:.17g} ({vix_level_display})"
+    )
     print(json.dumps(validation, indent=2))
     print(f"Saved {OUT}.html, ranking CSV, Telegram preview, and validation JSON")
 

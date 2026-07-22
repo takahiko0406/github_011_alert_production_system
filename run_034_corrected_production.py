@@ -135,6 +135,29 @@ def main() -> None:
     common_date = str(base_latest["latest_data_date"])[:10]
     if str(expanded_latest["latest_data_date"])[:10] != common_date:
         raise ValueError("022F and expanded latest dates differ")
+    feature_date = str(expanded_latest.get("feature_date", ""))[:10]
+    try:
+        feature_timestamp = pd.to_datetime(feature_date, format="%Y-%m-%d", errors="raise")
+    except (TypeError, ValueError) as exc:
+        raise ValueError(f"Expanded feature date is invalid: {feature_date!r}") from exc
+    if feature_date != common_date:
+        raise ValueError(
+            f"Expanded feature date differs from recommendation date: "
+            f"{feature_date} != {common_date}"
+        )
+    today_utc = pd.Timestamp.now(tz="UTC").tz_localize(None).normalize()
+    if feature_timestamp > today_utc:
+        raise ValueError(f"Expanded feature date is in the future: {feature_date}")
+    yield_curve_value = float(pd.to_numeric(expanded_latest.get("yield_curve", np.nan), errors="coerce"))
+    vix_level_value = float(pd.to_numeric(expanded_latest.get("vix_level", np.nan), errors="coerce"))
+    if not np.isfinite(yield_curve_value) or not np.isfinite(vix_level_value):
+        raise ValueError("Expanded yield_curve or vix_level is non-finite")
+    print(
+        "Validated macro metrics "
+        f"for {feature_date}: "
+        f"yield_curve={yield_curve_value:.17g}, "
+        f"vix_level={vix_level_value:.17g}"
+    )
     use_expanded = audit.robust_gate(expanded_latest)
     chosen = expanded_latest if use_expanded else base_latest
     source_model = "EXPANDED_CANDIDATE" if use_expanded else "022F_BASE"
@@ -154,6 +177,9 @@ def main() -> None:
         "prediction_date": common_date,
         "allocation_date": common_date,
         "base_weight_date": common_date,
+        "feature_date": feature_date,
+        "yield_curve": yield_curve_value,
+        "vix_level": vix_level_value,
         "source_model": source_model,
         "gate_active": use_expanded,
         "robust_gate_active": use_expanded,

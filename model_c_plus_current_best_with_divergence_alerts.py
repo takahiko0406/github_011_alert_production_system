@@ -388,6 +388,14 @@ usd_3m_strength = rolling_zscore(usd_3m, zscore_window)
 vix_level = macro_raw["vix_level"]
 vix_1m = macro_raw["vix_level"].pct_change(21)
 
+latest_macro_date = prices.index[-1]
+print(
+    "Computed macro metrics "
+    f"for {latest_macro_date.date()}: "
+    f"yield_curve={float(yield_curve.loc[latest_macro_date]):.17g}, "
+    f"vix_level={float(vix_level.loc[latest_macro_date]):.17g}"
+)
+
 copper_1m = macro_raw["copper"].pct_change(21)
 copper_3m = macro_raw["copper"].pct_change(63)
 copper_rel_spy_1m = copper_1m - spy_ret_1m
@@ -1644,6 +1652,9 @@ def get_latest_recommendation(
         return {
             "model": model_name,
             "date": latest_date,
+            "feature_date": latest_date,
+            "yield_curve": float(yield_curve.loc[latest_date]),
+            "vix_level": float(vix_level.loc[latest_date]),
             "raw_predictions": raw_preds,
             "adjusted_predictions": adjusted_preds,
             "signal_weights": signal_weights,
@@ -1716,6 +1727,9 @@ def save_latest(prefix: str, latest: dict):
     latest_df = pd.DataFrame([{
         "signal_date": latest["date"],
         "latest_data_date": prices.index[-1],
+        "feature_date": latest["feature_date"],
+        "yield_curve": latest["yield_curve"],
+        "vix_level": latest["vix_level"],
         "top_asset": latest["top_asset"],
         "second_asset": latest["second_asset"],
         "top_score": latest["top_score"],
