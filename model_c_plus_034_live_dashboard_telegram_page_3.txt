@@ -5,10 +5,10 @@ Data date: 2026-07-21 | Freshness: CURRENT
 Growth: Weak (-2.184)
 Credit: Neutral (0.141)
 USD: Strong / tightening (1.991)
-Yield curve: DATA_UNAVAILABLE
+Yield curve: +0.90%
 Risk-off pressure: Elevated (1.132)
 Crash pressure: Low (-0.900)
-VIX: DATA_UNAVAILABLE
+VIX: 17.05
 
 ━━ SECTOR AND CROSS-ASSET REGIME ━━
 Semiconductors / technology: Weak (-2.203)
@@ -16,17 +16,17 @@ Industrials: Mixed (-0.097)
 Materials: Mixed (0.093)
 Copper: Neutral (0.237)
 Oil / energy: Negative (-0.074)
-Small caps — IWM: Weak | score 12.7 | Exp10D 0.39%
-Financials — XLF: Mixed | score 44.4 | Exp10D 0.56%
-Real estate — XLRE: Constructive | score 63.9 | Exp10D 0.71%
-Healthcare — XLV: Strong | score 82.2 | Exp10D 0.87%
-Utilities — XLU: Constructive | score 66.4 | Exp10D 0.74%
-Staples — XLP: Strong | score 76.4 | Exp10D 0.75%
-Treasuries — TLT: Constructive | score 69.2 | Exp10D 0.70%
-Gold — GLD: Weak | score 37.0 | Exp10D 0.66%
+Small caps — IWM: Weak | score 12.6 | Exp10D 0.39%
+Financials — XLF: Mixed | score 44.6 | Exp10D 0.56%
+Real estate — XLRE: Constructive | score 63.8 | Exp10D 0.71%
+Healthcare — XLV: Strong | score 82.5 | Exp10D 0.87%
+Utilities — XLU: Constructive | score 66.3 | Exp10D 0.74%
+Staples — XLP: Strong | score 76.3 | Exp10D 0.75%
+Treasuries — TLT: Constructive | score 69.1 | Exp10D 0.70%
+Gold — GLD: Weak | score 36.9 | Exp10D 0.66%
 
 ━━ GLOBAL AND EM REGIME ━━
-Europe — FEZ: Constructive | score 60.8 | Exp10D 0.74%
+Europe — FEZ: Constructive | score 60.7 | Exp10D 0.74%
 Emerging markets — XSOE: Constructive | score 72.6 | Exp10D 1.06%
 China technology — CQQQ: NOT YET ACTIVE
 Latin America — ILF: NOT YET ACTIVE

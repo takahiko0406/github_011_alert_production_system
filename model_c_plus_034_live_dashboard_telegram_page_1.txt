@@ -25,7 +25,7 @@ Normal rebalance due: NOT_AVAILABLE_FROM_VALIDATED_SOURCE
 Live allocation leader: XSOE
 Second live holding: QQQM
 Research strength leader: SOXX
-Top-two score gap: 0.0318
+Top-two score gap: 0.0319
 Required gap: NOT_USED_BY_SOURCE_MODEL
 Effective technology exposure: 0.220x
 

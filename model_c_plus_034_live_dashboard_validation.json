@@ -9,7 +9,7 @@
   "source_recommendation_date": "2026-07-21",
   "score_date": "2026-07-21",
   "dashboard_date": "2026-07-22",
-  "ranking_fingerprint": "58baf49ad9227b28e0209f3a253f187fbe505dfb18676d4f59d5b2781e62d110",
+  "ranking_fingerprint": "5fa96ca8ee9c45ec0ee7561037aefa2ffa53e7c972e5f50ef01d85fd3e338ff3",
   "reporting_fields": {
     "selected_source_model": {
       "display": "022F_BASE",
@@ -130,26 +130,20 @@
       "missing_sources": []
     },
     "yield_curve": {
-      "display": "DATA_UNAVAILABLE",
-      "status": "DATA_UNAVAILABLE",
-      "source_artifact": "model_c_plus_feature_freshness.csv",
+      "display": "+0.90%",
+      "status": "AVAILABLE",
+      "source_artifact": "model_c_plus_034_execution_grade_expected_return_signal_latest_recommendation.csv",
       "source_field": "yield_curve",
       "source_date": "2026-07-21",
-      "missing_sources": [
-        "model_c_plus_expanded_execution_candidate_latest_recommendation.csv:yield_curve",
-        "model_c_plus_022F_calibrated_defense_validation_best_latest_recommendation.csv:yield_curve"
-      ]
+      "missing_sources": []
     },
     "vix": {
-      "display": "DATA_UNAVAILABLE",
-      "status": "DATA_UNAVAILABLE",
-      "source_artifact": "model_c_plus_feature_freshness.csv",
-      "source_field": "vix_level|vix",
+      "display": "17.05",
+      "status": "AVAILABLE",
+      "source_artifact": "model_c_plus_034_execution_grade_expected_return_signal_latest_recommendation.csv",
+      "source_field": "vix_level",
       "source_date": "2026-07-21",
-      "missing_sources": [
-        "model_c_plus_expanded_execution_candidate_latest_recommendation.csv:vix_level|vix",
-        "model_c_plus_022F_calibrated_defense_validation_best_latest_recommendation.csv:vix_level|vix"
-      ]
+      "missing_sources": []
     },
     "oil_energy_regime": {
       "display": "Negative (-0.074)",
@@ -228,7 +222,7 @@
     },
     "expected_returns": {
       "file": "model_c_plus_034_execution_grade_expected_return_signal_scoreboard.csv",
-      "sha256": "643279733cc08aab6736d3de0797180bd0bcbcb19e45f6a76ea81874a892c392"
+      "sha256": "b8b870632a84f93362584eec0336a7efa9e0050bc5a7316578d38a0f3d0e95a6"
     }
   },
   "economic_snapshot": {
@@ -237,7 +231,7 @@
       "XLE": 0.08,
       "XSOE": 0.7
     },
-    "expected_10_day_portfolio_return": 0.009122838554392798,
+    "expected_10_day_portfolio_return": 0.00914428443017192,
     "historical_annual_return": 1.1074669728441604,
     "historical_volatility": 0.2460930784240977,
     "historical_sharpe": 4.500195535510501,
@@ -266,7 +260,7 @@
       "IEF",
       "XLF"
     ],
-    "ranking_fingerprint": "58baf49ad9227b28e0209f3a253f187fbe505dfb18676d4f59d5b2781e62d110"
+    "ranking_fingerprint": "5fa96ca8ee9c45ec0ee7561037aefa2ffa53e7c972e5f50ef01d85fd3e338ff3"
   },
   "emergency_evidence": {
     "state_today": "NORMAL",
