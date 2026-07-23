@@ -1,2 +1,2 @@
 rule,active_days,active_pct,latest_robust_gate_active,latest_opportunistic_gate_active,latest_source_model,latest_weights
-top SOXX + growth > 0 + crash_pressure < 0.50 + (industrial > 0 or materials > 0),50,0.07331378299120235,False,False,022F_balanced_defense_real_estate,"XLE 63.5%, XSOE 30.0%, GLD 6.5%"
+top SOXX + growth > 0 + crash_pressure < 0.50 + (industrial > 0 or materials > 0),50,0.07320644216691069,False,False,022F_balanced_defense_real_estate,"XLE 70.0%, XSOE 30.0%"
