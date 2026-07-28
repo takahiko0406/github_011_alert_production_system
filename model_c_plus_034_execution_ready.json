@@ -1,17 +1,14 @@
 {
   "execution_safe": true,
-  "common_date": "2026-07-27",
+  "common_date": "2026-07-28",
   "source_model": "022F_BASE",
   "weights_sum": 1.0,
   "selected_assets": [
-    "FEZ",
-    "GLD",
     "QQQM",
-    "XLB",
-    "XLV",
+    "TLT",
     "XSOE"
   ],
-  "ranking_fingerprint": "6eb67116400d0803c5c7e13d620d4f5a45528a9d81e84c87281b9a6882dc3ded",
-  "effective_technology_exposure": 0.097167121046892,
+  "ranking_fingerprint": "5ad03c09fd30d50578ad3c7d8265659cc1f893bba79202bc41cc4ff2a35be97c",
+  "effective_technology_exposure": 0.15,
   "common_leverage_configuration": "D_BOTH_CAP_1.00"
 }
