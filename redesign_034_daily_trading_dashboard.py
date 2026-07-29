@@ -1,4 +1,4 @@
-"""Generate the six-page, fail-closed 034 daily trading dashboard.
+"""Generate the seven-page, fail-closed 034 daily trading dashboard.
 
 The presentation and Telegram preview share one ranking dataframe.  Execution
 authority comes from the recovered 022F path, never from legacy LIGHT labels.
@@ -18,6 +18,7 @@ import numpy as np
 import pandas as pd
 
 from audit_083_emergency_tqqq_soxl import emergency_criteria
+from build_production_page5 import dashboard_fragment, load_snapshot
 
 
 OUT = os.getenv("DASHBOARD_OUTPUT_PREFIX", "model_c_plus_034_live_dashboard")
@@ -372,7 +373,7 @@ def main() -> None:
         ("Execution safe", "PASS" if execution_safe else "FAIL", "all checks must pass"),
     ]
 
-    nav = "".join(f'<button data-page="p{i}" class="{"active" if i==1 else ""}">{i}. {name}</button>' for i, name in enumerate(["Today’s Execution", "Market Regime", "ETF Analysis", "Defensive Analysis", "SOXX / Overlay", "Model Health"], 1))
+    nav = "".join(f'<button data-page="p{i}" class="{"active" if i==1 else ""}">{i}. {name}</button>' for i, name in enumerate(["Today’s Execution", "Market Regime", "ETF Analysis", "Defensive Analysis", "034 Production Performance", "SOXX / Overlay", "Model Health"], 1))
     warning = "All model dates agree and inputs are current." if execution_safe else f"Signal/score date {data_date}, selected allocation date {allocation_date}, and dashboard date {dashboard_date}. Stale or mixed-date inputs cannot execute."
     provenance_rows = [[
         html.escape(name.replace("_", " ").title()), html.escape(value["display"]),
@@ -393,6 +394,7 @@ def main() -> None:
         f"<p><b>Annual return / volatility / Sharpe / max drawdown / final-equity effects:</b> {emergency_evidence['effect_on_annual_return']:+.6f} / {emergency_evidence['effect_on_volatility']:+.6f} / {emergency_evidence['effect_on_sharpe']:+.6f} / {emergency_evidence['effect_on_maximum_drawdown']:+.6f} / {emergency_evidence['effect_on_final_equity_after_costs']:+.6f}</p>",
         f"<p><b>False-positive reductions:</b> {emergency_evidence['false_positive_episodes']} · <b>Evidence quality:</b> {emergency_evidence['evidence_quality']}</p>",
     ]) + "</div>"
+    page5_html = dashboard_fragment(root)
     html_doc = f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>034 Daily Trading Dashboard</title><style>
     :root{{--bg:#f4f1ea;--paper:#fffdf8;--ink:#16211d;--muted:#64716b;--line:#d9ddd6;--green:#0c6b4f;--red:#a63d36;--amber:#b56a08;--nav:#122d26}}*{{box-sizing:border-box}}body{{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}}header{{background:var(--nav);color:white;padding:22px 28px;display:flex;justify-content:space-between;gap:18px;align-items:end}}header h1{{margin:0;font:700 26px/1.1 Georgia,serif}}header p{{margin:6px 0 0;color:#bcd0c8}}.status{{text-align:right}}nav{{display:flex;gap:6px;padding:10px 20px;background:#e4e9e3;overflow:auto;position:sticky;top:0;z-index:3;border-bottom:1px solid var(--line)}}nav button{{white-space:nowrap;border:0;background:transparent;padding:9px 13px;border-radius:7px;color:#42514b;font-weight:700;cursor:pointer}}nav button.active{{background:white;color:var(--green);box-shadow:0 1px 4px #0002}}main{{max-width:1480px;margin:auto;padding:22px}}.page{{display:none}}.page.active{{display:block}}h2{{font:700 25px Georgia,serif;margin:0 0 14px}}h3{{margin:0 0 10px}}.alert{{border-left:6px solid var(--red);background:#fff0ed;padding:18px 20px;border-radius:8px;margin-bottom:18px}}.alert h2{{color:var(--red);font-family:inherit;font-size:22px}}.grid{{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}}.card{{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:16px;box-shadow:0 2px 7px #1832290a}}.span4{{grid-column:span 4}}.span6{{grid-column:span 6}}.span8{{grid-column:span 8}}.span12{{grid-column:span 12}}.kpis{{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}}.kpi{{padding:10px;background:#edf1ec;border-radius:7px}}.kpi small{{display:block;color:var(--muted)}}.kpi strong{{display:block;margin-top:3px}}.badge{{display:inline-block;padding:3px 7px;border-radius:999px;background:#e7ebe7;font-size:11px;font-weight:800;white-space:nowrap}}.badge.ok{{background:#d8eee4;color:var(--green)}}.badge.bad{{background:#f5dad6;color:var(--red)}}.badge.warn{{background:#fae7c8;color:#8b5108}}.table-wrap{{overflow:auto}}table{{width:100%;border-collapse:collapse;white-space:nowrap}}th{{text-align:left;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.04em;padding:9px;border-bottom:2px solid var(--line)}}td{{padding:9px;border-bottom:1px solid #e9ebe7}}tbody tr:first-child{{background:#eef7f1}}.themes{{columns:2;column-gap:14px}}.theme{{break-inside:avoid;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:16px;margin:0 0 14px}}.theme article{{border-top:1px solid var(--line);padding:10px 0}}.theme article>div{{display:flex;justify-content:space-between}}.theme strong{{font-size:18px}}.theme p{{margin:5px 0;color:#4d5b55}}details{{background:var(--paper);border:1px solid var(--line);border-radius:8px;margin:8px 0;padding:11px}}summary{{display:flex;justify-content:space-between;cursor:pointer}}.drivers{{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;color:#4d5b55}}.health-row{{display:grid;grid-template-columns:1.2fr .4fr 2fr;gap:12px;padding:12px;border-bottom:1px solid var(--line)}}footer{{padding:30px;color:var(--muted);text-align:center}}@media(max-width:850px){{header{{align-items:start;flex-direction:column}}.status{{text-align:left}}.span4,.span6,.span8{{grid-column:span 12}}.kpis{{grid-template-columns:1fr 1fr}}.themes{{columns:1}}.drivers{{grid-template-columns:1fr}}main{{padding:14px}}}}
     </style></head><body><header><div><h1>034 Daily Trading Dashboard</h1><p>Execution first. Analysis second. One authority path.</p></div><div class="status">{badge("EXECUTION SAFE" if execution_safe else "EXECUTION BLOCKED", "ok" if execution_safe else "bad")}<br><small>Generated {dashboard_date}</small></div></header><nav>{nav}</nav><main>
@@ -400,8 +402,9 @@ def main() -> None:
     <section id="p2" class="page"><h2>Market Regime</h2><p>Why the model is cautious. All values are from {data_date} and are analytical while execution is blocked.</p><div class="themes">{theme_html}</div></section>
     <section id="p3" class="page"><h2>ETF Analysis</h2>{table(["Rank","ETF","Live Score","Expected Return","Current Weight","Recommended Weight","Confidence","Regime","Selection Reason"],analysis_rows)}<h3 style="margin-top:20px">Drivers and selection explanations</h3>{detail_html}</section>
     <section id="p4" class="page"><h2>Defensive Analysis</h2><p>Only validated defensive ETFs are shown.</p>{table(["ETF","Live Score","Expected Return","Weight","Trigger","Reason"],defensive_rows)}</section>
-    <section id="p5" class="page"><h2>SOXX / Common Overlay</h2><div class="grid"><div class="card span4"><h3>SOXX</h3><p>Score <b>{score(score_map.get('SOXX',{}).get('tradable_score_0_100',np.nan))}</b></p><p>Expected return <b>{pct(score_map.get('SOXX',{}).get('adjusted_expected_10d_return',np.nan),2)}</b></p><p>Base / final <b>{weight(fnum(latest.get('soxx_base_weight')))} / {weight(fnum(latest.get('soxx_final_weight')))}</b></p></div><div class="card span4"><h3>Portfolio-wide emergency</h3><p>{badge(str(latest.get('portfolio_wide_emergency','UNKNOWN')), "ok" if str(latest.get('portfolio_wide_emergency')) == "NORMAL" else "bad")}</p><p>Growth {score(macro['growth'])} · Crash {score(macro['crash'])}<br>No SOXL-specific timing or emergency system.</p></div><div class="card span4"><h3>SOXL replacement</h3><p>{badge("VALIDATED COMMON FRAMEWORK", "ok")}</p><p>Replacement fraction: {pct(fnum(latest.get('soxl_replacement_fraction')),1)}<br>Final SOXL: {weight(fnum(latest.get('soxl_substituted_weight')))}</p></div>{emergency_evidence_html}</div></section>
-    <section id="p6" class="page"><h2>Model Health</h2><div class="card">{"".join(f'<div class="health-row"><b>{n}</b>{badge(v,"ok" if v=="PASS" else "bad")}<span>{d}</span></div>' for n,v,d in health)}</div><div class="card" style="margin-top:14px"><h3>Final validation</h3>{"".join(f'<p>{badge("PASS" if v else "FAIL","ok" if v else "bad")} {html.escape(k.replace("_"," ").title())}</p>' for k,v in assertions.items())}<p><small>Ranking fingerprint: {digest}</small></p></div></section>
+    {page5_html}
+    <section id="p6" class="page"><h2>SOXX / Common Overlay</h2><div class="grid"><div class="card span4"><h3>SOXX</h3><p>Score <b>{score(score_map.get('SOXX',{}).get('tradable_score_0_100',np.nan))}</b></p><p>Expected return <b>{pct(score_map.get('SOXX',{}).get('adjusted_expected_10d_return',np.nan),2)}</b></p><p>Base / final <b>{weight(fnum(latest.get('soxx_base_weight')))} / {weight(fnum(latest.get('soxx_final_weight')))}</b></p></div><div class="card span4"><h3>Portfolio-wide emergency</h3><p>{badge(str(latest.get('portfolio_wide_emergency','UNKNOWN')), "ok" if str(latest.get('portfolio_wide_emergency')) == "NORMAL" else "bad")}</p><p>Growth {score(macro['growth'])} · Crash {score(macro['crash'])}<br>No SOXL-specific timing or emergency system.</p></div><div class="card span4"><h3>SOXL replacement</h3><p>{badge("VALIDATED COMMON FRAMEWORK", "ok")}</p><p>Replacement fraction: {pct(fnum(latest.get('soxl_replacement_fraction')),1)}<br>Final SOXL: {weight(fnum(latest.get('soxl_substituted_weight')))}</p></div>{emergency_evidence_html}</div></section>
+    <section id="p7" class="page"><h2>Model Health</h2><div class="card">{"".join(f'<div class="health-row"><b>{n}</b>{badge(v,"ok" if v=="PASS" else "bad")}<span>{d}</span></div>' for n,v,d in health)}</div><div class="card" style="margin-top:14px"><h3>Final validation</h3>{"".join(f'<p>{badge("PASS" if v else "FAIL","ok" if v else "bad")} {html.escape(k.replace("_"," ").title())}</p>' for k,v in assertions.items())}<p><small>Ranking fingerprint: {digest}</small></p></div></section>
     </main><footer>Source dates are always visible. Research data never receives live authority.</footer><script>document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{{document.querySelectorAll('nav button,.page').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.getElementById(b.dataset.page).classList.add('active');window.scrollTo(0,0)}})</script></body></html>'''
     Path(f"{OUT}.html").write_text(html_doc, encoding="utf-8")
 
@@ -478,6 +481,17 @@ def main() -> None:
         "energy_state": {"source_artifact": source_file, "source_field": "energy_state", "source_date": source_recommendation_date},
         "historical_performance": {"source_artifact": "model_c_plus_034_execution_grade_expected_return_signal_performance_summary.csv", "source_field": "annual_return|volatility|sharpe|max_drawdown", "source_date": data_date},
     }
+    monitor_snapshot = load_snapshot(root)
+    monitor_files = ["production_model_performance_history.csv", "production_prediction_history.csv", "production_prediction_errors.csv", "production_page5_report.md"]
+    production_monitor = {
+        "health": str(monitor_snapshot["latest"].overall_health),
+        "completed_signals": int(monitor_snapshot["latest"].completed_signal_count),
+        "pending_signals": int(monitor_snapshot["pending_signals"]),
+        "latest_captured_signal": str(monitor_snapshot["latest_signal"])[:10],
+        "completed_outcomes_only": True,
+        "historical_replay_excluded": True,
+        "artifact_hashes": {name: hashlib.sha256((root / name).read_bytes()).hexdigest() for name in monitor_files},
+    }
     validation = {
         "execution_safe": execution_safe, "data_date": data_date, "prediction_date": prediction_date,
         "allocation_date": allocation_date, "base_weight_date": base_weight_date,
@@ -487,6 +501,7 @@ def main() -> None:
         "reporting_fields": reporting_fields, "displayed_number_sources": displayed_number_sources,
         "artifact_hashes": artifact_hashes,
         "economic_snapshot": economic_snapshot, "emergency_evidence": emergency_evidence,
+        "production_performance_monitor": production_monitor,
         "assertions": assertions, "production_modified": False,
     }
     Path(f"{OUT}_validation.json").write_text(json.dumps(validation, indent=2), encoding="utf-8")

@@ -212,6 +212,60 @@ def main() -> None:
         if not value or str(value) not in dashboard_html or f"{label}: {value}" not in telegram:
             raise ValueError(f"Dashboard and Telegram emergency evidence disagree: {label}={value}")
 
+    page5_files = {
+        "performance": ROOT / "production_model_performance_history.csv",
+        "predictions": ROOT / "production_prediction_history.csv",
+        "errors": ROOT / "production_prediction_errors.csv",
+        "report": ROOT / "production_page5_report.md",
+        "telegram": ROOT / "model_c_plus_034_live_dashboard_telegram_page_5.txt",
+    }
+    if any(not path.is_file() for path in page5_files.values()):
+        raise ValueError(f"Page 5 output missing: {page5_files}")
+    predictions = pd.read_csv(page5_files["predictions"])
+    errors = pd.read_csv(page5_files["errors"])
+    monitor = pd.read_csv(page5_files["performance"])
+    if predictions.empty or monitor.empty:
+        raise ValueError("Page 5 production ledger or monitoring history is empty")
+    if not set(predictions["record_origin"]).issubset({"ACTUAL_COMMITTED_PRODUCTION_SNAPSHOT", "CURRENT_PRODUCTION_RUN"}):
+        raise ValueError("Page 5 contains a retrospectively regenerated prediction")
+    completed = predictions[predictions["outcome_status"].eq("COMPLETED")]
+    pending = predictions[predictions["outcome_status"].eq("PENDING")]
+    if not completed.empty:
+        if not (pd.to_datetime(completed["maturity_date"]) > pd.to_datetime(completed["signal_date"])).all():
+            raise ValueError("Page 5 completed maturity does not follow its signal")
+        if completed[["realized_etf_return", "realized_portfolio_return", "benchmark_return", "prediction_error"]].isna().any().any():
+            raise ValueError("Page 5 completed outcome is incomplete")
+    if not pending.empty and pending[["realized_etf_return", "realized_portfolio_return", "benchmark_return", "prediction_error"]].notna().any().any():
+        raise ValueError("Page 5 pending outcome contains future realization data")
+    if len(errors) != len(completed):
+        raise ValueError("Page 5 error history is not exactly the completed prediction set")
+    if not set(monitor["overall_health"]).issubset({"HEALTHY", "WATCH", "DETERIORATING"}):
+        raise ValueError("Page 5 has an invalid institutional health state")
+    completed_signal_count = int(completed["signal_date"].nunique())
+    if completed_signal_count < 20:
+        if str(monitor.iloc[-1]["overall_health"]) != "WATCH":
+            raise ValueError("Page 5 health must remain WATCH before 20 production signals mature")
+        page5_report = page5_files["report"].read_text(encoding="utf-8")
+        page5_telegram_text = page5_files["telegram"].read_text(encoding="utf-8")
+        if "INSUFFICIENT_DATA" not in page5_report or "INSUFFICIENT_DATA" not in page5_telegram_text:
+            raise ValueError("Page 5 must fail closed with INSUFFICIENT_DATA before 20 signals mature")
+    monitor_meta = dashboard.get("production_performance_monitor", {})
+    if not monitor_meta.get("completed_outcomes_only") or not monitor_meta.get("historical_replay_excluded"):
+        raise ValueError("Page 5 monitoring boundary is not fail-closed")
+    if monitor_meta.get("health") != str(monitor.iloc[-1]["overall_health"]):
+        raise ValueError("Page 5 health differs from the validated dashboard snapshot")
+    for filename, expected_hash in monitor_meta.get("artifact_hashes", {}).items():
+        path = ROOT / filename
+        if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != expected_hash:
+            raise ValueError(f"Page 5 artifact changed after dashboard generation: {filename}")
+    page5_telegram = page5_files["telegram"].read_text(encoding="utf-8")
+    if '<section id="p5" class="page"><h2>034 PRODUCTION MODEL PERFORMANCE</h2>' not in dashboard_html:
+        raise ValueError("Dashboard Page 5 is missing")
+    if completed_signal_count < 20 and "INSUFFICIENT_DATA" not in dashboard_html:
+        raise ValueError("Dashboard Page 5 must display INSUFFICIENT_DATA before 20 signals mature")
+    if "034 PRODUCTION MODEL PERFORMANCE" not in page5_telegram or not telegram.endswith(page5_telegram):
+        raise ValueError("Telegram Page 5 is missing or not sent after Pages 1-4")
+
     output = pd.DataFrame([{"component": name, "date": value, "status": "PASS"} for name, value in dates.items()])
     output.to_csv(ROOT / "model_c_plus_034_freshness_validation.csv", index=False)
     (ROOT / "model_c_plus_034_execution_ready.json").write_text(json.dumps({

@@ -8,8 +8,8 @@
   "feature_date": "2026-07-28",
   "source_recommendation_date": "2026-07-28",
   "score_date": "2026-07-28",
-  "dashboard_date": "2026-07-28",
-  "ranking_fingerprint": "5ad03c09fd30d50578ad3c7d8265659cc1f893bba79202bc41cc4ff2a35be97c",
+  "dashboard_date": "2026-07-29",
+  "ranking_fingerprint": "2eb66e733c8a6d54dbcd704a57c6cd953c910d732acddafa2383d77114799745",
   "reporting_fields": {
     "selected_source_model": {
       "display": "022F_BASE",
@@ -210,19 +210,19 @@
   "artifact_hashes": {
     "effective_weights": {
       "file": "model_c_plus_034_execution_grade_expected_return_signal_effective_weights.csv",
-      "sha256": "11a0b51af21de3aed7c47901035a6df48749ba60459c5d3a5cba008c7d7990c0"
+      "sha256": "e4818cd73ca945bd1bafe4d759b49b69c5cb8b1928388a65805f0bdd86f804ef"
     },
     "daily_returns": {
       "file": "model_c_plus_034_execution_grade_expected_return_signal_daily_returns.csv",
-      "sha256": "cf4095c32585341c1469e8040259b1ddd8cdee9f1a5ce68dbc89d17715c975ee"
+      "sha256": "51c72f06549f8ace733aebedebaff2fc2e923c7d1c01ac39424504c2e3741a85"
     },
     "turnover": {
       "file": "model_c_plus_034_execution_grade_expected_return_signal_common_overlay_turnover_costs.csv",
-      "sha256": "c92e7fa89dd5fb1be3bdda7791a5a24f21e91dec7ac2e7a7cf2cd9e45623c60e"
+      "sha256": "691d7f48b198c86e87a141f3821aa690c93b35758c2aed885713caf6cfbb03aa"
     },
     "expected_returns": {
       "file": "model_c_plus_034_execution_grade_expected_return_signal_scoreboard.csv",
-      "sha256": "9897328f17fc8119a3d009e9c0fb7b905a574f936446416909272c433f255556"
+      "sha256": "1dc8120b31e49771773a59b0e364acfebda8265b8247602a77ab337bdcca641e"
     }
   },
   "economic_snapshot": {
@@ -260,7 +260,7 @@
       "IEF",
       "XLF"
     ],
-    "ranking_fingerprint": "5ad03c09fd30d50578ad3c7d8265659cc1f893bba79202bc41cc4ff2a35be97c"
+    "ranking_fingerprint": "2eb66e733c8a6d54dbcd704a57c6cd953c910d732acddafa2383d77114799745"
   },
   "emergency_evidence": {
     "state_today": "NORMAL",
@@ -285,6 +285,20 @@
       "emergency_tqqq_soxl_ab_performance.csv",
       "emergency_tqqq_soxl_episode_audit.csv"
     ]
+  },
+  "production_performance_monitor": {
+    "health": "WATCH",
+    "completed_signals": 1,
+    "pending_signals": 10,
+    "latest_captured_signal": "2026-07-28",
+    "completed_outcomes_only": true,
+    "historical_replay_excluded": true,
+    "artifact_hashes": {
+      "production_model_performance_history.csv": "6e2c1ec900be7b3668ae6834bcf242766f9addc8f7dd0c311b48c3e6a6f94953",
+      "production_prediction_history.csv": "c32283bb068fbb3b3f62966eaf8d6b39324b23e38b3d4920e39509116dcc0bb7",
+      "production_prediction_errors.csv": "16e0f363b1593548a0741335751ae1eb3098d182db6162dc95242538e9a26fc4",
+      "production_page5_report.md": "8c8f4d4cf91198dcc227865f7e3be1e89fa32c3e3f0cd1cdcbdbd58206b12555"
+    }
   },
   "assertions": {
     "every_etf_once_in_main_ranking": true,

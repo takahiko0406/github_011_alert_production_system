@@ -10,6 +10,8 @@ from typing import Any
 
 import pandas as pd
 
+from build_production_page5 import telegram_page
+
 PREFIX = "model_c_plus_034_execution_grade_expected_return_signal"
 LATEST_FILE = f"{PREFIX}_latest_recommendation.csv"
 SCOREBOARD_FILE = f"{PREFIX}_scoreboard.csv"
@@ -18,7 +20,7 @@ VALIDATION_FILE = "model_c_plus_034_live_dashboard_validation.json"
 MARKET_FRESHNESS_FILE = "model_c_plus_market_data_freshness.csv"
 FEATURE_FRESHNESS_FILE = "model_c_plus_feature_freshness.csv"
 CURRENT_BEST_FILE = "model_c_plus_current_best_with_divergence_alerts_latest_recommendation.csv"
-OUT_FILES = [f"model_c_plus_034_live_dashboard_telegram_page_{i}.txt" for i in range(1, 5)]
+OUT_FILES = [f"model_c_plus_034_live_dashboard_telegram_page_{i}.txt" for i in range(1, 6)]
 OUT_ALL = "model_c_plus_034_live_dashboard_telegram_preview.txt"
 
 
@@ -454,6 +456,7 @@ def main() -> None:
 
     pages = [page1, page2, page3, page4]
     texts = ["\n".join(page).strip() + "\n" for page in pages]
+    texts.append(telegram_page(root))
     expected_ranking = validation.get("economic_snapshot", {}).get("ranking", [])
     if ranked["asset"].tolist() != expected_ranking:
         raise ValueError("Telegram ETF ranking differs from canonical dashboard ranking")
@@ -477,8 +480,8 @@ def main() -> None:
         (root / filename).write_text(text, encoding="utf-8")
     (root / OUT_ALL).write_text(combined, encoding="utf-8")
     if (root / OUT_ALL).read_text(encoding="utf-8") != combined:
-        raise ValueError("Combined Telegram preview differs from the four canonical pages")
-    print("Saved four-page high-information Telegram macro briefing.")
+        raise ValueError("Combined Telegram preview differs from the five canonical pages")
+    print("Saved five-page high-information Telegram macro briefing.")
     print("No model logic, weights, scores, gates, leverage or rebalance rules changed.")
 
 

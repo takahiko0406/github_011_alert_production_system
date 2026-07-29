@@ -110,6 +110,7 @@ def send_telegram_if_requested(enabled: bool) -> None:
         "model_c_plus_034_live_dashboard_telegram_page_2.txt",
         "model_c_plus_034_live_dashboard_telegram_page_3.txt",
         "model_c_plus_034_live_dashboard_telegram_page_4.txt",
+        "model_c_plus_034_live_dashboard_telegram_page_5.txt",
     ]
 
     for page_file in page_files:
@@ -154,13 +155,13 @@ def main() -> None:
         run("research_022f_calibrated_defense_validation.py")
         run("build_022f_live_allocation.py")
         run("run_034_corrected_production.py")
+        run("build_production_page5.py")
         run("redesign_034_daily_trading_dashboard.py", {"DASHBOARD_INPUT_DIR": str(ROOT), "DASHBOARD_OUTPUT_PREFIX": "model_c_plus_034_live_dashboard"})
-        run("validate_034_production.py")
-
         run(
             "redesign_082_clear_telegram_report.py",
             {"DASHBOARD_INPUT_DIR": str(ROOT)},
         )
+        run("validate_034_production.py")
 
         send_telegram_if_requested(args.send_telegram)
         block.unlink(missing_ok=True)
