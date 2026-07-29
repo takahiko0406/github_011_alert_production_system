@@ -1,33 +1,33 @@
 034 ECONOMIC AND MARKET REGIME
-Data date: 2026-07-28 | Freshness: CURRENT
+Data date: 2026-07-29 | Freshness: CURRENT
 
 ━━ CORE ECONOMIC STATE ━━
-Growth: Weak (-2.646)
-Credit: Neutral (-0.001)
-USD: Strong / tightening (1.744)
-Yield curve: +0.84%
-Risk-off pressure: Elevated (1.293)
-Crash pressure: Low (-1.138)
-VIX: 18.21
+Growth: Weak (-2.910)
+Credit: Neutral (-0.008)
+USD: Strong / tightening (1.660)
+Yield curve: +0.86%
+Risk-off pressure: Elevated (1.756)
+Crash pressure: Low (-1.290)
+VIX: 19.89
 
 ━━ SECTOR AND CROSS-ASSET REGIME ━━
-Semiconductors / technology: Weak (-2.541)
-Industrials: Mixed (0.028)
-Materials: Mixed (0.133)
-Copper: Neutral (0.186)
-Oil / energy: Positive (0.322)
-Small caps — IWM: Weak | score 16.0 | Exp10D 0.98%
-Financials — XLF: Mixed | score 41.4 | Exp10D 1.09%
-Real estate — XLRE: Constructive | score 70.5 | Exp10D 1.42%
-Healthcare — XLV: Constructive | score 68.6 | Exp10D 1.46%
-Utilities — XLU: Constructive | score 69.6 | Exp10D 1.44%
-Staples — XLP: Strong | score 78.6 | Exp10D 1.47%
-Treasuries — TLT: Constructive | score 60.5 | Exp10D 1.21%
-Gold — GLD: Constructive | score 71.1 | Exp10D 1.59%
+Semiconductors / technology: Weak (-2.819)
+Industrials: Mixed (0.256)
+Materials: Mixed (0.457)
+Copper: Supportive (0.539)
+Oil / energy: DATA_UNAVAILABLE
+Small caps — IWM: Weak | score 11.6 | Exp10D 0.97%
+Financials — XLF: Weak | score 37.9 | Exp10D 1.09%
+Real estate — XLRE: Constructive | score 67.2 | Exp10D 1.44%
+Healthcare — XLV: Mixed | score 52.8 | Exp10D 1.38%
+Utilities — XLU: Constructive | score 69.7 | Exp10D 1.48%
+Staples — XLP: Strong | score 75.3 | Exp10D 1.49%
+Treasuries — TLT: Constructive | score 62.5 | Exp10D 1.37%
+Gold — GLD: Constructive | score 63.4 | Exp10D 1.56%
 
 ━━ GLOBAL AND EM REGIME ━━
-Europe — FEZ: Mixed | score 56.1 | Exp10D 1.38%
-Emerging markets — XSOE: Constructive | score 63.6 | Exp10D 1.69%
+Europe — FEZ: Mixed | score 57.5 | Exp10D 1.45%
+Emerging markets — XSOE: Strong | score 80.0 | Exp10D 2.67%
 China technology — CQQQ: NOT YET ACTIVE
 Latin America — ILF: NOT YET ACTIVE
 USD/CNY and USD/CNH regime: NOT YET ACTIVE
