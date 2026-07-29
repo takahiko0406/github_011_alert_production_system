@@ -23,8 +23,8 @@ Drawdown / win rate: INSUFFICIENT_DATA / INSUFFICIENT_DATA
 
 ALLOCATION BEHAVIOUR
 Top / top-3 hit: INSUFFICIENT_DATA / INSUFFICIENT_DATA
-Turnover / persistence: 0.252 / +74.8%
-Holding period / HHI: 2.3 sessions / 0.535
+Turnover / persistence: 0.700 / +30.0%
+Holding period / HHI: 2.2 sessions / 0.383
 
 FOCUS ETF ERRORS
 XSOE: n=1 | pred +1.4% | real -2.2% | err +3.6% | dir +0.0%
