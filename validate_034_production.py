@@ -226,6 +226,12 @@ def main() -> None:
     monitor = pd.read_csv(page5_files["performance"])
     if predictions.empty or monitor.empty:
         raise ValueError("Page 5 production ledger or monitoring history is empty")
+    if predictions.duplicated(["signal_date", "ETF"]).any():
+        raise ValueError("Page 5 contains a duplicate signal-date/ETF prediction")
+    if errors.duplicated(["signal_date", "ETF"]).any():
+        raise ValueError("Page 5 contains a duplicate signal-date/ETF error")
+    if monitor.duplicated(["signal_date"]).any():
+        raise ValueError("Page 5 contains a duplicate signal-date performance record")
     if not set(predictions["record_origin"]).issubset({"ACTUAL_COMMITTED_PRODUCTION_SNAPSHOT", "CURRENT_PRODUCTION_RUN"}):
         raise ValueError("Page 5 contains a retrospectively regenerated prediction")
     completed = predictions[predictions["outcome_status"].eq("COMPLETED")]

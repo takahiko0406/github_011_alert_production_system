@@ -91,7 +91,7 @@ def actual_production_snapshots(root: Path) -> list[dict]:
     snapshots: dict[pd.Timestamp, dict] = {}
     ledger_path = root / PREDICTION_HISTORY
     if ledger_path.exists():
-        existing = pd.read_csv(ledger_path, parse_dates=["signal_date"])
+        existing = pd.read_csv(ledger_path, parse_dates=["signal_date"], float_precision="round_trip")
         required = {"source_commit", "captured_at_utc", "record_origin", "signal_date", "ETF", "allocation_weights", "expected_etf_return"}
         if required.issubset(existing.columns) and set(existing.record_origin).issubset({"ACTUAL_COMMITTED_PRODUCTION_SNAPSHOT", "CURRENT_PRODUCTION_RUN"}):
             for signal_date, group in existing.groupby("signal_date"):
@@ -121,7 +121,7 @@ def actual_production_snapshots(root: Path) -> list[dict]:
         if latest.empty or ranking.empty or expanded.empty:
             continue
         snapshot = snapshot_from_frames(commit, captured, "ACTUAL_COMMITTED_PRODUCTION_SNAPSHOT", latest, ranking, expanded)
-        snapshots[snapshot["signal_date"]] = snapshot
+        snapshots.setdefault(snapshot["signal_date"], snapshot)
 
     latest = pd.read_csv(root / LATEST)
     scores = pd.read_csv(root / SCORES)
@@ -135,7 +135,9 @@ def actual_production_snapshots(root: Path) -> list[dict]:
     head = git("rev-parse", "HEAD", root=root).strip()
     capture_time = str(latest.iloc[-1].get("latest_data_date", latest.iloc[-1].get("signal_date")))[:10] + "T21:00:00Z"
     current = snapshot_from_frames(head, capture_time, "CURRENT_PRODUCTION_RUN", latest, ranking, expanded)
-    snapshots[current["signal_date"]] = current
+    # The first captured forecast for a signal date is immutable. A rerun may
+    # mature its outcome, but it must never replace the prediction provenance.
+    snapshots.setdefault(current["signal_date"], current)
     return [snapshots[key] for key in sorted(snapshots)]
 
 
