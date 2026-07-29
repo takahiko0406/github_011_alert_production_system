@@ -10,9 +10,8 @@ Base weight date: 2026-07-28
 Freshness: CURRENT
 
 ━━ VERIFIED ALLOCATION ━━
-XLE      55.0%
-XSOE     23.0%
-TLT      15.0%
+XSOE     74.4%
+QQQM     18.6%
 XLV       7.0%
 TOTAL   100.0%
 
@@ -23,15 +22,15 @@ Source history through date: 2026-07-07
 Next scheduled rebalance date: NOT_AVAILABLE_FROM_VALIDATED_SOURCE
 Emergency state: NORMAL
 Normal rebalance due: NOT_AVAILABLE_FROM_VALIDATED_SOURCE
-Live allocation leader: XLE
-Second live holding: XSOE
+Live allocation leader: XSOE
+Second live holding: QQQM
 Research strength leader: SOXX
-Top-two score gap: 0.0797
+Top-two score gap: 0.0803
 Required gap: NOT_USED_BY_SOURCE_MODEL
-Effective technology exposure: 0.000x
+Effective technology exposure: 0.186x
 
 ━━ PORTFOLIO EVIDENCE ━━
-Expected 10-day portfolio return: 1.26%
+Expected 10-day portfolio return: 1.61%
 Historical annual return: 110.75%
 Historical volatility: 24.61%
 Historical Sharpe: 4.500

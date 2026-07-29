@@ -9,7 +9,7 @@
   "source_recommendation_date": "2026-07-28",
   "score_date": "2026-07-28",
   "dashboard_date": "2026-07-29",
-  "ranking_fingerprint": "1c190022ee4ff68ff417380276c916bb7d91e5cb4b2ba8c36127106ae8f74f32",
+  "ranking_fingerprint": "f6ff761afd5473b99daef3cb11e8afe8c453465d801df9c8776833ead88bbb96",
   "reporting_fields": {
     "selected_source_model": {
       "display": "022F_BASE",
@@ -146,7 +146,7 @@
       "missing_sources": []
     },
     "oil_energy_regime": {
-      "display": "Negative (-0.186)",
+      "display": "Positive (0.322)",
       "status": "AVAILABLE",
       "source_artifact": "model_c_plus_022F_calibrated_defense_validation_best_latest_recommendation.csv",
       "source_field": "energy_state",
@@ -222,17 +222,16 @@
     },
     "expected_returns": {
       "file": "model_c_plus_034_execution_grade_expected_return_signal_scoreboard.csv",
-      "sha256": "58ada5400c52434ddccbcbc8ec47712bec73ab5a55a14acee692719201b9fbbf"
+      "sha256": "37b1860f65f331e5255b0186a61a5fdfcf375142ba740021a91d7de795116e9e"
     }
   },
   "economic_snapshot": {
     "allocation_weights": {
-      "TLT": 0.15,
-      "XLE": 0.5499999999999999,
+      "QQQM": 0.1859999999999999,
       "XLV": 0.07,
-      "XSOE": 0.2299999999999999
+      "XSOE": 0.744
     },
-    "expected_10_day_portfolio_return": 0.012611747230083944,
+    "expected_10_day_portfolio_return": 0.016053488550825525,
     "historical_annual_return": 1.1074669728441604,
     "historical_volatility": 0.2460930784240977,
     "historical_sharpe": 4.500195535510501,
@@ -241,17 +240,17 @@
     "ranking": [
       "XLV",
       "XSOE",
-      "TLT",
-      "XLE",
+      "QQQM",
       "SOXX",
       "XLP",
       "GLD",
       "XLRE",
       "XLU",
+      "TLT",
       "FEZ",
-      "QQQM",
       "XLB",
       "XLI",
+      "XLE",
       "IWM",
       "TQQQ",
       "SOXL",
@@ -261,7 +260,7 @@
       "IEF",
       "XLF"
     ],
-    "ranking_fingerprint": "1c190022ee4ff68ff417380276c916bb7d91e5cb4b2ba8c36127106ae8f74f32"
+    "ranking_fingerprint": "f6ff761afd5473b99daef3cb11e8afe8c453465d801df9c8776833ead88bbb96"
   },
   "emergency_evidence": {
     "state_today": "NORMAL",

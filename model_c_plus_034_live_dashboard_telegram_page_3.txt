@@ -15,14 +15,14 @@ Semiconductors / technology: Weak (-2.541)
 Industrials: Mixed (0.028)
 Materials: Mixed (0.133)
 Copper: Neutral (0.186)
-Oil / energy: Negative (-0.186)
-Small caps — IWM: Weak | score 16.1 | Exp10D 0.98%
-Financials — XLF: Mixed | score 41.5 | Exp10D 1.09%
-Real estate — XLRE: Constructive | score 70.4 | Exp10D 1.41%
+Oil / energy: Positive (0.322)
+Small caps — IWM: Weak | score 16.0 | Exp10D 0.98%
+Financials — XLF: Mixed | score 41.4 | Exp10D 1.09%
+Real estate — XLRE: Constructive | score 70.5 | Exp10D 1.42%
 Healthcare — XLV: Constructive | score 68.6 | Exp10D 1.46%
-Utilities — XLU: Constructive | score 69.5 | Exp10D 1.44%
+Utilities — XLU: Constructive | score 69.6 | Exp10D 1.44%
 Staples — XLP: Strong | score 78.6 | Exp10D 1.47%
-Treasuries — TLT: Constructive | score 60.6 | Exp10D 1.21%
+Treasuries — TLT: Constructive | score 60.5 | Exp10D 1.21%
 Gold — GLD: Constructive | score 71.1 | Exp10D 1.59%
 
 ━━ GLOBAL AND EM REGIME ━━
@@ -34,7 +34,7 @@ USD/CNY and USD/CNH regime: NOT YET ACTIVE
 Korean won / Asian export-cycle regime: NOT YET ACTIVE
 
 ━━ ECONOMIC INTERPRETATION ━━
-Verified live allocation is led by XLE; XSOE is the next live holding.
+Verified live allocation is led by XSOE; QQQM is the next live holding.
 SOXX is the strongest research signal but has RESEARCH authority, so it does not replace the verified live allocation.
 The top-two gap indicates comparatively clear leadership.
 The strong-dollar regime remains a headwind for broad EM and international risk assets.

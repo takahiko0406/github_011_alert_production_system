@@ -4,12 +4,11 @@
   "source_model": "022F_BASE",
   "weights_sum": 0.9999999999999999,
   "selected_assets": [
-    "TLT",
-    "XLE",
+    "QQQM",
     "XLV",
     "XSOE"
   ],
-  "ranking_fingerprint": "1c190022ee4ff68ff417380276c916bb7d91e5cb4b2ba8c36127106ae8f74f32",
-  "effective_technology_exposure": 0.0,
+  "ranking_fingerprint": "f6ff761afd5473b99daef3cb11e8afe8c453465d801df9c8776833ead88bbb96",
+  "effective_technology_exposure": 0.1859999999999999,
   "common_leverage_configuration": "D_BOTH_CAP_1.00"
 }
