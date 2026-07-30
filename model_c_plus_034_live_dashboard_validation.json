@@ -1,22 +1,22 @@
 {
   "execution_safe": true,
-  "data_date": "2026-07-29",
-  "prediction_date": "2026-07-29",
-  "allocation_date": "2026-07-29",
-  "base_weight_date": "2026-07-29",
-  "market_data_date": "2026-07-29",
-  "feature_date": "2026-07-29",
-  "source_recommendation_date": "2026-07-29",
-  "score_date": "2026-07-29",
-  "dashboard_date": "2026-07-29",
-  "ranking_fingerprint": "63fd03c39905f9a6c1a2cb915fb0396aa59bcd69c15b79511a00f3a8d3c7015b",
+  "data_date": "2026-07-30",
+  "prediction_date": "2026-07-30",
+  "allocation_date": "2026-07-30",
+  "base_weight_date": "2026-07-30",
+  "market_data_date": "2026-07-30",
+  "feature_date": "2026-07-30",
+  "source_recommendation_date": "2026-07-30",
+  "score_date": "2026-07-30",
+  "dashboard_date": "2026-07-30",
+  "ranking_fingerprint": "696d1970f0ef1c2084146c5a9585a6c1a9536e9b1261019ce898f036aea3eda4",
   "reporting_fields": {
     "selected_source_model": {
       "display": "022F_BASE",
       "status": "AVAILABLE",
       "source_artifact": "model_c_plus_034_execution_grade_expected_return_signal_latest_recommendation.csv",
       "source_field": "source_model",
-      "source_date": "2026-07-29",
+      "source_date": "2026-07-30",
       "missing_sources": []
     },
     "source_model_name": {
@@ -24,7 +24,7 @@
       "status": "AVAILABLE",
       "source_artifact": "model_c_plus_022F_calibrated_defense_validation_best_latest_recommendation.csv",
       "source_field": "model",
-      "source_date": "2026-07-29",
+      "source_date": "2026-07-30",
       "missing_sources": []
     },
     "source_configuration": {
@@ -32,47 +32,47 @@
       "status": "AVAILABLE",
       "source_artifact": "model_c_plus_022F_calibrated_defense_validation_best_latest_recommendation.csv",
       "source_field": "configuration",
-      "source_date": "2026-07-29",
+      "source_date": "2026-07-30",
       "missing_sources": []
     },
     "source_recommendation_date": {
-      "display": "2026-07-29",
+      "display": "2026-07-30",
       "status": "AVAILABLE",
       "source_artifact": "model_c_plus_022F_calibrated_defense_validation_best_latest_recommendation.csv",
       "source_field": "latest_data_date",
-      "source_date": "2026-07-29",
+      "source_date": "2026-07-30",
       "missing_sources": []
     },
     "allocation_date": {
-      "display": "2026-07-29",
+      "display": "2026-07-30",
       "status": "AVAILABLE",
       "source_artifact": "model_c_plus_034_execution_grade_expected_return_signal_latest_recommendation.csv",
       "source_field": "allocation_date",
-      "source_date": "2026-07-29",
+      "source_date": "2026-07-30",
       "missing_sources": []
     },
     "base_weight_date": {
-      "display": "2026-07-29",
+      "display": "2026-07-30",
       "status": "AVAILABLE",
       "source_artifact": "model_c_plus_034_execution_grade_expected_return_signal_latest_recommendation.csv",
       "source_field": "base_weight_date",
-      "source_date": "2026-07-29",
+      "source_date": "2026-07-30",
       "missing_sources": []
     },
     "market_data_date": {
-      "display": "2026-07-29",
+      "display": "2026-07-30",
       "status": "AVAILABLE",
       "source_artifact": "model_c_plus_market_data_freshness.csv",
       "source_field": "latest_data_date",
-      "source_date": "2026-07-29",
+      "source_date": "2026-07-30",
       "missing_sources": []
     },
     "feature_date": {
-      "display": "2026-07-29",
+      "display": "2026-07-30",
       "status": "AVAILABLE",
       "source_artifact": "model_c_plus_feature_freshness.csv",
       "source_field": "latest_data_date",
-      "source_date": "2026-07-29",
+      "source_date": "2026-07-30",
       "missing_sources": []
     },
     "last_rebalance_date": {
@@ -80,7 +80,7 @@
       "status": "NOT_AVAILABLE_FROM_VALIDATED_SOURCE",
       "source_artifact": "model_c_plus_022F_calibrated_defense_validation_best_latest_recommendation.csv",
       "source_field": "actual_last_rebalance_date",
-      "source_date": "2026-07-29",
+      "source_date": "2026-07-30",
       "missing_sources": [
         "model_c_plus_022F_calibrated_defense_validation_best_latest_recommendation.csv:actual_last_rebalance_date"
       ]
@@ -90,7 +90,7 @@
       "status": "AVAILABLE",
       "source_artifact": "model_c_plus_022F_calibrated_defense_validation_best_latest_recommendation.csv",
       "source_field": "source_rebalance_date (historical source-log maximum date; not an actual live rebalance date)",
-      "source_date": "2026-07-29",
+      "source_date": "2026-07-30",
       "missing_sources": []
     },
     "next_scheduled_rebalance_date": {
@@ -98,7 +98,7 @@
       "status": "NOT_AVAILABLE_FROM_VALIDATED_SOURCE",
       "source_artifact": "model_c_plus_022F_calibrated_defense_validation_best_latest_recommendation.csv",
       "source_field": "next_scheduled_rebalance_date",
-      "source_date": "2026-07-29",
+      "source_date": "2026-07-30",
       "missing_sources": [
         "model_c_plus_022F_calibrated_defense_validation_best_latest_recommendation.csv:next_scheduled_rebalance_date"
       ]
@@ -108,7 +108,7 @@
       "status": "AVAILABLE",
       "source_artifact": "model_c_plus_034_execution_grade_expected_return_signal_latest_recommendation.csv",
       "source_field": "portfolio_wide_emergency",
-      "source_date": "2026-07-29",
+      "source_date": "2026-07-30",
       "missing_sources": []
     },
     "normal_rebalance_due": {
@@ -116,7 +116,7 @@
       "status": "NOT_AVAILABLE_FROM_VALIDATED_SOURCE",
       "source_artifact": "model_c_plus_022F_calibrated_defense_validation_best_latest_recommendation.csv",
       "source_field": "normal_rebalance_due",
-      "source_date": "2026-07-29",
+      "source_date": "2026-07-30",
       "missing_sources": [
         "model_c_plus_022F_calibrated_defense_validation_best_latest_recommendation.csv:normal_rebalance_due"
       ]
@@ -126,23 +126,23 @@
       "status": "NOT_USED_BY_SOURCE_MODEL",
       "source_artifact": "model_c_plus_022F_calibrated_defense_validation_best_latest_recommendation.csv",
       "source_field": "required_gap",
-      "source_date": "2026-07-29",
+      "source_date": "2026-07-30",
       "missing_sources": []
     },
     "yield_curve": {
-      "display": "+0.86%",
+      "display": "+1.01%",
       "status": "AVAILABLE",
       "source_artifact": "model_c_plus_034_execution_grade_expected_return_signal_latest_recommendation.csv",
       "source_field": "yield_curve",
-      "source_date": "2026-07-29",
+      "source_date": "2026-07-30",
       "missing_sources": []
     },
     "vix": {
-      "display": "19.89",
+      "display": "18.46",
       "status": "AVAILABLE",
       "source_artifact": "model_c_plus_034_execution_grade_expected_return_signal_latest_recommendation.csv",
       "source_field": "vix_level",
-      "source_date": "2026-07-29",
+      "source_date": "2026-07-30",
       "missing_sources": []
     },
     "oil_energy_regime": {
@@ -150,7 +150,7 @@
       "status": "DATA_UNAVAILABLE",
       "source_artifact": "model_c_plus_022F_calibrated_defense_validation_best_latest_recommendation.csv",
       "source_field": "energy_state",
-      "source_date": "2026-07-29",
+      "source_date": "2026-07-30",
       "missing_sources": [
         "model_c_plus_022F_calibrated_defense_validation_best_latest_recommendation.csv:energy_state"
       ]
@@ -160,7 +160,7 @@
       "status": "NOT_TRIGGERED",
       "source_artifact": "model_c_plus_034_execution_grade_expected_return_signal_latest_recommendation.csv",
       "source_field": "robust_gate_active",
-      "source_date": "2026-07-29",
+      "source_date": "2026-07-30",
       "missing_sources": []
     },
     "opportunistic_gate": {
@@ -168,7 +168,7 @@
       "status": "NOT_APPLICABLE",
       "source_artifact": "model_c_plus_034_execution_grade_expected_return_signal_latest_recommendation.csv",
       "source_field": "opportunistic_gate_active",
-      "source_date": "2026-07-29",
+      "source_date": "2026-07-30",
       "missing_sources": []
     }
   },
@@ -181,32 +181,32 @@
     "recommended_weights_and_leverage": {
       "source_artifact": "model_c_plus_034_execution_grade_expected_return_signal_latest_recommendation.csv",
       "source_field": "exec_w_*|*_base_weight|*_substituted_weight|effective_technology_exposure",
-      "source_date": "2026-07-29"
+      "source_date": "2026-07-30"
     },
     "ranking_scores_expected_returns": {
       "source_artifact": "model_c_plus_full_universe_expected_returns_trading_scores.csv",
       "source_field": "tradable_score_0_100|adjusted_expected_10d_return",
-      "source_date": "2026-07-29"
+      "source_date": "2026-07-30"
     },
     "expanded_macro_features": {
       "source_artifact": "model_c_plus_expanded_execution_candidate_latest_recommendation.csv",
       "source_field": "growth_strength|credit_strength|risk_off_strength|crash_pressure|industrial_strength|materials_strength|copper_strength|usd_3m_strength|soxx_strength|hyg_strength",
-      "source_date": "2026-07-29"
+      "source_date": "2026-07-30"
     },
     "technology_state": {
       "source_artifact": "model_c_plus_transition_conviction_overlay_011_LIGHT_latest_recommendation.csv",
       "source_field": "tech_state",
-      "source_date": "2026-07-29"
+      "source_date": "2026-07-30"
     },
     "energy_state": {
       "source_artifact": "model_c_plus_022F_calibrated_defense_validation_best_latest_recommendation.csv",
       "source_field": "energy_state",
-      "source_date": "2026-07-29"
+      "source_date": "2026-07-30"
     },
     "historical_performance": {
       "source_artifact": "model_c_plus_034_execution_grade_expected_return_signal_performance_summary.csv",
       "source_field": "annual_return|volatility|sharpe|max_drawdown",
-      "source_date": "2026-07-29"
+      "source_date": "2026-07-30"
     }
   },
   "artifact_hashes": {
@@ -224,34 +224,34 @@
     },
     "expected_returns": {
       "file": "model_c_plus_034_execution_grade_expected_return_signal_scoreboard.csv",
-      "sha256": "87187735f972ed3999aa771959e5b42b6268ad9d6ebc544300e6159f38176683"
+      "sha256": "65505b02b48cfe5b8b36f95f4aaa032c3b3001aa0d75c62132e867af1886f2f5"
     }
   },
   "economic_snapshot": {
     "allocation_weights": {
-      "QQQM": 0.2789999999999999,
-      "XLV": 0.07,
-      "XSOE": 0.6509999999999999
+      "GLD": 0.1,
+      "QQQM": 0.3,
+      "XSOE": 0.6000000000000001
     },
-    "expected_10_day_portfolio_return": 0.022920268157156337,
+    "expected_10_day_portfolio_return": 0.014107455143620053,
     "historical_annual_return": 1.1074669728441604,
     "historical_volatility": 0.2460930784240977,
     "historical_sharpe": 4.500195535510501,
     "historical_max_drawdown": -0.114453003426848,
     "execution_safe": true,
     "ranking": [
-      "XSOE",
       "QQQM",
-      "XLV",
+      "XSOE",
+      "GLD",
       "SOXX",
       "XLP",
+      "XLV",
+      "TLT",
       "XLU",
       "XLRE",
-      "GLD",
-      "TLT",
       "FEZ",
-      "XLE",
       "XLB",
+      "XLE",
       "XLI",
       "IWM",
       "TQQQ",
@@ -262,7 +262,7 @@
       "IEF",
       "XLF"
     ],
-    "ranking_fingerprint": "63fd03c39905f9a6c1a2cb915fb0396aa59bcd69c15b79511a00f3a8d3c7015b"
+    "ranking_fingerprint": "696d1970f0ef1c2084146c5a9585a6c1a9536e9b1261019ce898f036aea3eda4"
   },
   "emergency_evidence": {
     "state_today": "EXIT",
@@ -290,16 +290,16 @@
   },
   "production_performance_monitor": {
     "health": "WATCH",
-    "completed_signals": 2,
+    "completed_signals": 3,
     "pending_signals": 10,
-    "latest_captured_signal": "2026-07-29",
+    "latest_captured_signal": "2026-07-30",
     "completed_outcomes_only": true,
     "historical_replay_excluded": true,
     "artifact_hashes": {
-      "production_model_performance_history.csv": "051d9e6a8f65918c3f72e42d219e560caa65b8854bab31e05f8c9de33646f01e",
-      "production_prediction_history.csv": "07aec7cc250f4ff7ec8f8ad4b53ccecdc2e8945eea6fdd88494a047937a84e99",
-      "production_prediction_errors.csv": "e04cf3d51752b84f7a0922f4042eaeb39f350df3faf3eb751ef5f8aa596dc5f3",
-      "production_page5_report.md": "60185c5de520448989503a7c640e6c15d602052416510274f22dfba1115d744f"
+      "production_model_performance_history.csv": "2019eb22e3f6f01d2ff6aa4941de0ca2a2cbdeb7d7a3e96d910a1496cc61ff9e",
+      "production_prediction_history.csv": "469eb0c46dac2030822ceab19f125dfa78d267ab20e2ae57324a9f1927a8f418",
+      "production_prediction_errors.csv": "e14f7a9562eccaed27b25464db15a2d6ee6a521817cbcd203c61bfa8fd3ba53f",
+      "production_page5_report.md": "de7a5a0caac2266fc29858d60eaf4dde11358fd3ee53ceea19e59a8bb23d9f89"
     }
   },
   "assertions": {

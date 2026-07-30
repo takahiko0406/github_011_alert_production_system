@@ -1,14 +1,14 @@
 {
   "execution_safe": true,
-  "common_date": "2026-07-29",
+  "common_date": "2026-07-30",
   "source_model": "022F_BASE",
-  "weights_sum": 0.9999999999999998,
+  "weights_sum": 1.0,
   "selected_assets": [
+    "GLD",
     "QQQM",
-    "XLV",
     "XSOE"
   ],
-  "ranking_fingerprint": "63fd03c39905f9a6c1a2cb915fb0396aa59bcd69c15b79511a00f3a8d3c7015b",
-  "effective_technology_exposure": 0.2789999999999999,
+  "ranking_fingerprint": "696d1970f0ef1c2084146c5a9585a6c1a9536e9b1261019ce898f036aea3eda4",
+  "effective_technology_exposure": 0.3,
   "common_leverage_configuration": "D_BOTH_CAP_1.00"
 }
