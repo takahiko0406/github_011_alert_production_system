@@ -6,17 +6,17 @@ QQQM base weight: 30.00%
 TQQQ substituted weight: 0.00%
 SOXX base weight: 0.00%
 SOXL substituted weight: 0.00%
-Common leverage budget: 0.00%
+Common leverage budget: 0.04%
 Effective technology exposure: 0.300x
 Leverage configuration: D_BOTH_CAP_1.00
 Robust gate: NOT_TRIGGERED
 Opportunistic gate: NOT_APPLICABLE
 
 ━━ 🚨 EMERGENCY SYSTEM EVIDENCE 🚨 ━━
-State today: EXIT
+State today: NORMAL
 Applied today: NO
-Reason: risk_off_strength_greater_than_or_equal_to_hard_max
-Criteria passed: 2/3
+Reason: all_hard_safety_criteria_passed
+Criteria passed: 3/3
 TQQQ functional test: PASS
 SOXL functional test: PASS
 Combined TQQQ+SOXL test: PASS
@@ -36,7 +36,7 @@ Model: 034_EXECUTION_GRADE_EXPECTED_RETURN_SIGNAL
 Market-data freshness: CURRENT (2026-07-30)
 Feature freshness: CURRENT (2026-07-30)
 Allocation freshness: CURRENT (2026-07-30)
-Ranking fingerprint: 696d1970f0ef1c2084146c5a9585a6c1a9536e9b1261019ce898f036aea3eda4
+Ranking fingerprint: 09e6a53cbf1187c1c2766f291e2a84cfebf75d5456811b2690b98404d8dc2d62
 
 ━━ EXECUTION AUTHORITY ━━
 Live execution: QQQM, XLE, XSOE, XLI, XLB

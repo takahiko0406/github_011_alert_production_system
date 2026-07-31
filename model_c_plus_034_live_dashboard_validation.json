@@ -8,8 +8,8 @@
   "feature_date": "2026-07-30",
   "source_recommendation_date": "2026-07-30",
   "score_date": "2026-07-30",
-  "dashboard_date": "2026-07-30",
-  "ranking_fingerprint": "696d1970f0ef1c2084146c5a9585a6c1a9536e9b1261019ce898f036aea3eda4",
+  "dashboard_date": "2026-07-31",
+  "ranking_fingerprint": "09e6a53cbf1187c1c2766f291e2a84cfebf75d5456811b2690b98404d8dc2d62",
   "reporting_fields": {
     "selected_source_model": {
       "display": "022F_BASE",
@@ -104,7 +104,7 @@
       ]
     },
     "emergency_state": {
-      "display": "EXIT",
+      "display": "NORMAL",
       "status": "AVAILABLE",
       "source_artifact": "model_c_plus_034_execution_grade_expected_return_signal_latest_recommendation.csv",
       "source_field": "portfolio_wide_emergency",
@@ -130,7 +130,7 @@
       "missing_sources": []
     },
     "yield_curve": {
-      "display": "+1.01%",
+      "display": "+0.99%",
       "status": "AVAILABLE",
       "source_artifact": "model_c_plus_034_execution_grade_expected_return_signal_latest_recommendation.csv",
       "source_field": "yield_curve",
@@ -138,7 +138,7 @@
       "missing_sources": []
     },
     "vix": {
-      "display": "18.46",
+      "display": "17.09",
       "status": "AVAILABLE",
       "source_artifact": "model_c_plus_034_execution_grade_expected_return_signal_latest_recommendation.csv",
       "source_field": "vix_level",
@@ -146,14 +146,12 @@
       "missing_sources": []
     },
     "oil_energy_regime": {
-      "display": "DATA_UNAVAILABLE",
-      "status": "DATA_UNAVAILABLE",
+      "display": "Positive (0.271)",
+      "status": "AVAILABLE",
       "source_artifact": "model_c_plus_022F_calibrated_defense_validation_best_latest_recommendation.csv",
       "source_field": "energy_state",
       "source_date": "2026-07-30",
-      "missing_sources": [
-        "model_c_plus_022F_calibrated_defense_validation_best_latest_recommendation.csv:energy_state"
-      ]
+      "missing_sources": []
     },
     "robust_gate": {
       "display": "NOT_TRIGGERED",
@@ -224,7 +222,7 @@
     },
     "expected_returns": {
       "file": "model_c_plus_034_execution_grade_expected_return_signal_scoreboard.csv",
-      "sha256": "65505b02b48cfe5b8b36f95f4aaa032c3b3001aa0d75c62132e867af1886f2f5"
+      "sha256": "806c171bcd9348103f2be6ee6947eaf20ddfa803bf3de0cba8b8628769f517f3"
     }
   },
   "economic_snapshot": {
@@ -233,26 +231,26 @@
       "QQQM": 0.3,
       "XSOE": 0.6000000000000001
     },
-    "expected_10_day_portfolio_return": 0.014107455143620053,
+    "expected_10_day_portfolio_return": 0.009286029820353071,
     "historical_annual_return": 1.1074669728441604,
     "historical_volatility": 0.2460930784240977,
     "historical_sharpe": 4.500195535510501,
     "historical_max_drawdown": -0.114453003426848,
     "execution_safe": true,
     "ranking": [
-      "QQQM",
-      "XSOE",
       "GLD",
+      "XSOE",
+      "QQQM",
       "SOXX",
-      "XLP",
-      "XLV",
       "TLT",
+      "XLP",
       "XLU",
       "XLRE",
       "FEZ",
-      "XLB",
+      "XLV",
       "XLE",
       "XLI",
+      "XLB",
       "IWM",
       "TQQQ",
       "SOXL",
@@ -262,13 +260,13 @@
       "IEF",
       "XLF"
     ],
-    "ranking_fingerprint": "696d1970f0ef1c2084146c5a9585a6c1a9536e9b1261019ce898f036aea3eda4"
+    "ranking_fingerprint": "09e6a53cbf1187c1c2766f291e2a84cfebf75d5456811b2690b98404d8dc2d62"
   },
   "emergency_evidence": {
-    "state_today": "EXIT",
+    "state_today": "NORMAL",
     "applied_today": false,
-    "reason": "risk_off_strength_greater_than_or_equal_to_hard_max",
-    "criteria_passed": "2/3",
+    "reason": "all_hard_safety_criteria_passed",
+    "criteria_passed": "3/3",
     "tqqq_functional_test": "PASS",
     "soxl_functional_test": "PASS",
     "combined_functional_test": "PASS",
@@ -296,10 +294,10 @@
     "completed_outcomes_only": true,
     "historical_replay_excluded": true,
     "artifact_hashes": {
-      "production_model_performance_history.csv": "2019eb22e3f6f01d2ff6aa4941de0ca2a2cbdeb7d7a3e96d910a1496cc61ff9e",
-      "production_prediction_history.csv": "469eb0c46dac2030822ceab19f125dfa78d267ab20e2ae57324a9f1927a8f418",
-      "production_prediction_errors.csv": "e14f7a9562eccaed27b25464db15a2d6ee6a521817cbcd203c61bfa8fd3ba53f",
-      "production_page5_report.md": "de7a5a0caac2266fc29858d60eaf4dde11358fd3ee53ceea19e59a8bb23d9f89"
+      "production_model_performance_history.csv": "4a1c02e4b3ff713df620394d1752bd596f0e49ebdb9338068df092e57e77d2a7",
+      "production_prediction_history.csv": "0b0a5cf72cdd574b0b73184b8bcf80477619e28c267d036bc25dbf1687538ade",
+      "production_prediction_errors.csv": "03e8db4ad57104af6142948fc6e9e85bb0f6b64c8e4f9ce628eab01390b6bcbe",
+      "production_page5_report.md": "8e0ce1438e9d16e22cb9d390a16592fc67da408f8dbd1f936d56c0d1148461ed"
     }
   },
   "assertions": {

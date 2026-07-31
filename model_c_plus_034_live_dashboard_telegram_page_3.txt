@@ -2,32 +2,32 @@
 Data date: 2026-07-30 | Freshness: CURRENT
 
 ━━ CORE ECONOMIC STATE ━━
-Growth: Weak (-2.683)
-Credit: Neutral (0.177)
-USD: Strong / tightening (0.599)
-Yield curve: +1.01%
-Risk-off pressure: Elevated (1.602)
-Crash pressure: Low (-1.314)
-VIX: 18.46
+Growth: Weak (-2.741)
+Credit: Neutral (0.265)
+USD: Strong / tightening (0.519)
+Yield curve: +0.99%
+Risk-off pressure: Elevated (1.440)
+Crash pressure: Low (-1.360)
+VIX: 17.09
 
 ━━ SECTOR AND CROSS-ASSET REGIME ━━
-Semiconductors / technology: Weak (-2.645)
-Industrials: Mixed (0.295)
-Materials: Strong (0.682)
-Copper: Supportive (0.780)
-Oil / energy: DATA_UNAVAILABLE
-Small caps — IWM: Weak | score 15.9 | Exp10D 0.77%
-Financials — XLF: Weak | score 34.7 | Exp10D 0.81%
-Real estate — XLRE: Mixed | score 58.3 | Exp10D 1.05%
-Healthcare — XLV: Constructive | score 65.0 | Exp10D 1.08%
-Utilities — XLU: Constructive | score 63.0 | Exp10D 1.06%
-Staples — XLP: Constructive | score 69.4 | Exp10D 1.08%
-Treasuries — TLT: Constructive | score 63.9 | Exp10D 1.05%
-Gold — GLD: Constructive | score 61.4 | Exp10D 1.11%
+Semiconductors / technology: Weak (-2.676)
+Industrials: Mixed (0.262)
+Materials: Strong (0.571)
+Copper: Supportive (0.648)
+Oil / energy: Positive (0.271)
+Small caps — IWM: Weak | score 15.4 | Exp10D 0.57%
+Financials — XLF: Weak | score 37.6 | Exp10D 0.65%
+Real estate — XLRE: Constructive | score 61.8 | Exp10D 0.86%
+Healthcare — XLV: Mixed | score 56.4 | Exp10D 0.86%
+Utilities — XLU: Constructive | score 69.9 | Exp10D 0.87%
+Staples — XLP: Constructive | score 71.1 | Exp10D 0.87%
+Treasuries — TLT: Strong | score 83.3 | Exp10D 0.88%
+Gold — GLD: Constructive | score 69.5 | Exp10D 0.92%
 
 ━━ GLOBAL AND EM REGIME ━━
-Europe — FEZ: Mixed | score 55.5 | Exp10D 1.07%
-Emerging markets — XSOE: Constructive | score 68.0 | Exp10D 1.53%
+Europe — FEZ: Mixed | score 57.7 | Exp10D 0.87%
+Emerging markets — XSOE: Constructive | score 62.0 | Exp10D 1.03%
 China technology — CQQQ: NOT YET ACTIVE
 Latin America — ILF: NOT YET ACTIVE
 USD/CNY and USD/CNH regime: NOT YET ACTIVE
