@@ -1,14 +1,12 @@
 {
   "execution_safe": true,
-  "common_date": "2026-07-30",
+  "common_date": "2026-07-31",
   "source_model": "022F_BASE",
   "weights_sum": 1.0,
   "selected_assets": [
-    "GLD",
-    "QQQM",
-    "XSOE"
+    "BIL"
   ],
-  "ranking_fingerprint": "09e6a53cbf1187c1c2766f291e2a84cfebf75d5456811b2690b98404d8dc2d62",
-  "effective_technology_exposure": 0.3,
+  "ranking_fingerprint": "975eea213886e618d84a6a235ae08110c6b46941975b8a055a89de68b08505b1",
+  "effective_technology_exposure": 0.0,
   "common_leverage_configuration": "D_BOTH_CAP_1.00"
 }
