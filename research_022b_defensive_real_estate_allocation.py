@@ -49,6 +49,7 @@ def download_prices_checked(start):
             + r14b.PEERS
             + r20a.EUROPE_ASSETS
             + DEFENSIVE_ASSETS
+            + r19a.r15e.RISK_ASSETS
             + ["IEF", "SHY", "HYG", "KRE", "XLF"]
         )
     )

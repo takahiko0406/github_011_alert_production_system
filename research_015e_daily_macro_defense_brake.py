@@ -14,7 +14,7 @@ import research_015b_fast_defensive_breadth as r15b
 
 OUT_PREFIX = "model_c_plus_015E_daily_macro_defense_brake"
 DEF_ASSETS = ["XLV", "XLU", "XLP", "XLRE"]
-RISK_ASSETS = ["QQQM", "SOXX", "IWM", "XSOE"]
+RISK_ASSETS = ["QQQM", "SOXX", "IWM", "EMXC"]
 EXEC_ASSETS_EXT = m.EXEC_ASSETS + ["SOXX", "SOXL", "IWM", "TNA"] + DEF_ASSETS
 
 
@@ -113,7 +113,7 @@ def apply_daily_brake(weights, day_features, macro_row, params):
         if destination not in DEF_ASSETS:
             destination = "XLV"
 
-    sources = ["SOXL", "TQQQ", "SOXX", "QQQM", "IWM", "XSOE"]
+    sources = ["SOXL", "TQQQ", "SOXX", "QQQM", "IWM", "EMXC"]
     if cyc <= params["cyclical_weak_max"]:
         sources += ["UXI", "ERX", "XLI", "XLB", "XLE"]
 
