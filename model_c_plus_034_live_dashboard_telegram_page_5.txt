@@ -1,11 +1,11 @@
 034 PRODUCTION MODEL PERFORMANCE
-Latest captured signal: 2026-07-31
+Latest captured signal: 2026-08-03
 Completed production outcomes only — not a backtest.
 
 OVERALL HEALTH: WATCH
-WATCH: 4 production signals have completed their 10-session outcome; 20 are required before institutional health classification. No backfilled replay observations are used.
+WATCH: 5 production signals have completed their 10-session outcome; 20 are required before institutional health classification. No backfilled replay observations are used.
 
-Completed / pending signals: 4 / 10
+Completed / pending signals: 5 / 10
 
 PREDICTION QUALITY
 Rank IC 20 / 60: INSUFFICIENT_DATA / INSUFFICIENT_DATA
@@ -24,12 +24,12 @@ Drawdown / win rate: INSUFFICIENT_DATA / INSUFFICIENT_DATA
 ALLOCATION BEHAVIOUR
 Top / top-3 hit: INSUFFICIENT_DATA / INSUFFICIENT_DATA
 Turnover / persistence: 1.000 / +0.0%
-Holding period / HHI: 2.3 sessions / 1.000
+Holding period / HHI: 2.0 sessions / 0.382
 
 FOCUS ETF ERRORS
-XSOE: n=4 | pred +1.2% | real -2.9% | err +4.1% | dir +25.0%
-QQQM: n=4 | pred +0.6% | real -4.3% | err +4.8% | dir +0.0%
-SOXX: n=4 | pred +2.5% | real -7.7% | err +10.2% | dir +0.0%
-XLE: n=4 | pred +0.6% | real +3.0% | err -2.5% | dir +100.0%
-XLB: n=4 | pred +0.5% | real +1.3% | err -0.8% | dir +75.0%
-XLI: n=4 | pred +0.5% | real -0.4% | err +0.9% | dir +25.0%
+XSOE: n=5 | pred +1.2% | real -2.1% | err +3.3% | dir +40.0%
+QQQM: n=5 | pred +0.6% | real -3.2% | err +3.8% | dir +20.0%
+SOXX: n=5 | pred +3.2% | real -7.0% | err +10.2% | dir +0.0%
+XLE: n=5 | pred +0.6% | real +3.1% | err -2.5% | dir +100.0%
+XLB: n=5 | pred +0.5% | real +1.3% | err -0.8% | dir +80.0%
+XLI: n=5 | pred +0.5% | real +0.2% | err +0.3% | dir +60.0%

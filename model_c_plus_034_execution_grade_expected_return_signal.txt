@@ -5,24 +5,24 @@ Purpose
 - Mark only production or robust-gated shadow signals as execution-grade.
 
 Performance
-- 034_EXECUTION_GRADE_EXPECTED_RETURN_SIGNAL: ann 0.8497, Sharpe 3.4037, DD -0.1996, final equity 5.3741
-- 022F_BASE_COMMON: ann 0.8250, Sharpe 3.2823, DD -0.1996, final equity 5.1799
-- EXPANDED_CANDIDATE_COMMON: ann 0.6841, Sharpe 2.8688, DD -0.1682, final equity 4.1583
+- 034_EXECUTION_GRADE_EXPECTED_RETURN_SIGNAL: ann 0.8586, Sharpe 3.4399, DD -0.1996, final equity 5.4580
+- 022F_BASE_COMMON: ann 0.8337, Sharpe 3.3179, DD -0.1996, final equity 5.2608
+- EXPANDED_CANDIDATE_COMMON: ann 0.6858, Sharpe 2.8706, DD -0.1657, final equity 4.1783
 
 Latest Gate
 - Robust gate active: False
-- Opportunistic gate active: False
+- Opportunistic gate active: True
 - Source model: 022F_balanced_defense_real_estate
 - Weights: XLE 62.0%, XSOE 30.0%, FEZ 8.0%
 
 Top Execution-Grade Scores
-- XLB: action 17.3, authority LIVE_EXECUTION_MODEL, exp10d +1.11%, weight 0.0%
-- XLE: action 13.7, authority LIVE_EXECUTION_MODEL, exp10d +1.09%, weight 0.0%
-- QQQM: action 10.4, authority LIVE_EXECUTION_MODEL, exp10d +1.07%, weight 0.0%
-- XSOE: action 8.6, authority LIVE_EXECUTION_MODEL, exp10d +1.06%, weight 0.0%
-- XLI: action 7.1, authority LIVE_EXECUTION_MODEL, exp10d +0.91%, weight 0.0%
-- SOXX: action 29.4, authority RESEARCH_EXPECTED_RETURN_ONLY, exp10d +12.04%, weight 0.0%
-- XLV: action 10.9, authority RESEARCH_EXPECTED_RETURN_ONLY, exp10d +1.29%, weight 0.0%
-- XLP: action 9.4, authority RESEARCH_EXPECTED_RETURN_ONLY, exp10d +1.18%, weight 0.0%
-- GLD: action 8.8, authority RESEARCH_EXPECTED_RETURN_ONLY, exp10d +1.21%, weight 0.0%
-- XLRE: action 8.8, authority RESEARCH_EXPECTED_RETURN_ONLY, exp10d +1.11%, weight 0.0%
+- XLB: action 38.0, authority LIVE_EXECUTION_MODEL, exp10d +0.78%, weight 60.0%
+- XLE: action 31.6, authority LIVE_EXECUTION_MODEL, exp10d +0.81%, weight 27.5%
+- QQQM: action 20.8, authority LIVE_EXECUTION_MODEL, exp10d +0.71%, weight 0.0%
+- XLI: action 9.0, authority LIVE_EXECUTION_MODEL, exp10d +0.70%, weight 0.0%
+- XSOE: action 8.2, authority LIVE_EXECUTION_MODEL, exp10d +0.69%, weight 0.0%
+- SOXX: action 52.9, authority OPPORTUNISTIC_SHADOW_EXECUTION, exp10d +1.22%, weight 50.0%
+- XLV: action 41.7, authority OPPORTUNISTIC_SHADOW_EXECUTION, exp10d +0.89%, weight 50.0%
+- GLD: action 18.5, authority RESEARCH_EXPECTED_RETURN_ONLY, exp10d +0.89%, weight 0.0%
+- XLP: action 17.4, authority RESEARCH_EXPECTED_RETURN_ONLY, exp10d +0.83%, weight 0.0%
+- XLU: action 16.8, authority RESEARCH_EXPECTED_RETURN_ONLY, exp10d +0.81%, weight 0.0%
