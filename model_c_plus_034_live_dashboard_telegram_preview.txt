@@ -2,36 +2,35 @@
 Source model: 022F_BASE
 Source model name: 022F_CALIBRATED_DEFENSE_VALIDATION_BEST
 Source configuration: CONVICTION_00051
-Source recommendation date: 2026-08-03
-Market-data date: 2026-08-03
-Feature date: 2026-08-03
-Allocation date: 2026-08-03
-Base weight date: 2026-08-03
+Source recommendation date: 2026-08-04
+Market-data date: 2026-08-04
+Feature date: 2026-08-04
+Allocation date: 2026-08-04
+Base weight date: 2026-08-04
 Freshness: CURRENT
 
 ━━ VERIFIED ALLOCATION ━━
-XLB      54.5%
-XLE      24.9%
-ERX      12.5%
+XLB      52.0%
+XSOE     40.0%
 FEZ       8.0%
 TOTAL   100.0%
 
 ━━ EXECUTION STATE ━━
 Execution safe: YES
 Last rebalance date: NOT_AVAILABLE_FROM_VALIDATED_SOURCE
-Source history through date: 2026-07-07
+Source history through date: 2026-07-21
 Next scheduled rebalance date: NOT_AVAILABLE_FROM_VALIDATED_SOURCE
 Emergency state: NORMAL
 Normal rebalance due: NOT_AVAILABLE_FROM_VALIDATED_SOURCE
 Live allocation leader: XLB
-Second live holding: XLE
-Research strength leader: XLV
-Top-two score gap: 0.0033
+Second live holding: XSOE
+Research strength leader: XLB
+Top-two score gap: 0.0010
 Required gap: NOT_USED_BY_SOURCE_MODEL
 Effective technology exposure: 0.000x
 
 ━━ PORTFOLIO EVIDENCE ━━
-Expected 10-day portfolio return: 0.69%
+Expected 10-day portfolio return: 0.62%
 Historical annual return: 110.75%
 Historical volatility: 24.61%
 Historical Sharpe: 4.500
@@ -39,31 +38,31 @@ Historical max drawdown: -11.45%
 
 
 034 COMPLETE ETF STRENGTH RANKING
-Data date: 2026-08-03 | Freshness: CURRENT
+Data date: 2026-08-04 | Freshness: CURRENT
 
 #  ETF    Wt   Exp10D  Strength  Model    Authority
 ---------------------------------------------------
- 1 FEZ     8%    0.83%     66.6   0.0083 RESEARCH
- 2 XLB    55%    0.78%     47.2   0.0063 LIVE
- 3 XLE    25%    0.81%     45.3   0.0062 LIVE
- 4 ERX    13%      N/A      N/A      N/A LIVE
- 5 XLV     0%    0.89%     81.3   0.0089 SHADOW
- 6 XLP     0%    0.83%     72.2   0.0083 RESEARCH
- 7 XLRE    0%    0.81%     70.6   0.0081 RESEARCH
- 8 XLU     0%    0.81%     69.7   0.0081 RESEARCH
- 9 GLD     0%    0.89%     69.1   0.0089 RESEARCH
-10 TLT     0%    0.78%     65.9   0.0078 RESEARCH
-11 SOXX    0%    1.22%     63.0   0.0122 SHADOW
-12 XLI     0%    0.70%     30.1   0.0042 LIVE
-13 QQQM    0%    0.71%     29.2   0.0059 LIVE
-14 IWM     0%    0.68%     22.0   0.0068 RESEARCH
-15 XSOE    0%    0.69%     20.1   0.0045 LIVE
-16 TQQQ    0%      N/A      N/A      N/A LIVE
-17 SOXL    0%      N/A      N/A      N/A LIVE
+ 1 XLB    52%    0.77%     89.2   0.0054 LIVE
+ 2 FEZ     8%    0.61%     64.0   0.0061 RESEARCH
+ 3 XSOE   40%    0.43%     18.4   0.0021 LIVE
+ 4 XLRE    0%    0.61%     82.3   0.0061 RESEARCH
+ 5 XLV     0%    0.67%     81.2   0.0067 RESEARCH
+ 6 XLP     0%    0.61%     73.5   0.0061 RESEARCH
+ 7 TLT     0%    0.60%     72.5   0.0060 RESEARCH
+ 8 XLU     0%    0.60%     65.9   0.0060 RESEARCH
+ 9 GLD     0%    0.60%     50.6   0.0060 RESEARCH
+10 XLI     0%    0.49%     40.9   0.0017 LIVE
+11 IWM     0%    0.49%     39.6   0.0049 RESEARCH
+12 XLE     0%    0.60%     38.1   0.0021 LIVE
+13 QQQM    0%    0.48%     24.0   0.0006 LIVE
+14 SOXX    0%   -1.20%      7.2  -0.0120 RESEARCH
+15 TQQQ    0%      N/A      N/A      N/A LIVE
+16 SOXL    0%      N/A      N/A      N/A LIVE
+17 ERX     0%      N/A      N/A      N/A LIVE
 18 UXI     0%      N/A      N/A      N/A LIVE
 19 BIL     0%      N/A      N/A      N/A LIVE
-20 IEF     0%    0.77%     61.3   0.0077 RESEARCH
-21 XLF     0%    0.68%     40.8   0.0068 RESEARCH
+20 IEF     0%    0.60%     67.8   0.0060 RESEARCH
+21 XLF     0%    0.48%     40.6   0.0048 RESEARCH
 
 ━━ HOW TO READ ━━
 Weight is the verified execution allocation.
@@ -74,43 +73,42 @@ LIVE may execute. GATED, SHADOW and RESEARCH do not execute unless approved.
 
 
 034 ECONOMIC AND MARKET REGIME
-Data date: 2026-08-03 | Freshness: CURRENT
+Data date: 2026-08-04 | Freshness: CURRENT
 
 ━━ CORE ECONOMIC STATE ━━
-Growth: Weak (-1.748)
-Credit: Neutral (-0.000)
-USD: Strong / tightening (0.951)
-Yield curve: +1.00%
-Risk-off pressure: Elevated (0.672)
-Crash pressure: Low (-0.971)
-VIX: 15.60
+Growth: Weak (-1.407)
+Credit: Neutral (-0.151)
+USD: Strong / tightening (0.732)
+Yield curve: +0.91%
+Risk-off pressure: Elevated (0.641)
+Crash pressure: Low (-0.848)
+VIX: 15.92
 
 ━━ SECTOR AND CROSS-ASSET REGIME ━━
-Semiconductors / technology: Weak (-1.867)
-Industrials: Mixed (-0.066)
-Materials: Mixed (0.387)
-Copper: Supportive (0.686)
-Oil / energy: Positive (0.041)
-Small caps — IWM: Weak | score 22.0 | Exp10D 0.68%
-Financials — XLF: Mixed | score 40.8 | Exp10D 0.68%
-Real estate — XLRE: Constructive | score 70.6 | Exp10D 0.81%
-Healthcare — XLV: Strong | score 81.3 | Exp10D 0.89%
-Utilities — XLU: Constructive | score 69.7 | Exp10D 0.81%
-Staples — XLP: Constructive | score 72.2 | Exp10D 0.83%
-Treasuries — TLT: Constructive | score 65.9 | Exp10D 0.78%
-Gold — GLD: Constructive | score 69.1 | Exp10D 0.89%
+Semiconductors / technology: Weak (-1.530)
+Industrials: Mixed (0.021)
+Materials: Strong (0.551)
+Copper: Supportive (0.775)
+Oil / energy: Negative (-0.011)
+Small caps — IWM: Weak | score 39.6 | Exp10D 0.49%
+Financials — XLF: Mixed | score 40.6 | Exp10D 0.48%
+Real estate — XLRE: Strong | score 82.3 | Exp10D 0.61%
+Healthcare — XLV: Strong | score 81.2 | Exp10D 0.67%
+Utilities — XLU: Constructive | score 65.9 | Exp10D 0.60%
+Staples — XLP: Constructive | score 73.5 | Exp10D 0.61%
+Treasuries — TLT: Constructive | score 72.5 | Exp10D 0.60%
+Gold — GLD: Mixed | score 50.6 | Exp10D 0.60%
 
 ━━ GLOBAL AND EM REGIME ━━
-Europe — FEZ: Constructive | score 66.6 | Exp10D 0.83%
-Emerging markets — XSOE: Weak | score 20.1 | Exp10D 0.69%
+Europe — FEZ: Constructive | score 64.0 | Exp10D 0.61%
+Emerging markets — XSOE: Weak | score 18.4 | Exp10D 0.43%
 China technology — CQQQ: NOT YET ACTIVE
 Latin America — ILF: NOT YET ACTIVE
 USD/CNY and USD/CNH regime: NOT YET ACTIVE
 Korean won / Asian export-cycle regime: NOT YET ACTIVE
 
 ━━ ECONOMIC INTERPRETATION ━━
-Verified live allocation is led by XLB; XLE is the next live holding.
-XLV is the strongest research signal but has SHADOW authority, so it does not replace the verified live allocation.
+Verified live allocation is led by XLB; XSOE is the next live holding.
 The top-two gap is small, so leadership conviction is limited rather than dominant.
 The strong-dollar regime remains a headwind for broad EM and international risk assets.
 The slow semiconductor regime remains weak even if short-term price action improves.
@@ -118,14 +116,14 @@ Real estate, small caps, defensives, bonds, gold, Europe and EM remain visible a
 
 
 034 MODEL HEALTH AND DIAGNOSTICS
-Data date: 2026-08-03 | Freshness: CURRENT
+Data date: 2026-08-04 | Freshness: CURRENT
 
 ━━ TECHNOLOGY AND LEVERAGE ━━
 QQQM base weight: 0.00%
 TQQQ substituted weight: 0.00%
 SOXX base weight: 0.00%
 SOXL substituted weight: 0.00%
-Common leverage budget: 12.54%
+Common leverage budget: 13.07%
 Effective technology exposure: 0.000x
 Leverage configuration: D_BOTH_CAP_1.00
 Robust gate: NOT_TRIGGERED
@@ -152,10 +150,10 @@ Evidence quality: FUNCTIONAL_STRONG_HISTORICAL_INSUFFICIENT
 Execution safe: YES
 Validation: PASS
 Model: 034_EXECUTION_GRADE_EXPECTED_RETURN_SIGNAL
-Market-data freshness: CURRENT (2026-08-03)
-Feature freshness: CURRENT (2026-08-03)
-Allocation freshness: CURRENT (2026-08-03)
-Ranking fingerprint: c1e0b52c552b5c9a4ee8f3ffd8e5cef395f668f25f84ae31b3f08dca76e036b3
+Market-data freshness: CURRENT (2026-08-04)
+Feature freshness: CURRENT (2026-08-04)
+Allocation freshness: CURRENT (2026-08-04)
+Ranking fingerprint: 518ab924236312c1de7def94222fc9d126b0d117efdddad251a490a163106942
 
 ━━ EXECUTION AUTHORITY ━━
 Live execution: QQQM, XLE, XSOE, XLI, XLB
@@ -169,13 +167,13 @@ They can be added later without rebuilding this four-page report.
 
 
 034 PRODUCTION MODEL PERFORMANCE
-Latest captured signal: 2026-08-03
+Latest captured signal: 2026-08-04
 Completed production outcomes only — not a backtest.
 
 OVERALL HEALTH: WATCH
-WATCH: 5 production signals have completed their 10-session outcome; 20 are required before institutional health classification. No backfilled replay observations are used.
+WATCH: 6 production signals have completed their 10-session outcome; 20 are required before institutional health classification. No backfilled replay observations are used.
 
-Completed / pending signals: 5 / 10
+Completed / pending signals: 6 / 10
 
 PREDICTION QUALITY
 Rank IC 20 / 60: INSUFFICIENT_DATA / INSUFFICIENT_DATA
@@ -193,13 +191,13 @@ Drawdown / win rate: INSUFFICIENT_DATA / INSUFFICIENT_DATA
 
 ALLOCATION BEHAVIOUR
 Top / top-3 hit: INSUFFICIENT_DATA / INSUFFICIENT_DATA
-Turnover / persistence: 1.000 / +0.0%
-Holding period / HHI: 2.0 sessions / 0.382
+Turnover / persistence: 0.400 / +60.0%
+Holding period / HHI: 2.1 sessions / 0.437
 
 FOCUS ETF ERRORS
-XSOE: n=5 | pred +1.2% | real -2.1% | err +3.3% | dir +40.0%
-QQQM: n=5 | pred +0.6% | real -3.2% | err +3.8% | dir +20.0%
-SOXX: n=5 | pred +3.2% | real -7.0% | err +10.2% | dir +0.0%
-XLE: n=5 | pred +0.6% | real +3.1% | err -2.5% | dir +100.0%
-XLB: n=5 | pred +0.5% | real +1.3% | err -0.8% | dir +80.0%
-XLI: n=5 | pred +0.5% | real +0.2% | err +0.3% | dir +60.0%
+XSOE: n=6 | pred +1.2% | real -1.6% | err +2.8% | dir +50.0%
+QQQM: n=6 | pred +0.6% | real -2.4% | err +3.0% | dir +33.3%
+SOXX: n=6 | pred +3.4% | real -6.1% | err +9.5% | dir +0.0%
+XLE: n=6 | pred +0.6% | real +2.4% | err -1.8% | dir +83.3%
+XLB: n=6 | pred +0.5% | real +1.7% | err -1.2% | dir +83.3%
+XLI: n=6 | pred +0.5% | real +0.9% | err -0.3% | dir +66.7%

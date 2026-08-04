@@ -8,24 +8,24 @@ Design Being Validated
 - The volatility block was tested but rejected; best model uses no practical vol block.
 
 Common Period Versus 020C
-- Annual return delta: +0.0177
-- Sharpe delta: +0.1699
-- Max drawdown delta: +0.0205
+- Annual return delta: +0.0179
+- Sharpe delta: +0.1705
+- Max drawdown delta: +0.0208
 
 Cost Sensitivity
-- 2x cost Sharpe delta: +0.1157
-- 5x cost Sharpe delta: -0.0215
+- 2x cost Sharpe delta: +0.1162
+- 5x cost Sharpe delta: -0.0209
 
 Weak Windows
 - Rate-stress 2024H1 Sharpe delta: -0.2683
 - April 2025 Sharpe delta: -0.1441
 
 Exposure
-- Defensive active days: 171
-- XLP days: 40
+- Defensive active days: 169
+- XLP days: 39
 - XLRE days: 54
 - XLU days: 38
-- XLV days: 39
+- XLV days: 38
 
 Recommendation
 - 022E passes normal validation as the best defensive/real-estate allocation candidate so far.
