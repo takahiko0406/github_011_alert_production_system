@@ -1,12 +1,12 @@
 034 MODEL HEALTH AND DIAGNOSTICS
-Data date: 2026-08-04 | Freshness: CURRENT
+Data date: 2026-08-05 | Freshness: CURRENT
 
 ━━ TECHNOLOGY AND LEVERAGE ━━
 QQQM base weight: 0.00%
 TQQQ substituted weight: 0.00%
 SOXX base weight: 0.00%
 SOXL substituted weight: 0.00%
-Common leverage budget: 13.07%
+Common leverage budget: 16.48%
 Effective technology exposure: 0.000x
 Leverage configuration: D_BOTH_CAP_1.00
 Robust gate: NOT_TRIGGERED
@@ -33,10 +33,10 @@ Evidence quality: FUNCTIONAL_STRONG_HISTORICAL_INSUFFICIENT
 Execution safe: YES
 Validation: PASS
 Model: 034_EXECUTION_GRADE_EXPECTED_RETURN_SIGNAL
-Market-data freshness: CURRENT (2026-08-04)
-Feature freshness: CURRENT (2026-08-04)
-Allocation freshness: CURRENT (2026-08-04)
-Ranking fingerprint: 518ab924236312c1de7def94222fc9d126b0d117efdddad251a490a163106942
+Market-data freshness: CURRENT (2026-08-05)
+Feature freshness: CURRENT (2026-08-05)
+Allocation freshness: CURRENT (2026-08-05)
+Ranking fingerprint: 8892cb008c9ff010dff2b3d0dc2666b19a7c45627ae429ca09cdf7c58cd51773
 
 ━━ EXECUTION AUTHORITY ━━
 Live execution: QQQM, XLE, XSOE, XLI, XLB
