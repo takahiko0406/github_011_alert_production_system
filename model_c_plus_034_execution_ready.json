@@ -1,14 +1,15 @@
 {
   "execution_safe": true,
-  "common_date": "2026-08-05",
+  "common_date": "2026-08-06",
   "source_model": "022F_BASE",
-  "weights_sum": 0.9999999999999999,
+  "weights_sum": 1.0000000000000002,
   "selected_assets": [
-    "ERX",
+    "FEZ",
+    "UXI",
     "XLB",
-    "XLE"
+    "XLI"
   ],
-  "ranking_fingerprint": "8892cb008c9ff010dff2b3d0dc2666b19a7c45627ae429ca09cdf7c58cd51773",
+  "ranking_fingerprint": "430f78f5f402d1c67a20d50fa549619e4fc992652278e34ab1f728c3c6c7cff5",
   "effective_technology_exposure": 0.0,
   "common_leverage_configuration": "D_BOTH_CAP_1.00"
 }

@@ -1,41 +1,40 @@
 034 ECONOMIC AND MARKET REGIME
-Data date: 2026-08-05 | Freshness: CURRENT
+Data date: 2026-08-06 | Freshness: CURRENT
 
 ━━ CORE ECONOMIC STATE ━━
-Growth: Weak (-1.039)
-Credit: Neutral (-0.339)
-USD: Strong / tightening (0.586)
-Yield curve: +0.89%
-Risk-off pressure: Moderate (0.369)
-Crash pressure: Low (-0.713)
-VIX: 16.30
+Growth: Weak (-1.225)
+Credit: Neutral (-0.069)
+USD: Strong / tightening (0.995)
+Yield curve: +0.92%
+Risk-off pressure: Moderate (0.311)
+Crash pressure: Low (-1.075)
+VIX: 15.50
 
 ━━ SECTOR AND CROSS-ASSET REGIME ━━
-Semiconductors / technology: Weak (-1.279)
-Industrials: Mixed (0.118)
-Materials: Mixed (0.464)
-Copper: Supportive (0.641)
-Oil / energy: Positive (0.029)
-Small caps — IWM: Weak | score 39.6 | Exp10D 0.38%
-Financials — XLF: Mixed | score 49.3 | Exp10D 0.37%
-Real estate — XLRE: Constructive | score 73.8 | Exp10D 0.45%
-Healthcare — XLV: Strong | score 84.0 | Exp10D 0.48%
-Utilities — XLU: Constructive | score 69.5 | Exp10D 0.45%
-Staples — XLP: Constructive | score 67.3 | Exp10D 0.45%
-Treasuries — TLT: Strong | score 88.1 | Exp10D 0.47%
-Gold — GLD: Constructive | score 67.4 | Exp10D 0.47%
+Semiconductors / technology: Weak (-1.308)
+Industrials: Mixed (0.485)
+Materials: Strong (0.790)
+Copper: Supportive (1.091)
+Oil / energy: Positive (0.114)
+Small caps — IWM: Weak | score 25.4 | Exp10D 0.55%
+Financials — XLF: Mixed | score 44.1 | Exp10D 0.55%
+Real estate — XLRE: Mixed | score 52.2 | Exp10D 0.61%
+Healthcare — XLV: Constructive | score 66.3 | Exp10D 0.62%
+Utilities — XLU: Mixed | score 56.9 | Exp10D 0.61%
+Staples — XLP: Mixed | score 54.7 | Exp10D 0.61%
+Treasuries — TLT: Constructive | score 72.5 | Exp10D 0.62%
+Gold — GLD: Mixed | score 59.1 | Exp10D 0.63%
 
 ━━ GLOBAL AND EM REGIME ━━
-Europe — FEZ: Mixed | score 50.9 | Exp10D 0.45%
-Emerging markets — XSOE: Weak | score 17.4 | Exp10D 0.31%
+Europe — FEZ: Weak | score 37.9 | Exp10D 0.60%
+Emerging markets — XSOE: Weak | score 15.0 | Exp10D 0.51%
 China technology — CQQQ: NOT YET ACTIVE
 Latin America — ILF: NOT YET ACTIVE
 USD/CNY and USD/CNH regime: NOT YET ACTIVE
 Korean won / Asian export-cycle regime: NOT YET ACTIVE
 
 ━━ ECONOMIC INTERPRETATION ━━
-Verified live allocation is led by XLB; XLE is the next live holding.
-TLT is the strongest research signal but has RESEARCH authority, so it does not replace the verified live allocation.
+Verified live allocation is led by XLB; XLI is the next live holding.
 The top-two gap is small, so leadership conviction is limited rather than dominant.
 The strong-dollar regime remains a headwind for broad EM and international risk assets.
 The slow semiconductor regime remains weak even if short-term price action improves.

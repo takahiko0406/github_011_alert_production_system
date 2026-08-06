@@ -1,29 +1,29 @@
 034 COMPLETE ETF STRENGTH RANKING
-Data date: 2026-08-05 | Freshness: CURRENT
+Data date: 2026-08-06 | Freshness: CURRENT
 
 #  ETF    Wt   Exp10D  Strength  Model    Authority
 ---------------------------------------------------
- 1 XLE    24%    0.46%     62.8   0.0025 LIVE
- 2 XLB    60%    0.45%     52.1   0.0042 LIVE
- 3 ERX    16%      N/A      N/A      N/A LIVE
- 4 TLT     0%    0.47%     88.1   0.0047 RESEARCH
- 5 XLV     0%    0.48%     84.0   0.0048 RESEARCH
- 6 XLRE    0%    0.45%     73.8   0.0045 RESEARCH
- 7 XLU     0%    0.45%     69.5   0.0045 RESEARCH
- 8 GLD     0%    0.47%     67.4   0.0047 RESEARCH
- 9 XLP     0%    0.45%     67.3   0.0045 RESEARCH
-10 FEZ     0%    0.45%     50.9   0.0045 RESEARCH
-11 XLI     0%    0.38%     40.9   0.0025 LIVE
-12 IWM     0%    0.38%     39.6   0.0038 RESEARCH
-13 QQQM    0%    0.37%     24.0   0.0018 LIVE
-14 XSOE    0%    0.31%     17.4   0.0013 LIVE
-15 SOXX    0%   -1.21%      7.2  -0.0121 RESEARCH
+ 1 XLB    54%    0.88%     91.4   0.0098 LIVE
+ 2 XLI    19%    0.62%     60.7   0.0058 LIVE
+ 3 FEZ     8%    0.60%     37.9   0.0060 RESEARCH
+ 4 UXI    19%      N/A      N/A      N/A LIVE
+ 5 TLT     0%    0.62%     72.5   0.0062 RESEARCH
+ 6 XLV     0%    0.62%     66.3   0.0062 RESEARCH
+ 7 XLE     0%    0.64%     64.7   0.0058 LIVE
+ 8 SOXX    0%    0.71%     59.4   0.0071 RESEARCH
+ 9 GLD     0%    0.63%     59.1   0.0063 RESEARCH
+10 XLU     0%    0.61%     56.9   0.0061 RESEARCH
+11 XLP     0%    0.61%     54.7   0.0061 RESEARCH
+12 XLRE    0%    0.61%     52.2   0.0061 RESEARCH
+13 QQQM    0%    0.56%     25.7   0.0055 LIVE
+14 IWM     0%    0.55%     25.4   0.0055 RESEARCH
+15 XSOE    0%    0.51%     15.0   0.0054 LIVE
 16 TQQQ    0%      N/A      N/A      N/A LIVE
 17 SOXL    0%      N/A      N/A      N/A LIVE
-18 UXI     0%      N/A      N/A      N/A LIVE
+18 ERX     0%      N/A      N/A      N/A LIVE
 19 BIL     0%      N/A      N/A      N/A LIVE
-20 IEF     0%    0.45%     78.2   0.0045 RESEARCH
-21 XLF     0%    0.37%     49.3   0.0037 RESEARCH
+20 IEF     0%    0.61%     67.9   0.0061 RESEARCH
+21 XLF     0%    0.55%     44.1   0.0055 RESEARCH
 
 ━━ HOW TO READ ━━
 Weight is the verified execution allocation.
