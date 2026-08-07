@@ -2,17 +2,18 @@
 Source model: 022F_BASE
 Source model name: 022F_CALIBRATED_DEFENSE_VALIDATION_BEST
 Source configuration: CONVICTION_00051
-Source recommendation date: 2026-08-06
-Market-data date: 2026-08-06
-Feature date: 2026-08-06
-Allocation date: 2026-08-06
-Base weight date: 2026-08-06
+Source recommendation date: 2026-08-07
+Market-data date: 2026-08-07
+Feature date: 2026-08-07
+Allocation date: 2026-08-07
+Base weight date: 2026-08-07
 Freshness: CURRENT
 
 ━━ VERIFIED ALLOCATION ━━
-XLB      54.1%
-XLI      19.0%
-UXI      19.0%
+XLB      47.2%
+XLE      19.2%
+ERX      15.5%
+GLD      10.0%
 FEZ       8.0%
 TOTAL   100.0%
 
@@ -24,14 +25,14 @@ Next scheduled rebalance date: NOT_AVAILABLE_FROM_VALIDATED_SOURCE
 Emergency state: NORMAL
 Normal rebalance due: NOT_AVAILABLE_FROM_VALIDATED_SOURCE
 Live allocation leader: XLB
-Second live holding: XLI
-Research strength leader: XLB
-Top-two score gap: 0.0017
+Second live holding: XLE
+Research strength leader: TLT
+Top-two score gap: 0.0002
 Required gap: NOT_USED_BY_SOURCE_MODEL
 Effective technology exposure: 0.000x
 
 ━━ PORTFOLIO EVIDENCE ━━
-Expected 10-day portfolio return: 0.64%
+Expected 10-day portfolio return: 0.38%
 Historical annual return: 110.75%
 Historical volatility: 24.61%
 Historical Sharpe: 4.500
